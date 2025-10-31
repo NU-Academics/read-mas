@@ -219,3 +219,12 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Runs
+runs/
+
+# Data
+data/
+
+# Jupyter Notebooks
+notebooks/.ipynb_checkpoints/
