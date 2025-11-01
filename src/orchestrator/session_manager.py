@@ -5,7 +5,7 @@ from google.adk.sessions import InMemorySessionService
 from google.adk.sessions.base_session_service import BaseSessionService
 from google.adk.runners import Runner
 from google.adk.agents import Agent
-from src.orchestrator.constants import APP_NAME
+from orchestrator.constants import APP_NAME
 
 class SessionManager:
   """Manages the session for the orchestrator agent."""

@@ -1,14 +1,24 @@
 import asyncio
-import typer
+import sys
 from pathlib import Path
-from typing import Optional, List, Dict, Any, Set, Union
+from typing import Optional
+import typer
 from rich import print
-from rich.table import Table
 from rich.console import Console
 from loguru import logger
 import uuid
-from src.orchestrator.orchestrator import get_agent_response
-from src.orchestrator.constants import DEFAULT_MODEL_NAME
+
+# Add src directory to path if running directly (not installed)
+# This allows imports like 'from orchestrator.orchestrator import ...' to work
+if __name__ == "__main__" or (hasattr(sys, "argv") and sys.argv[0].endswith("main.py")):
+    # Get the project root (parent of src/)
+    project_root = Path(__file__).parent.parent
+    src_dir = project_root / "src"
+    if str(src_dir) not in sys.path:
+        sys.path.insert(0, str(src_dir))
+
+from orchestrator.orchestrator import get_agent_response
+from orchestrator.constants import DEFAULT_MODEL_NAME
 
 app = typer.Typer(help="READ-MAS CLI for automated software design")
 
@@ -60,4 +70,6 @@ def run(
 
 
 if __name__ == "__main__":
-    app()
+    # Allow running as: python -m src.main run ...
+    # or: python src/main.py run ...
+    app(prog_name="readmas")

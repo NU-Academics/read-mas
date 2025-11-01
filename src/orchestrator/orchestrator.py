@@ -2,11 +2,11 @@
 
 from google.adk.agents import Agent
 
-from src.single.single_agent import SingleAgent
+from single.single_agent import SingleAgent
 from google.genai import types
 
-from src.orchestrator.session_manager import SessionManager
-from src.orchestrator.constants import APP_NAME
+from orchestrator.session_manager import SessionManager
+from orchestrator.constants import APP_NAME
 
 session_manager = SessionManager()
 session_service = session_manager.get_session()
