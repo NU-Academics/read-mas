@@ -47,32 +47,61 @@ An automated software requirements specification (SRS) and system design generat
 
 ### Command-Line Interface
 
-After installation, you can use the CLI in two ways:
+The project provides two CLI entry points:
+
+1. **`src/main.py`**: Main CLI for running software design automation
+2. **`src/eval/run.py`**: Evaluation CLI for generating benchmark samples
+
+### Main CLI (`src/main.py`)
+
+The main CLI can be used in two ways:
 
 #### Option 1: Using the installed command
 ```bash
-readmas --query "Design a tic-tac-toe game" -t single -m ollama_chat/gpt-oss:20b
+readmas run --query "Design a tic-tac-toe game" -t single -m ollama_chat/gpt-oss:20b
 ```
 
 #### Option 2: Running as a module
 ```bash
-python -m src.main --query "Design a tic-tac-toe game" -t single -m ollama_chat/gpt-oss:20b
+python -m src.main run --query "Design a tic-tac-toe game" -t single -m ollama_chat/gpt-oss:20b
 ```
 
-### Command Options
+#### Command Options
 
-- `--query`, `-q`: User's input query describing the software to design (required)
+- `--query`, `-q`: User's input query describing the software to design (optional)
 - `--agent-type`, `-t`: Agent type - `single` or `multi` (default: `single`)
 - `--llm-model-name`, `-m`: LLM model name to use (default: `ollama_chat/gpt-oss:20b`)
-- `--run-id`, `-r`: Unique run identifier (default: auto-generated UUID)
+- `--run-id`, `-r`: Unique run identifier (default: auto-generated timestamp)
 
-### Example
+#### Example
 
 ```bash
-python -m src.main \
+python -m src.main run \
   --query "Design a task management application with user authentication and team collaboration features" \
   --agent-type single \
   --llm-model-name "gpt-4"
+```
+
+### Evaluation CLI (`src/eval/run.py`)
+
+The evaluation CLI provides commands for generating benchmark samples:
+
+#### Generate Samples
+
+Generate samples for a benchmark using the evaluation coding agent:
+
+```bash
+python -m src.eval.run generate-samples <benchmark_name> --model ollama_chat/gpt-oss:20b --run-id <run_id>
+```
+
+**Command Options:**
+- `benchmark_name`: Name of the benchmark (positional argument, required)
+- `--model`, `-m`: LLM model name to use (default: `ollama_chat/gpt-oss:20b`)
+- `--run-id`, `-r`: Unique run identifier (default: auto-generated timestamp)
+
+**Example:**
+```bash
+python -m src.eval.run generate-samples humaneval --model gpt-4
 ```
 
 ## Project Structure
@@ -89,11 +118,16 @@ read-mas/
 │   │   └── constants.py
 │   ├── single/          # Single agent implementation
 │   │   └── single_agent.py
+│   ├── eval/            # Evaluation modules
+│   │   ├── eval_agents/ # Evaluation agents
+│   │   ├── evaluators/  # Benchmark evaluators
+│   │   └── run.py       # Evaluation CLI entry point
 │   ├── design/          # Design-related modules (future)
 │   ├── requirement/     # Requirements-related modules (future)
-│   └── main.py          # CLI entry point
+│   └── main.py          # Main CLI entry point
 ├── notebooks/           # Jupyter notebooks for experimentation
 ├── runs/                # Execution logs and outputs
+├── data/                # Data files including samples and results
 ├── pyproject.toml       # Project configuration and dependencies
 └── README.md
 ```
