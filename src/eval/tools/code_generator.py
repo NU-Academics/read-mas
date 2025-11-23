@@ -2,11 +2,7 @@
 
 from litellm import completion
 from loguru import logger
-import re
-from typing import Optional, Dict, Any
-from google.adk.tools.tool_context import ToolContext
-from google.adk.tools.base_tool import BaseTool
-
+from orchestrator.constants import DEFAULT_MODEL_NAME
 
 CODE_GENERATOR_TOOL_SYSTEM_PROMPT = """Generate code based on the following software design specification:
 
@@ -32,7 +28,7 @@ def generate_code(design_output: str) -> str:
 
   try:
     # TODO: this can be an environment variable
-    code_model = "ollama/gpt-oss:20b"
+    code_model = DEFAULT_MODEL_NAME
     # code_model="gemini/gemini-2.5-pro"
     response = completion(
         model=code_model,

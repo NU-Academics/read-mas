@@ -11,9 +11,8 @@ from google.adk.agents.callback_context import CallbackContext
 
 from agents.agent_base import AgentBase
 from agents.agent_util import get_model_from
-from utils.const import DEFAULT_MODEL_NAME
 from single.prompt import SINGLE_AGENT_SYSTEM_PROMPT
-
+from orchestrator.constants import DEFAULT_MODEL_NAME
 
 def log_single_call(callback_context: CallbackContext) -> Optional[Content]:
   design_output = callback_context.state.get("design_output")
