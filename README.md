@@ -104,6 +104,128 @@ python -m src.eval.run generate-samples <benchmark_name> --model ollama_chat/gpt
 python -m src.eval.run generate-samples humaneval --model gpt-4
 ```
 
+#### Running Evaluations
+
+After generating samples, you can evaluate them using the `evalplus` library. The generated samples are saved in JSONL format to `data/samples/{benchmark_name}/` with the format:
+```json
+{"task_id": "HumanEval/0", "solution": "def function_name(...):\n    ..."}
+```
+
+**Prerequisites:**
+- Ensure `evalplus` is installed (included in project dependencies)
+- For Docker evaluation, ensure Docker is installed and running
+
+##### Local Evaluation
+
+**Step 1: Prepare the samples file**
+
+The generated samples use the `solution` field. If needed, you can convert them to the format expected by evalplus (which uses `completion`):
+
+
+**Step 2: Sanitize the samples**
+
+Sanitize the samples to remove syntax errors and extraneous content:
+
+```bash
+evalplus.sanitize --samples data/samples/humaneval/human_eval_samples_default_completion.jsonl --dataset humaneval
+```
+
+This creates a sanitized file: `data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl`
+
+**Step 3: Validate syntax**
+
+Check for syntax errors:
+
+```bash
+evalplus.syncheck --samples data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl --dataset humaneval
+```
+
+**Step 4: Run evaluation**
+
+Evaluate the sanitized samples locally:
+
+```bash
+evalplus.evaluate --dataset humaneval --samples data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl
+```
+
+For MBPP:
+
+```bash
+evalplus.evaluate --dataset mbpp --samples data/samples/mbpp/mbpp_samples_<timestamp>-sanitized.jsonl
+```
+
+**Optional: Performance tuning**
+
+For slower machines, you can adjust timeout settings:
+
+```bash
+evalplus.evaluate \
+  --dataset humaneval \
+  --samples data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl \
+  --min-time-limit 2 \
+  --gt-time-limit-factor 5 \
+  --parallel 4
+```
+
+##### Docker Sandbox Evaluation
+
+Running evaluations in Docker provides better security isolation for executing untrusted code.
+
+**Step 1: Prepare and sanitize samples** (same as local evaluation)
+
+Follow steps 1-3 from the local evaluation section above.
+
+**Step 2: Run evaluation in Docker**
+
+Mount your data directory and run the evaluation:
+
+```bash
+docker run -v $(pwd):/app -v $(pwd)/data/results/humaneval:/app/data ganler/evalplus:latest \
+  evalplus.evaluate \
+  --dataset humaneval \
+  --samples /app/data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl
+```
+
+For MBPP:
+
+```bash
+docker run -v $(pwd):/app -v $(pwd)/data/results/mbpp:/app/data ganler/evalplus:latest \
+  evalplus.evaluate \
+  --dataset mbpp \
+  --samples /app/data/samples/mbpp/mbpp_samples_<timestamp>-sanitized.jsonl
+```
+
+**Alternative: Run sanitization and validation in Docker too**
+
+You can also run the entire pipeline in Docker:
+
+```bash
+# Sanitize
+docker run -v $(pwd):/app -v $(pwd)/data:/app/data ganler/evalplus:latest \
+  evalplus.sanitize \
+  --samples /app/data/samples/humaneval/human_eval_samples_default_completion.jsonl \
+  --dataset humaneval
+
+# Validate
+docker run  -v $(pwd):/app -v $(pwd)/data:/app/data ganler/evalplus:latest \
+  evalplus.syncheck \
+  --samples /app/data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl \
+  --dataset humaneval
+
+# Evaluate
+docker run -v $(pwd):/app -v $(pwd)/data:/app/data ganler/evalplus:latest \
+  evalplus.evaluate \
+  --dataset humaneval \
+  --samples /app/data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl
+```
+
+**Viewing Results**
+
+After evaluation, results are saved to a file with the pattern `*_eval_results.json` or `*_eval_results.jsonl` in the data/results/dataset_name directory. The results include:
+- Pass rates
+- Detailed test outcomes
+- Error messages (if any)
+
 ## Project Structure
 
 ```
