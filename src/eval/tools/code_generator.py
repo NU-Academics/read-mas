@@ -15,7 +15,8 @@ CODE_GENERATOR_TOOL_SYSTEM_PROMPT = """Generate code based on the following soft
     - Generate ONLY the function implementation that solves the problem
     - Return only the code without explanations or markdown formatting unless the code itself requires markdown.
     """
-    
+
+
 def generate_code(design_output: str) -> str:
   """Generate code using an LLM using the input from a design agent.
 
@@ -33,7 +34,10 @@ def generate_code(design_output: str) -> str:
     response = completion(
         model=code_model,
         messages=[
-            {"role": "user", "content": CODE_GENERATOR_TOOL_SYSTEM_PROMPT.format(design_output=design_output)},
+            {
+                "role": "user",
+                "content": CODE_GENERATOR_TOOL_SYSTEM_PROMPT.format(design_output=design_output),
+            },
         ],
     )
 

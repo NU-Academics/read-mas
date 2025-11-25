@@ -14,6 +14,7 @@ from agents.agent_util import get_model_from
 from single.prompt import SINGLE_AGENT_SYSTEM_PROMPT
 from orchestrator.constants import DEFAULT_MODEL_NAME
 
+
 def log_single_call(callback_context: CallbackContext) -> Optional[Content]:
   design_output = callback_context.state.get("design_output")
   logger.info(f"Design output from single agent: {design_output}")
@@ -39,7 +40,6 @@ class SingleAgent(AgentBase):
         output_key="design_output",
         after_agent_callback=[log_single_call],
     )
-
 
 
 # For testing in adk web ui

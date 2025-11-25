@@ -15,4 +15,3 @@ class AgentBase(ABC):
   @abstractmethod
   def get_agent() -> Agent:
     pass
-

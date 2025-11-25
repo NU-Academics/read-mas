@@ -1,21 +1,18 @@
 import asyncio
-from typing import Optional
 import time
+from typing import Optional
 
-import typer
-from loguru import logger
-
-from orchestrator.constants import DEFAULT_MODEL_NAME
-from orchestrator.session_manager import SessionManager
-from orchestrator.orchestrator import run_agent_batch
-from utils.logger import setup_logging
-from eval.eval_agents.eval_code_generator import EvalCodeGeneratorAgent
 from deepeval.synthesizer import Synthesizer
 from deepeval.synthesizer.config import FiltrationConfig
+from eval.eval_agents.eval_code_generator import EvalCodeGeneratorAgent
 from eval.evaluators.benchmark_evals.benchmark_evaluator import (
     generate_benchmark_samples,
 )
+from loguru import logger
+from orchestrator.constants import DEFAULT_MODEL_NAME
 from tqdm import tqdm
+import typer
+from utils.logger import setup_logging
 
 
 app = typer.Typer(help="READ-MAS CLI for running Evals")
@@ -38,7 +35,10 @@ def generate_samples(
         None,
         "--samples-file",
         "-s",
-        help="Path to an existing samples file. If provided, will resume generation from where it stopped.",
+        help=(
+            "Path to an existing samples file. If provided, will resume generation from where it"
+            " stopped."
+        ),
     ),
 ):
   """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder."""

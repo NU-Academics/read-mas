@@ -1,7 +1,5 @@
 APP_NAME = "readmas"
 DEFAULT_MODEL_NAME = "ollama_chat/gpt-oss:20b"
 
-MAX_CONCURRENCY = 8
-PAUSE = 180
 MAX_RETRIES = 3
 RETRY_DELAY = 60

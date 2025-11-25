@@ -1,14 +1,13 @@
 import asyncio
-from typing import Optional
-import typer
-from rich import print
-from rich.console import Console
-from loguru import logger
 import time
+from typing import Optional
 
-from utils.logger import setup_logging
-from orchestrator.orchestrator import get_agent_response
+from loguru import logger
 from orchestrator.constants import DEFAULT_MODEL_NAME
+from orchestrator.orchestrator import get_agent_response
+from rich import print
+import typer
+from utils.logger import setup_logging
 
 app = typer.Typer(help="READ-MAS CLI for automated software design")
 
@@ -54,6 +53,4 @@ def run(
 
 
 if __name__ == "__main__":
-  # Allow running as: python -m src.main run ...
-  # or: python src/main.py run ...
   app(prog_name="readmas")
