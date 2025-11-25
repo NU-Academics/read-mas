@@ -195,33 +195,9 @@ docker run -v $(pwd):/app -v $(pwd)/data/results/mbpp:/app/data ganler/evalplus:
   --samples /app/data/samples/mbpp/mbpp_samples_<timestamp>-sanitized.jsonl
 ```
 
-**Alternative: Run sanitization and validation in Docker too**
-
-You can also run the entire pipeline in Docker:
-
-```bash
-# Sanitize
-docker run -v $(pwd):/app -v $(pwd)/data:/app/data ganler/evalplus:latest \
-  evalplus.sanitize \
-  --samples /app/data/samples/humaneval/human_eval_samples_default_completion.jsonl \
-  --dataset humaneval
-
-# Validate
-docker run  -v $(pwd):/app -v $(pwd)/data:/app/data ganler/evalplus:latest \
-  evalplus.syncheck \
-  --samples /app/data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl \
-  --dataset humaneval
-
-# Evaluate
-docker run -v $(pwd):/app -v $(pwd)/data:/app/data ganler/evalplus:latest \
-  evalplus.evaluate \
-  --dataset humaneval \
-  --samples /app/data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl
-```
-
 **Viewing Results**
 
-After evaluation, results are saved to a file with the pattern `*_eval_results.json` or `*_eval_results.jsonl` in the data/results/dataset_name directory. The results include:
+After evaluation, results are saved to a file with the pattern `*_eval_results.json` or `*_eval_results.jsonl` in the data/samples/dataset_name directory. The results include:
 - Pass rates
 - Detailed test outcomes
 - Error messages (if any)

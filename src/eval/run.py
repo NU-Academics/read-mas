@@ -34,6 +34,12 @@ def generate_samples(
     model: Optional[str] = typer.Option(
         DEFAULT_MODEL_NAME, "--model", "-m", help="The LLM model name"
     ),
+    samples_file: Optional[str] = typer.Option(
+        None,
+        "--samples-file",
+        "-s",
+        help="Path to an existing samples file. If provided, will resume generation from where it stopped.",
+    ),
 ):
   """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder."""
   setup_logging(str(ctx.params["run_id"]), f"{benchmark_name}")
@@ -42,7 +48,9 @@ def generate_samples(
   async def a_generate_benchmark_samples():
     """Run evaluation."""
     entry_agent = EvalCodeGeneratorAgent(model).get_agent()
-    await generate_benchmark_samples(entry_agent, benchmark_name, app_name="agents")
+    await generate_benchmark_samples(
+        entry_agent, benchmark_name, app_name="agents", samples_file_path=samples_file
+    )
 
   try:
     asyncio.run(a_generate_benchmark_samples())
