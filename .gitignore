@@ -227,7 +227,7 @@ runs/
 data/
 
 # Jupyter Notebooks
-notebooks/.ipynb_checkpoints/
+**/.ipynb_checkpoints/
 
 # ADK
 .adk
