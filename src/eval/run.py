@@ -83,9 +83,6 @@ def generate_goldens(
   synthesizer = Synthesizer(model, filtration_config=filtration_config)
   synthesizer.generate_goldens_from_docs(
       document_paths=[
-          "/Users/mesfinbt/src/dissertation/rSDE-Bench/inference/docs/VolunteerMatch.md",
-          "/Users/mesfinbt/src/dissertation/rSDE-Bench/inference/docs/VirtualWellnessRetreats.md",
-          "/Users/mesfinbt/src/dissertation/rSDE-Bench/inference/docs/VirtualBookPublishing.md",
       ],
   )
   goldens = synthesizer.synthetic_goldens

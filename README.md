@@ -154,19 +154,6 @@ For MBPP:
 evalplus.evaluate --dataset mbpp --samples data/samples/mbpp/mbpp_samples_<timestamp>-sanitized.jsonl
 ```
 
-**Optional: Performance tuning**
-
-For slower machines, you can adjust timeout settings:
-
-```bash
-evalplus.evaluate \
-  --dataset humaneval \
-  --samples data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl \
-  --min-time-limit 2 \
-  --gt-time-limit-factor 5 \
-  --parallel 4
-```
-
 ##### Docker Sandbox Evaluation
 
 Running evaluations in Docker provides better security isolation for executing untrusted code.
@@ -180,19 +167,19 @@ Follow steps 1-3 from the local evaluation section above.
 Mount your data directory and run the evaluation:
 
 ```bash
-docker run -v $(pwd):/app -v $(pwd)/data/results/humaneval:/app/data ganler/evalplus:latest \
+docker run -v $(pwd)/data/samples/humaneval:/app ganler/evalplus:latest \
   evalplus.evaluate \
   --dataset humaneval \
-  --samples /app/data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl
+  --samples /app/human_eval_samples_default_completion-sanitized.jsonl
 ```
 
 For MBPP:
 
 ```bash
-docker run -v $(pwd):/app -v $(pwd)/data/results/mbpp:/app/data ganler/evalplus:latest \
+docker run -v $(pwd)/data/samples/mbpp:/app ganler/evalplus:latest \
   evalplus.evaluate \
   --dataset mbpp \
-  --samples /app/data/samples/mbpp/mbpp_samples_<timestamp>-sanitized.jsonl
+  --samples /app/mbpp_samples_<timestamp>-sanitized.jsonl
 ```
 
 **Viewing Results**
