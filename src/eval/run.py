@@ -83,11 +83,14 @@ def generate_goldens(
   synthesizer = Synthesizer(model, filtration_config=filtration_config)
   synthesizer.generate_goldens_from_docs(
       document_paths=[
+          "datasets/rSDE-Bench/website/VolunteerMatch.md",
+          "datasets/rSDE-Bench/website/VirtualWellnessRetreats.md",
+          "datasets/rSDE-Bench/website/VirtualBookPublishing.md",
       ],
   )
   goldens = synthesizer.synthetic_goldens
   logger.info(f"Goldens: {str(goldens)}")
-  synthesizer.save_as(file_type="json", directory="data")
+  synthesizer.save_as(file_type="json", directory="data/goldens")
 
 
 if __name__ == "__main__":
