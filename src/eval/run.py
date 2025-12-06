@@ -40,6 +40,12 @@ def generate_samples(
             " stopped."
         ),
     ),
+    num_samples: int = typer.Option(
+        10,
+        "--num-samples",
+        "-n",
+        help="Number of samples to generate per task",
+    ),
 ):
   """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder."""
   setup_logging(str(ctx.params["run_id"]), f"{benchmark_name}")
@@ -49,7 +55,7 @@ def generate_samples(
     """Run evaluation."""
     entry_agent = EvalCodeGeneratorAgent(model).get_agent()
     await generate_benchmark_samples(
-        entry_agent, benchmark_name, app_name="agents", samples_file_path=samples_file
+        entry_agent, benchmark_name, app_name="agents", samples_file_path=samples_file, num_samples=num_samples
     )
 
   try:

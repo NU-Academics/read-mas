@@ -127,7 +127,7 @@ The generated samples use the `solution` field. If needed, you can convert them 
 Sanitize the samples to remove syntax errors and extraneous content:
 
 ```bash
-evalplus.sanitize --samples data/samples/humaneval/human_eval_samples_default_completion.jsonl --dataset humaneval
+evalplus.sanitize --samples data/samples/humaneval/human_eval_samples_default_completion.jsonl
 ```
 
 This creates a sanitized file: `data/samples/humaneval/human_eval_samples_default_completion-sanitized.jsonl`
