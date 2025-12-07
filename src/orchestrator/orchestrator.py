@@ -58,9 +58,6 @@ async def run_agent(
 
   Retries up to 3 times with 2 minute pauses if LLM model errors occur.
   """
-  max_retries = MAX_RETRIES
-  retry_delay = RETRY_DELAY
-
   # Initialize session if needed (will be reused across retries)
   current_session_id = session_id
   current_user_id = user_id
@@ -108,21 +105,16 @@ async def run_agent(
             break
           else:
             break
-    except Exception as e:
-      logger.error(f"Agent execution error for query: {query}: {str(e)}")
-      raise RuntimeError(f"Error executing eval agent for query: {query}.") from e
     finally:
       await running.aclose()
 
     return response
 
   # Retry logic for exceptions during agent execution
-  last_exception = None
   for attempt in range(MAX_RETRIES + 1):
     try:
       return await _execute_agent()
     except Exception as e:
-      last_exception = e
       if attempt < MAX_RETRIES:
         logger.warning(
             f"Error on attempt {attempt + 1}/{MAX_RETRIES + 1}: {str(e)}. "
@@ -130,6 +122,7 @@ async def run_agent(
         )
         await asyncio.sleep(RETRY_DELAY)
       else:
+        logger.error(f"Agent execution failed for query: {query} after {MAX_RETRIES + 1} attempts.")
         raise RuntimeError(
-            f"Error executing eval agent for query: {query} after {MAX_RETRIES} attempts."
+            f"Error executing agent for query: {query} after {MAX_RETRIES + 1} attempts."
         ) from e

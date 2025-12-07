@@ -30,7 +30,7 @@ def generate_code(design_output: str) -> str:
   try:
     # TODO: this can be an environment variable
     # code_model = DEFAULT_MODEL_NAME
-    code_model="gemini/gemini-2.0-flash"
+    code_model = "gemini/gemini-2.5-flash"
     response = completion(
         model=code_model,
         messages=[

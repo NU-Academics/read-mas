@@ -55,7 +55,11 @@ def generate_samples(
     """Run evaluation."""
     entry_agent = EvalCodeGeneratorAgent(model).get_agent()
     await generate_benchmark_samples(
-        entry_agent, benchmark_name, app_name="agents", samples_file_path=samples_file, num_samples=num_samples
+        entry_agent,
+        benchmark_name,
+        app_name="agents",
+        samples_file_path=samples_file,
+        num_samples=num_samples,
     )
 
   try:

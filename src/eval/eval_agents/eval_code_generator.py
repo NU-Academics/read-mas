@@ -15,8 +15,6 @@ from single.single_agent import SingleAgent
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 
-
-
 class EvalCodeGeneratorAgent(AgentBase):
   """Agent to generate code from outputs of design agents for evaluation."""
 

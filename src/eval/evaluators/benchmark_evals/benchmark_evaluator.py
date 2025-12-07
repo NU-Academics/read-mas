@@ -42,15 +42,14 @@ async def generate_benchmark_samples(
   queries = [entry["prompt"] for _, entry in dataset_entries]
 
   # Determine output file path
+  existing_samples_count = {}  # Dict mapping task_id -> count
   if samples_file_path:
     jsonl_path = Path(samples_file_path)
     if not jsonl_path.exists():
       logger.warning(f"Samples file {jsonl_path} does not exist. Creating new file.")
       jsonl_path.parent.mkdir(parents=True, exist_ok=True)
-      existing_samples_count = {}  # Dict mapping task_id -> count
     else:
       # Read existing samples and count per task
-      existing_samples_count = {}
       try:
         with open(jsonl_path, "r") as f:
           for line in f:
@@ -59,7 +58,10 @@ async def generate_benchmark_samples(
               task_id_str = str(entry["task_id"])
               existing_samples_count[task_id_str] = existing_samples_count.get(task_id_str, 0) + 1
         total_existing = sum(existing_samples_count.values())
-        logger.info(f"Found {total_existing} existing samples across {len(existing_samples_count)} tasks in {jsonl_path}")
+        logger.info(
+            f"Found {total_existing} existing samples across {len(existing_samples_count)} tasks in"
+            f" {jsonl_path}"
+        )
       except Exception as e:
         logger.error(f"Error reading existing samples file: {e}. Starting fresh.")
         existing_samples_count = {}
@@ -70,7 +72,6 @@ async def generate_benchmark_samples(
     samples_dir = data_dir / "samples" / benchmark_name
     samples_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = samples_dir / f"{benchmark_name}_samples_{file_suffix}.jsonl"
-    existing_task_ids = {}
 
     # Filter tasks that need more samples
   remaining_entries = []
@@ -91,8 +92,8 @@ async def generate_benchmark_samples(
 
   total_samples_needed = sum(remaining_sample_counts)
   logger.info(
-      f"Generating {total_samples_needed} samples for {len(remaining_queries)} tasks in benchmark {benchmark_name} "
-      f"(out of {len(queries)} total tasks, {num_samples} samples per task)"
+      f"Generating {total_samples_needed} samples for {len(remaining_queries)} tasks in benchmark"
+      f" {benchmark_name} (out of {len(queries)} total tasks, {num_samples} samples per task)"
   )
 
   mode = "a" if jsonl_path.exists() else "w"
@@ -105,8 +106,9 @@ async def generate_benchmark_samples(
         sample_counter += 1
         try:
           logger.info(
-              f"Processing sample {sample_counter}/{total_samples_needed} "
-              f"(task {task_idx}/{len(remaining_entries)}: {task_id}, sample {sample_idx + 1}/{num_needed})"
+              f"Processing sample {sample_counter}/{total_samples_needed} (task"
+              f" {task_idx}/{len(remaining_entries)}: {task_id}, sample"
+              f" {sample_idx + 1}/{num_needed})"
           )
           sample = await run_agent(
               query,
