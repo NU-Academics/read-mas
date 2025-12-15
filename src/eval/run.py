@@ -41,7 +41,7 @@ def generate_samples(
         ),
     ),
     num_samples: int = typer.Option(
-        10,
+        1,
         "--num-samples",
         "-n",
         help="Number of samples to generate per task",

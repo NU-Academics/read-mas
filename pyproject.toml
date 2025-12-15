@@ -22,13 +22,18 @@ dependencies = [
     "langgraph>=0.0.10",
     "litellm>=1.72.4,<=1.76.3",
     "loguru>=0.7.0",
+    "numpy>=2.3.4",
     "openai>=1.10.0",
+    "pandas>=2.3.3",
+    "pdfplumber>=0.11.8",
     "pydantic>=2.5.0",
     "pyink>=24.10.1",
     "pypdf>=6.3.0",
     "pytest>=7.4.0",
     "pytest-mock>=1.17.0",
+    "python-docx>=1.2.0",
     "python-dotenv>=1.0.0",
+    "ragas>=0.4.1",
     "requests>=2.31.0",
     "rich>=13.7.0",
     "rouge-score>=0.1.2",
@@ -37,6 +42,7 @@ dependencies = [
     "tqdm>=4.66.0",
     "typer>=0.20.0",
     "uuid>=1.30",
+    "xmltodict>=1.0.2",
 ]
 
 [project.scripts]

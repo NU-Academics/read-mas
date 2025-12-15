@@ -9,7 +9,7 @@ from loguru import logger
 import json
 from pathlib import Path
 import time
-
+from dvclive import Live
 
 async def generate_benchmark_samples(
     entry_agent: Agent,
@@ -19,7 +19,7 @@ async def generate_benchmark_samples(
     runner: Optional[Runner] = None,
     app_name: Optional[str] = APP_NAME,
     samples_file_path: Optional[str] = None,
-    num_samples: int = 10,
+    num_samples: int = 1,
 ):
   """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder.
 
@@ -36,7 +36,7 @@ async def generate_benchmark_samples(
   Returns:
     Path to the samples jsonl file
   """
-
+  
   benchmark_dataset = get_mbpp_plus() if benchmark_name == "mbpp" else get_human_eval()
   dataset_entries = [(task_id, entry) for task_id, entry in benchmark_dataset.items()]
   queries = [entry["prompt"] for _, entry in dataset_entries]
