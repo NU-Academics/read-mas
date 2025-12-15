@@ -11,7 +11,7 @@ from google.adk.agents.callback_context import CallbackContext
 
 from agents.agent_base import AgentBase
 from agents.agent_util import get_model_from
-from single.prompt import SINGLE_AGENT_SYSTEM_PROMPT
+from prompt_templates.single_prompt import SINGLE_AGENT_SYSTEM_PROMPT
 from orchestrator.constants import DEFAULT_MODEL_NAME
 
 

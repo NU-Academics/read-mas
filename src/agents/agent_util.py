@@ -2,7 +2,6 @@
 
 from typing import Union
 from google.adk.models.lite_llm import LiteLlm
-from orchestrator.constants import DEFAULT_MODEL_NAME
 
 
 def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
@@ -10,6 +9,8 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
   if llm_model_name.startswith("gemini"):
     return llm_model_name
   elif llm_model_name.startswith("ollama"):
+    # Lazy import to avoid circular dependency
+    from orchestrator.constants import DEFAULT_MODEL_NAME
     return LiteLlm(
         model=DEFAULT_MODEL_NAME,
         api_base="http://localhost:11434",
