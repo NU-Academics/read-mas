@@ -13,6 +13,7 @@ from agents.agent_base import AgentBase
 from agents.agent_util import get_model_from
 from prompt_templates.single_prompt import SINGLE_AGENT_SYSTEM_PROMPT
 from orchestrator.constants import DEFAULT_MODEL_NAME
+from tools import save_to_file
 
 
 def log_single_call(callback_context: CallbackContext) -> Optional[Content]:
@@ -37,6 +38,7 @@ class SingleAgent(AgentBase):
         model=get_model_from(self._llm_model_name),
         description="A single agent that generates a software design for a user's query",
         instruction=SINGLE_AGENT_SYSTEM_PROMPT,
+        tools=[save_to_file],
         output_key="design_output",
         after_agent_callback=[log_single_call],
     )
