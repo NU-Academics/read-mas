@@ -11,6 +11,7 @@ from loguru import logger
 
 from orchestrator.constants import APP_NAME
 from orchestrator.orchestrator import run_agent
+from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
 
 
 async def generate_benchmark_samples(
@@ -21,7 +22,7 @@ async def generate_benchmark_samples(
     runner: Optional[Runner] = None,
     app_name: Optional[str] = APP_NAME,
     samples_file_path: Optional[str] = None,
-    num_samples: int = 1,
+    num_samples: int = NUMBER_OF_TRIES,
 ):
     """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder.
 
@@ -117,7 +118,7 @@ async def generate_benchmark_samples(
                     sample = await run_agent(
                         query,
                         entry_agent=entry_agent,
-                        app_name=app_name,
+                        app_name=app_name
                     )
 
                     formatted_entry = {

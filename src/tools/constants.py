@@ -6,5 +6,6 @@ class OutputType(enum.Enum):
   """Output type for the tools."""
   SRS = "srs"
   DESIGN = "design"
-  SEQUENCE_DIAGRAM = "sequence_diagram"
-  CLASS_DIAGRAM = "class_diagram"
+  ARCHITECTURE_DESIGN = "architecture_design"
+  UML_SEQUENCE = "UML_sequence"
+  UML_CLASS = "UML_class"

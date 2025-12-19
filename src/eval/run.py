@@ -13,6 +13,7 @@ from orchestrator.constants import DEFAULT_MODEL_NAME
 from tqdm import tqdm
 import typer
 from utils.logger import setup_logging
+from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
 
 
 app = typer.Typer(help="READ-MAS CLI for running Evals")
@@ -41,19 +42,19 @@ def generate_samples(
         ),
     ),
     num_samples: int = typer.Option(
-        1,
+        NUMBER_OF_TRIES,
         "--num-samples",
         "-n",
         help="Number of samples to generate per task",
     ),
 ):
   """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder."""
-  setup_logging(str(ctx.params["run_id"]), f"{benchmark_name}")
+  log_path = setup_logging(str(ctx.params["run_id"]), f"{benchmark_name}")
   logger.info(f"Starting run with ID: {run_id}")
 
   async def a_generate_benchmark_samples():
     """Run evaluation."""
-    entry_agent = EvalCodeGeneratorAgent(model).get_agent()
+    entry_agent = EvalCodeGeneratorAgent(model, AgentRunMode.BENCHMARK).get_agent()
     await generate_benchmark_samples(
         entry_agent,
         benchmark_name,
