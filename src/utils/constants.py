@@ -2,6 +2,7 @@
 
 from enum import StrEnum
 
+DEFAULT_MODEL_NAME = "ollama_chat/gpt-oss:20b"
 
 class AgentRunMode(StrEnum):
     """Run modes for the READ-MAS agents: eval, benchmark, or main"""

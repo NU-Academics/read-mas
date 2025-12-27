@@ -3,11 +3,12 @@ import time
 from typing import Optional
 
 from loguru import logger
-from orchestrator.constants import DEFAULT_MODEL_NAME
+from utils import DEFAULT_MODEL_NAME
 from orchestrator.orchestrator import get_agent_response
 from rich import print
 import typer
 from utils.logger import setup_logging
+from utils.constants import AgentRunMode
 
 app = typer.Typer(help="READ-MAS CLI for automated software design")
 
@@ -17,7 +18,7 @@ def run(
     run_id: str = typer.Option(
         lambda: str(int(time.time() * 1000)),
         "--run-id",
-        "-r",
+        "-i",
         help="Unique run identifier",
     ),
     agent_type: Optional[str] = typer.Option(
@@ -38,13 +39,19 @@ def run(
         "-m",
         help="LLM model name",
     ),
+    rag: Optional[bool] = typer.Option(
+        False,
+        "--rag",
+        "-r",
+        help="Indicates if the agents use RAG",
+    ),
 ):
   """Run the READ-MAS automation with specified configuration."""
   setup_logging(run_id, "cli")
   logger.info(f"Starting run with ID: {run_id}")
 
   try:
-    response = asyncio.run(get_agent_response(query, llm_model_name, agent_type))
+    response = asyncio.run(get_agent_response(query, llm_model_name, agent_type, run_mode=AgentRunMode.MAIN, rag=rag))
     logger.info(f"Response: {response}")
   except Exception as e:
     logger.error(f"Error during execution: {str(e)}")

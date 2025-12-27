@@ -12,9 +12,18 @@ class AgentBase(ABC):
     """All agents use this base class."""
 
     @abstractmethod
-    def __init__(self, llm_model_name: str, run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN):
-        self._llm_model_name = llm_model_name
-        self._run_mode = run_mode
+    def __init__(self, llm_model_name: str, run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN, rag: Optional[bool] = False):
+      """
+      The agent initialization.
+      
+      Args:
+        llm_model_name: The LLM model
+        run_mode: The agent run mode, e.g. main, eval, or benchmark
+        rag: Whether to use the RAG tool
+      """
+      self._llm_model_name = llm_model_name
+      self._run_mode = run_mode
+      self._rag = rag
 
     @abstractmethod
     def get_agent() -> Agent:

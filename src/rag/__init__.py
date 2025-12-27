@@ -1,3 +1,5 @@
 """RAG module for retrieving information from the knowledge base."""
 
-__all__ = ["RAGAgent", "get_rag_agent"]
+from .retriever import retrieve_requirements
+
+__all__ = ["retrieve_requirements"]

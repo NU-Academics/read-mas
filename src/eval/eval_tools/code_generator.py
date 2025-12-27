@@ -2,7 +2,7 @@
 
 from litellm import completion
 from loguru import logger
-from orchestrator.constants import DEFAULT_MODEL_NAME
+from utils import DEFAULT_MODEL_NAME
 
 CODE_GENERATOR_TOOL_SYSTEM_PROMPT = """Generate code based on the following software design specification:
 

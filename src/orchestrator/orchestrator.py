@@ -9,37 +9,51 @@ from google.adk.runners import Runner
 from google.genai import types
 from loguru import logger
 
+from agents import AgentBase
 from orchestrator.constants import APP_NAME, MAX_RETRIES, RETRY_DELAY
 from orchestrator.session_manager import SessionManager
-from single.single_agent import SingleAgent
+from single import SingleAgent
 from utils.logger import log_adk_event
+from utils.constants import AgentRunMode
 
 # Enable this to debug litellm
 # litellm._turn_on_debug()
 
-
-async def get_agent_response(query: str, llm_model_name: str, agent_type: str) -> str:
-    """Gets the response from the agent."""
+def get_agent(llm_model_name: str, agent_type: str, run_mode: AgentRunMode, rag: bool) -> AgentBase:
+    """Returns the agent based on the specified parameters.
+    
+    Args:
+        llm_model_name: The LLM model
+        agent_type: The agent type - single or multi-agent
+        run_mode: The agent run mode
+        rag: Whether the entry agent should use RAG
+        
+    Returns:
+        The entry agent
+    """
     if agent_type == "single":
-        return await run_single_agent(query, llm_model_name)
+        agent = SingleAgent(llm_model_name, run_mode, rag)
     elif agent_type == "multi":
-        ...
-        # return await run_multi_agent(query, llm_model_name)
+        agent = None
     else:
         raise ValueError(f"Invalid agent type: {agent_type}")
+    
+    return agent
 
 
-async def run_single_agent(query: str, llm_model_name: str):
-    """Runs the single agent."""
-    single_agent = SingleAgent(llm_model_name)
-    return await run_agent(query, single_agent.get_agent())
+async def get_agent_response(query: str, llm_model_name: str, agent_type: str, run_mode: AgentRunMode, rag: bool) -> str:
+    """Gets the response from the agent.
+    
+    Args:
+        query: The prompt from the user requesting for a system design
+        llm_model_name: The LLM model
+        agent_type: The agent type - single or multi-agent
+        run_mode: The agent run mode
+        rag: Shows whether the agents should use RAG
+    """
+    entry_agent = get_agent(llm_model_name, agent_type, run_mode, rag)
 
-
-# async def run_multi_agent(query: str, llm_model_name: str):
-#     """Runs the multi agent."""
-#     multi_agent = MultiAgent(llm_model_name)
-#     return await run_agent(query, multi_agent.get_agent())
-
+    return await run_agent(query, entry_agent.get_agent())
 
 async def run_agent(
     query: str,

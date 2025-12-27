@@ -4,13 +4,24 @@ from prompt_templates.kb.design_kb import (
     CRITERIA_FOR_REJECTING_CANDIDATE_CLASSES,
     HEURISTICS_FOR_FINDING_ANALYSIS_CLASSES,
     HEURISTICS_FOR_FINDING_DESIGN_CLASSES,
-    IDEAL_CLASSES_PROPERTIES, OBJECT_ORIENTED_DESIGN_GUIDELINES)
-from prompt_templates.kb.requirements_kb import (FUNCTIONAL_REQUIREMENTS_DESCRIPTION, NON_FUNCTIONAL_REQUIREMENTS_DESCRIPTION, USER_REQUIREMENTS_DESCRIPTION, REQUIREMENT_TYPES)
+    IDEAL_CLASSES_PROPERTIES,
+    OBJECT_ORIENTED_DESIGN_GUIDELINES,
+)
+from prompt_templates.kb.requirements_kb import (
+    FUNCTIONAL_REQUIREMENTS_DESCRIPTION,
+    NON_FUNCTIONAL_REQUIREMENTS_DESCRIPTION,
+    REQUIREMENT_TYPES,
+    USER_REQUIREMENTS_DESCRIPTION,
+)
 from prompt_templates.templates.design_template import DESIGN_TEMPLATE
 from prompt_templates.templates.srs_template import IEEE_830_SRS_TEMPLATE
 
 SINGLE_AGENT_SYSTEM_PROMPT = f"""You are an expert software requirements and design architect. 
-Create a Software Requirement Specification (SRS) and then a system design for an application requested by the user. 
+Create a Software Requirement Specification (SRS) and then a system design for an application requested by the user.
+
+## Core Guidelines
+- Use ONLY the query provided by the user to develop the requirements and generate the design.
+- DO NOT save the SRS and design documents to disk in the BENCHMARK mode.
 
 ## Analysis and Design Workflow
 1. First collect the requirement, typically the {REQUIREMENT_TYPES} consisting of {USER_REQUIREMENTS_DESCRIPTION}.
@@ -21,8 +32,5 @@ Create a Software Requirement Specification (SRS) and then a system design for a
 5. USE the mermaid notation for class and sequence diagrams in your design.
 6. Generate the design document that follows the design template {DESIGN_TEMPLATE}.
 7. Save the design output to disk using save_to_file_tool tool.
-8. COPY the File Structure content FROM the design and save it to disk as architecture_design file using the save_to_file_tool tool. DO NOT modify or delete the design file.
-9. COPY the Class Diagram content FROM the design and save it to disk as UML_class file using the save_to_file_tool tool. DO NOT modify or delete the design file.
-10. COPY the Sequence Diagram content FROM the design and save it to disk as UML_sequence file using the save_to_file_tool tool. DO NOT modify or delete the design file.
-11. Return ONLY the design document as the final response.
+8. Return ONLY the design document as the final response.
 """

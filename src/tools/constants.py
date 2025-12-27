@@ -7,5 +7,5 @@ class OutputType(enum.Enum):
   SRS = "srs"
   DESIGN = "design"
   ARCHITECTURE_DESIGN = "architecture_design"
-  UML_SEQUENCE = "UML_sequence"
-  UML_CLASS = "UML_class"
+  UML_SEQUENCE = "uml_sequence"
+  UML_CLASS = "uml_class"

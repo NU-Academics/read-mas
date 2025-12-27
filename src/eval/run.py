@@ -9,11 +9,12 @@ from eval.evaluators.benchmark_evals.benchmark_evaluator import (
     generate_benchmark_samples,
 )
 from loguru import logger
-from orchestrator.constants import DEFAULT_MODEL_NAME
+from utils import DEFAULT_MODEL_NAME
 from tqdm import tqdm
 import typer
 from utils.logger import setup_logging
 from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
+from orchestrator import get_agent
 
 
 app = typer.Typer(help="READ-MAS CLI for running Evals")
@@ -26,11 +27,17 @@ def generate_samples(
     run_id: str = typer.Option(
         lambda: str(int(time.time() * 1000)),
         "--run-id",
-        "-r",
+        "-i",
         help="Unique run identifier",
     ),
     model: Optional[str] = typer.Option(
         DEFAULT_MODEL_NAME, "--model", "-m", help="The LLM model name"
+    ),
+    agent_type: Optional[str] = typer.Option(
+        "single",
+        "--agent-type",
+        "-t",
+        help="Single or Multi-agent option.",
     ),
     samples_file: Optional[str] = typer.Option(
         None,
@@ -47,6 +54,12 @@ def generate_samples(
         "-n",
         help="Number of samples to generate per task",
     ),
+    rag: bool = typer.Option(
+        False,
+        "--rag",
+        "-r",
+        help="Whether to use the RAG tool",
+    ),
 ):
   """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder."""
   log_path = setup_logging(str(ctx.params["run_id"]), f"{benchmark_name}")
@@ -54,7 +67,8 @@ def generate_samples(
 
   async def a_generate_benchmark_samples():
     """Run evaluation."""
-    entry_agent = EvalCodeGeneratorAgent(model, AgentRunMode.BENCHMARK).get_agent()
+    evaluated = get_agent(model, agent_type, AgentRunMode.BENCHMARK, rag)
+    entry_agent = EvalCodeGeneratorAgent(model, evaluated).get_agent()
     await generate_benchmark_samples(
         entry_agent,
         benchmark_name,

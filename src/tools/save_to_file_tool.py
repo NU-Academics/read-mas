@@ -14,7 +14,7 @@ def _get_output_file_name(output_type: OutputType) -> Optional[Path]:
     """Get the output file path based on the output type.
 
     Args:
-        output_type: The agent output type
+        output_type: The agent output type, including srs, design, architecture_design, uml_class, and uml_sequence content.
 
     Returns:
         The full Path to the output file, or None if the log path is not set.
@@ -33,7 +33,7 @@ def save_to_file(file_content: str, output_type: str) -> str:
 
     Args:
         file_content: The string content to save.
-        output_type: The type of content. Valid values: 'srs', 'design', 'sequence_diagram', 'class_diagram'.
+        output_type: The agent output type, including srs, design, architecture_design, UML_class, and UML_sequence content.
 
     Returns:
         A message indicating success or failure.
