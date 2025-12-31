@@ -38,8 +38,3 @@ Granularity of functional requirements. Write individually testable functional r
 NON_FUNCTIONAL_REQUIREMENTS_DESCRIPTION = """
 Non-functional requirements are requirements that describe the non-functional properties of the system-to-be. Non-functional requirements are also known as quality attributes, non-functional requirements, or constraints. Non-functional requirements are usually elicited by business analysts and user representatives or a product manager depending on the type of the software (Software for internal corporate use or Software for commercial sale). They must align with the context and objectives that the business requirements and features establish. Non-functional requirements are most typically represented as quality attributes, constraints, or data requirements. Non-functional requirements are most typically represented as quality attributes, constraints, or data requirements.
 """
-
-
-
-
-

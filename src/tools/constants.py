@@ -2,8 +2,10 @@
 
 import enum
 
+
 class OutputType(enum.Enum):
   """Output type for the tools."""
+
   SRS = "srs"
   DESIGN = "design"
   ARCHITECTURE_DESIGN = "architecture_design"

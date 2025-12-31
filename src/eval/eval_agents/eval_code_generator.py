@@ -20,10 +20,15 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from typing import Optional
 from utils.constants import AgentRunMode
 
+
 class EvalCodeGeneratorAgent(AgentBase):
   """Agent to generate code from outputs of design agents for evaluation."""
 
-  def __init__(self, llm_model_name: str, evaluated: AgentBase,):
+  def __init__(
+      self,
+      llm_model_name: str,
+      evaluated: AgentBase,
+  ):
     super().__init__(llm_model_name)
     self._evaluated = evaluated.get_agent()
     self._agent_tool = AgentTool(agent=self._evaluated)

@@ -51,7 +51,9 @@ def run(
   logger.info(f"Starting run with ID: {run_id}")
 
   try:
-    response = asyncio.run(get_agent_response(query, llm_model_name, agent_type, run_mode=AgentRunMode.MAIN, rag=rag))
+    response = asyncio.run(
+        get_agent_response(query, llm_model_name, agent_type, run_mode=AgentRunMode.MAIN, rag=rag)
+    )
     logger.info(f"Response: {response}")
   except Exception as e:
     logger.error(f"Error during execution: {str(e)}")
