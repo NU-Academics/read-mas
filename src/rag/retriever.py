@@ -11,6 +11,7 @@ from .constants import (
     REQUIREMENT_CHUNKS_NAME,
     RAG_TOP_K,
 )
+from loguru import logger
 
 
 def _get_embedding(query: str):
@@ -39,7 +40,7 @@ def retrieve_requirements(query: str) -> [str]:
   distances, indices = index.search(query_vector, RAG_TOP_K)
 
   result = [requirement_chunks[i]["chunk"] for i in indices[0]]
-  print(result)
+  logger.debug(f"RAG retrieval for query: {query} is: {result}")
   return result
 
 
