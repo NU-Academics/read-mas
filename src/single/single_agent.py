@@ -40,7 +40,7 @@ class SingleAgent(AgentBase):
 
     if self._rag:
       tools.append(retrieve_requirements)
-    
+
     return Agent(
         name="single_agent",
         model=get_model_from(self._llm_model_name),

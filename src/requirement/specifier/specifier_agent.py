@@ -1,15 +1,18 @@
 """This is the last agent in the RE agent pipeline and documents the requirements using the SRS template."""
 
-from typing import Optional
-from agents import (AgentBase, get_model_from)
-from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
 import time
+from typing import Optional
 
 from google.adk.agents import Agent
-from tools import save_to_file
-from rag import retrieve_requirements
-from utils.logger import setup_logging
+
+from agents import AgentBase, get_model_from
 from prompt_templates import SPECIFIER_AGENT_SYSTEM_PROMPT
+from rag import retrieve_requirements
+from tools import save_to_file
+from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode
+from utils.logger import setup_logging
+
+from .specifier_models import SpecifierInputModel
 
 
 class SpecifierAgent(AgentBase):
@@ -30,15 +33,16 @@ class SpecifierAgent(AgentBase):
 
     if self._rag:
       tools.append(retrieve_requirements)
-    
+
     return Agent(
-        name="collector_agent",
+        name="specifier_agent",
         model=get_model_from(self._llm_model_name),
         description=(
             "A requirements specifier agent that documents requirements using the SRS template."
         ),
         instruction=SPECIFIER_AGENT_SYSTEM_PROMPT,
         tools=tools,
+        input_schema=SpecifierInputModel,
         output_key="specifier_output",
     )
 

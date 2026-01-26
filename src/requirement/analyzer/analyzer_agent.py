@@ -10,6 +10,8 @@ from tools import save_to_file
 from rag import retrieve_requirements
 from utils.logger import setup_logging
 from prompt_templates import ANALYZER_AGENT_SYSTEM_PROMPT
+from requirement.collector import CollectorOutputModel
+from .analyzer_models import AnalyzerOutputModel
 
 
 class AnalyzerAgent(AgentBase):
@@ -35,10 +37,13 @@ class AnalyzerAgent(AgentBase):
         name="analyzer_agent",
         model=get_model_from(self._llm_model_name),
         description=(
-            "A requirements analyzer agent that analyzes the raw requirements from the collector agent."
+            "A requirements analyzer agent that analyzes the raw requirements from the collector"
+            " agent."
         ),
         instruction=ANALYZER_AGENT_SYSTEM_PROMPT,
         tools=tools,
+        input_schema=CollectorOutputModel,
+        output_schema=AnalyzerOutputModel,
         output_key="analyzer_output",
     )
 

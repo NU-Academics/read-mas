@@ -12,6 +12,7 @@ from tools import save_to_file
 from rag import retrieve_requirements
 from utils.logger import setup_logging
 from prompt_templates import COLLECTOR_AGENT_SYSTEM_PROMPT
+from .collector_models import CollectorOutputModel
 
 
 class CollectorAgent(AgentBase):
@@ -32,15 +33,10 @@ class CollectorAgent(AgentBase):
 
     if self._rag:
       tools.append(retrieve_requirements)
-    
+
     # Create a ThinkingConfig and planner
-    thinking_config = ThinkingConfig(
-        include_thoughts=True,   
-        thinking_budget=256
-    )
-    planner = BuiltInPlanner(
-        thinking_config=thinking_config
-    )
+    thinking_config = ThinkingConfig(include_thoughts=True, thinking_budget=256)
+    planner = BuiltInPlanner(thinking_config=thinking_config)
 
     return Agent(
         name="collector_agent",
@@ -51,6 +47,7 @@ class CollectorAgent(AgentBase):
         instruction=COLLECTOR_AGENT_SYSTEM_PROMPT,
         planner=planner,
         tools=tools,
+        output_schema=CollectorOutputModel,
         output_key="collector_output",
     )
 

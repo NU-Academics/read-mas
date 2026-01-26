@@ -15,6 +15,7 @@ from orchestrator.session_manager import SessionManager
 from single import SingleAgent
 from utils.logger import log_adk_event
 from utils.constants import AgentRunMode
+from requirement import RequirementsOrchestrator
 
 # Enable this to debug litellm
 # litellm._turn_on_debug()
@@ -35,7 +36,7 @@ def get_agent(llm_model_name: str, agent_type: str, run_mode: AgentRunMode, rag:
   if agent_type == "single":
     agent = SingleAgent(llm_model_name, run_mode, rag)
   elif agent_type == "multi":
-    agent = None
+    agent = RequirementsOrchestrator(llm_model_name, rag)
   else:
     raise ValueError(f"Invalid agent type: {agent_type}")
 

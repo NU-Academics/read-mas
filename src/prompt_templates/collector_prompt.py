@@ -16,14 +16,5 @@ Use these functional and non-functional requirements as examples requirements fo
 - [requirement 1]
 - [requirement 2]
 - [requirement 3]
-3. Output the raw functional and non-functional requirements using markdown in the following format:
-## Functional Requirements
-- FR1: [requirement 1]
-- FR2: [requirement 2]
-...
-
-## Non-Functional Requirements
-- NFR1: [requirement 1]
-- NFR2: [requirement 2]
-...
+3. Output the raw functional and non-functional requirements using a JSON format.
 """
