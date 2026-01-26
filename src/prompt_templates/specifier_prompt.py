@@ -12,4 +12,5 @@ Create a Software Requirement Specification (SRS) from the collector and analyze
 ## Requirements Specification Workflow
 1. First read the collector and analyzer outputs from the input provided to you.
 2. Create an SRS from the requirements using the {IEEE_830_SRS_TEMPLATE} and save the SRS to disk using the save_to_file_tool tool.
+3. Copy and add the mermaid diagrams for the domain class diagram, data model, and use case diagram from the analyzer output into the appropriate sections of the SRS.
 """
