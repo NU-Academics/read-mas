@@ -3,6 +3,6 @@
 from .collector import CollectorAgent
 from .analyzer import AnalyzerAgent
 from .specifier import SpecifierAgent
-from .re_agent import RequirementsOrchestrator
+from .re_agent import RequirementsWrapperAgent
 
-__all__ = ["CollectorAgent", "AnalyzerAgent", "SpecifierAgent", "RequirementsOrchestrator"]
+__all__ = ["CollectorAgent", "AnalyzerAgent", "SpecifierAgent", "RequirementsWrapperAgent"]

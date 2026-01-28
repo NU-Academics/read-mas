@@ -1,4 +1,4 @@
-"""Orchestrator agent to create a workflow of the RE agents."""
+"""Wrapper agent to create a workflow of the RE agents."""
 
 from typing import Optional
 from agents import (AgentBase, get_model_from)
@@ -12,10 +12,12 @@ from prompt_templates import RE_AGENT_SYSTEM_PROMPT
 from requirement import CollectorAgent
 from requirement import AnalyzerAgent
 from requirement import SpecifierAgent
+from rag import retrieve_requirements
+from tools import save_to_file
 
 
-class RequirementsOrchestrator(AgentBase):
-  """This class defines the orchestrator agent for the RE phase of the SDLC."""
+class RequirementsWrapperAgent(AgentBase):
+  """This class defines the wrapper agent for the RE phase of the SDLC."""
 
   def __init__(
       self,
@@ -24,21 +26,28 @@ class RequirementsOrchestrator(AgentBase):
       rag: Optional[bool] = True,
   ):
     super().__init__(llm_model_name, run_mode, rag)
-    self._collector_agent = CollectorAgent(llm_model_name, run_mode, rag)
-    self._analyzer_agent = AnalyzerAgent(llm_model_name, run_mode, rag)
-    self._specifier_agent = SpecifierAgent(llm_model_name, run_mode, rag)
+    self._collector_agent = CollectorAgent(llm_model_name, run_mode, rag).get_agent()
+    self._analyzer_agent = AnalyzerAgent(llm_model_name, run_mode, rag).get_agent()
+    self._specifier_agent = SpecifierAgent(llm_model_name, run_mode, rag).get_agent()
 
   def get_agent(self) -> Agent:
     tools = []
-    tools.append(AgentTool(agent=self._collector_agent.get_agent()))
-    tools.append(AgentTool(agent=self._analyzer_agent.get_agent()))
-    tools.append(AgentTool(agent=self._specifier_agent.get_agent()))
+
+    if self._rag:
+      tools.append(retrieve_requirements)
+
+    tools.append(AgentTool(agent=self._collector_agent))
+    tools.append(AgentTool(agent=self._analyzer_agent))
+    tools.append(AgentTool(agent=self._specifier_agent))
+    
+    if self._run_mode != AgentRunMode.BENCHMARK:
+      tools.append(save_to_file)
 
     return Agent(
         name="re_agent",
         model=get_model_from(self._llm_model_name),
         description=(
-            "A requirements orchestrator agent that uses RE agent tools to generate the SRS."
+            "A requirements wrapper agent that uses RE agent tools to generate the SRS."
         ),
         instruction=RE_AGENT_SYSTEM_PROMPT,
         tools=tools,
@@ -49,5 +58,5 @@ class RequirementsOrchestrator(AgentBase):
 # For testing in adk web ui
 run_id = str(int(time.time() * 1000))
 setup_logging(run_id, "adk")
-agent = RequirementsOrchestrator(DEFAULT_MODEL_NAME)
+agent = RequirementsWrapperAgent(DEFAULT_MODEL_NAME)
 root_agent = agent.get_agent()

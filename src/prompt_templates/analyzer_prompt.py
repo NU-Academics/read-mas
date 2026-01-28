@@ -1,4 +1,4 @@
-"""Prompt template for the requirements collector agent."""
+"""Prompt template for the requirements analyzer agent."""
 
 from .kb.design_kb import HEURISTICS_FOR_FINDING_ANALYSIS_CLASSES
 from .kb.requirements_kb import (
@@ -11,7 +11,6 @@ Analyze the raw functional and non-functional requirements provided as input.
 
 ## Core Guidelines
 - Use ONLY the input provided to you for your analysis. The input will contain functional requirements (FRs) and non-functional requirements (NFRs).
-- DO NOT save the analysis output to disk in the BENCHMARK mode.
 
 ## Requirements Analysis Workflow
 1. Catalog the business use cases based on the input requirements. Each use case must be a simple string description (e.g., "Customer registers for an account" or "Customer searches for books"). DO NOT use structured objects with fields like actor, description, or preconditions - use simple string descriptions only.

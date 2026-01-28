@@ -8,7 +8,7 @@ from agents.agent_base import AgentBase
 from agents.agent_util import get_model_from
 from eval.eval_agents.prompt import EVAL_AGENT_SYSTEM_PROMPT
 from eval.eval_tools import generate_code
-from google.adk.agents import Agent
+from google.adk.agents import Agent, BaseAgent
 from google.adk.tools.agent_tool import AgentTool
 from utils import DEFAULT_MODEL_NAME
 from single import SingleAgent
@@ -27,10 +27,10 @@ class EvalCodeGeneratorAgent(AgentBase):
   def __init__(
       self,
       llm_model_name: str,
-      evaluated: AgentBase,
+      evaluated: BaseAgent,
   ):
     super().__init__(llm_model_name)
-    self._evaluated = evaluated.get_agent()
+    self._evaluated = evaluated
     self._agent_tool = AgentTool(agent=self._evaluated)
 
   def get_agent(self) -> Agent:

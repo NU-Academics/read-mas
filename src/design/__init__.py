@@ -1,3 +1,7 @@
 """Design-related agents and utilities."""
 
-__all__ = ["DesignAgent", "get_design_agent"]
+from .designer import DesignerAgent
+from .documenter import DocumenterAgent
+from .design_agent import DesignWrapperAgent
+
+__all__ = ["DesignerAgent", "DocumenterAgent", "DesignWrapperAgent"]

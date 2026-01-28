@@ -1,5 +1,5 @@
 """The orchestrator module for the RE agents."""
 
-from .requirements_orchestrator import RequirementsOrchestrator, root_agent
+from .requirements_wrapper import RequirementsWrapperAgent, root_agent
 
-__all__ = ["RequirementsOrchestrator", "root_agent"]
+__all__ = ["RequirementsWrapperAgent", "root_agent"]

@@ -1,4 +1,5 @@
 import json
+import os
 import threading
 from datetime import datetime
 from pathlib import Path
@@ -175,9 +176,19 @@ def setup_logging(run_id: str, logger_path: str):
   _logging_state.log_path = log_path
   _logging_state.adk_events_path = str(log_path / "adk_events.jsonl")
 
+  # Also persist the log path in the process environment so tools running in a different
+  # thread (e.g., inside ADK tool execution) can still resolve the correct output dir.
+  os.environ["READMAS_LOG_PATH"] = str(log_path)
+
   return log_path
 
 
 def get_log_path() -> Optional[Path]:
   """Get the current log path from thread-local storage."""
-  return getattr(_logging_state, "log_path", None)
+  path = getattr(_logging_state, "log_path", None)
+  if path is not None:
+    return path
+
+  # Fallback for tool execution contexts that do not share the caller's thread-local state.
+  env_path = os.environ.get("READMAS_LOG_PATH")
+  return Path(env_path) if env_path else None
