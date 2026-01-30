@@ -47,6 +47,6 @@ class EvalCodeGeneratorAgent(AgentBase):
 
 
 # for adk web test
-single_agent = SingleAgent(DEFAULT_MODEL_NAME)
+single_agent = SingleAgent(DEFAULT_MODEL_NAME).get_agent()
 agent = EvalCodeGeneratorAgent(llm_model_name=DEFAULT_MODEL_NAME, evaluated=single_agent)
 root_agent = agent.get_agent()

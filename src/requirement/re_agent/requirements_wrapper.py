@@ -39,16 +39,14 @@ class RequirementsWrapperAgent(AgentBase):
     tools.append(AgentTool(agent=self._collector_agent))
     tools.append(AgentTool(agent=self._analyzer_agent))
     tools.append(AgentTool(agent=self._specifier_agent))
-    
+
     if self._run_mode != AgentRunMode.BENCHMARK:
       tools.append(save_to_file)
 
     return Agent(
         name="re_agent",
         model=get_model_from(self._llm_model_name),
-        description=(
-            "A requirements wrapper agent that uses RE agent tools to generate the SRS."
-        ),
+        description="A requirements wrapper agent that uses RE agent tools to generate the SRS.",
         instruction=RE_AGENT_SYSTEM_PROMPT,
         tools=tools,
         output_key="requirements_output",

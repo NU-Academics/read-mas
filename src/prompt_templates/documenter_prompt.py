@@ -10,7 +10,7 @@ Create a Software Design document from the designer agent tool output provided a
 
 ## Design Documenter Workflow
 1. Generate the design document that follows the design template {DESIGN_TEMPLATE}.
-2. Save the complete design document to disk by calling the save_to_file tool with output_type="design".
+2. If the save_to_file tool is available, save the complete design document to disk by calling the save_to_file tool with output_type="design".
 3. Return ONLY the design document as the final response (the same content you saved).
 
 ## Saving

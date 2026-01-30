@@ -6,11 +6,10 @@ from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
 import time
 
 from google.adk.agents import Agent
-from google.adk.planners import BuiltInPlanner
-from google.genai.types import ThinkingConfig
 from utils.logger import setup_logging
 from prompt_templates import DESIGNER_AGENT_SYSTEM_PROMPT
 from .designer_models import DesignerOutputModel
+
 
 class DesignerAgent(AgentBase):
   """This class defines the designer agent in the Design phase of the SDLC."""
@@ -24,17 +23,14 @@ class DesignerAgent(AgentBase):
     super().__init__(llm_model_name, run_mode, rag)
 
   def get_agent(self) -> Agent:
-    thinking_config = ThinkingConfig(include_thoughts=True, thinking_budget=256)
-    planner = BuiltInPlanner(thinking_config=thinking_config)
-
     return Agent(
         name="designer_agent",
         model=get_model_from(self._llm_model_name),
         description=(
-            "A designer agent that generates the system and component design for the given requirements."
+            "A designer agent that generates the system and component design for the given"
+            " requirements."
         ),
         instruction=DESIGNER_AGENT_SYSTEM_PROMPT,
-        planner=planner,
         output_schema=DesignerOutputModel,
         output_key="designer_output",
     )

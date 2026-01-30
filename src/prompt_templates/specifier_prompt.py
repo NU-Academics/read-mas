@@ -17,7 +17,7 @@ Create a Software Requirement Specification (SRS) from the collector and analyze
    - Include the data model diagram from analyzer_output.dataModel in Appendix B
    - Include use cases from analyzer_output.useCases in the appropriate sections
    - Include business rules from analyzer_output.businessRules
-3. Save the complete SRS document to disk by calling the save_to_file tool with output_type="srs".
+3. If the save_to_file tool is available, save the complete SRS document to disk by calling the save_to_file tool with output_type="srs".
 4. Return the complete SRS document as your final response (the same content you saved).
 
 ## Saving

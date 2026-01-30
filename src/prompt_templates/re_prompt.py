@@ -30,7 +30,7 @@ Use these functional and non-functional requirements as examples requirements fo
      }}
    
 5. The specifier_agent will generate the final SRS document.
-6. Save the complete SRS document to disk using the save_to_file tool with output_type="srs".
+6. If the save_to_file tool is available, save the complete SRS document to disk using the save_to_file tool with output_type="srs".
 7. Return the complete SRS document as your final response (not a JSON object, not a query).
 
 ## Critical Requirements

@@ -9,7 +9,7 @@ Create and document a software design from the provided Software Requirements Sp
 ## Software Design Workflow
 1. First, call the designer_agent_tool with the input SRS to create the design.
 2. Then call the documenter_agent_tool to generate the final design document.
-3. Save the complete design document to disk using the save_to_file tool with output_type="design".
+3. If the save_to_file tool is available, save the complete design document to disk using the save_to_file tool with output_type="design".
 4. Return the complete design document as the final response (the same content you saved).
 
 ## Critical Requirements
