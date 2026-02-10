@@ -123,12 +123,8 @@ async def run_agent(
 
         if event.is_final_response():
           if event.content and event.content.parts:
-            # IMPORTANT: In a SequentialAgent, sub-agents may emit their own
-            # final responses. We keep consuming events and return the *last*
-            # final response, which corresponds to the overall pipeline output.
             response = event.content.parts[0].text
           else:
-            # Keep consuming; a later final response may contain the actual output.
             continue
     finally:
       await running.aclose()

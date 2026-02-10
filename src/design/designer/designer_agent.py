@@ -9,6 +9,7 @@ from google.adk.agents import Agent
 from utils.logger import setup_logging
 from prompt_templates import DESIGNER_AGENT_SYSTEM_PROMPT
 from .designer_models import DesignerOutputModel
+from agents import (before_agent, after_agent, before_model, after_model)
 
 
 class DesignerAgent(AgentBase):
@@ -33,6 +34,10 @@ class DesignerAgent(AgentBase):
         instruction=DESIGNER_AGENT_SYSTEM_PROMPT,
         output_schema=DesignerOutputModel,
         output_key="designer_output",
+        before_agent_callback=before_agent,
+        after_agent_callback=after_agent,
+        before_model_callback=before_model,
+        after_model_callback=after_model,
     )
 
 

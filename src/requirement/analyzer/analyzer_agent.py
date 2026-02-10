@@ -12,6 +12,7 @@ from utils.logger import setup_logging
 from prompt_templates import ANALYZER_AGENT_SYSTEM_PROMPT
 from requirement.collector import CollectorOutputModel
 from .analyzer_models import AnalyzerOutputModel
+from agents import (before_agent, after_agent, before_model, after_model)
 
 
 class AnalyzerAgent(AgentBase):
@@ -45,6 +46,10 @@ class AnalyzerAgent(AgentBase):
         input_schema=CollectorOutputModel,
         output_schema=AnalyzerOutputModel,
         output_key="analyzer_output",
+        before_agent_callback=before_agent,
+        after_agent_callback=after_agent,
+        before_model_callback=before_model,
+        after_model_callback=after_model,
     )
 
 

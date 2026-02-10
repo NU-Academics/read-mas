@@ -13,6 +13,7 @@ from rag import retrieve_requirements
 from utils.logger import setup_logging
 from prompt_templates import COLLECTOR_AGENT_SYSTEM_PROMPT
 from .collector_models import CollectorOutputModel
+from agents import (before_agent, after_agent, before_model, after_model)
 
 
 class CollectorAgent(AgentBase):
@@ -49,6 +50,10 @@ class CollectorAgent(AgentBase):
         tools=tools,
         output_schema=CollectorOutputModel,
         output_key="collector_output",
+        before_agent_callback=before_agent,
+        after_agent_callback=after_agent,
+        before_model_callback=before_model,
+        after_model_callback=after_model,
     )
 
 

@@ -20,13 +20,6 @@ Create a Software Requirement Specification (SRS) from the collector and analyze
 3. If the save_to_file tool is available, save the complete SRS document to disk by calling the save_to_file tool with output_type="srs".
 4. Return the complete SRS document as your final response (the same content you saved).
 
-## Saving
-When calling the save_to_file tool:
-- Pass the full SRS document as plain text in the file_content argument (do NOT JSON-escape it).
-- Use output_type="srs".
- - Call save_to_file ONLY after the SRS is complete and finalized.
- - Do NOT return the save_to_file success message as your final response.
-
 ## SRS Template Structure
 {IEEE_830_SRS_TEMPLATE}
 
@@ -35,4 +28,5 @@ When calling the save_to_file tool:
 - Extract domainClasses, dataModel, useCases, and businessRules from the analyzer_output
 - Extract FRs and NFRs from the collector_output
 - Create a complete, finished document before calling save_to_file
+- Do NOT return the save_to_file success message as your final response.
 """

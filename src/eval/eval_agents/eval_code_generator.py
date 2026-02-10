@@ -2,7 +2,6 @@
 
 import os
 import sys
-from typing import Optional
 
 from agents.agent_base import AgentBase
 from agents.agent_util import get_model_from
@@ -12,13 +11,8 @@ from google.adk.agents import Agent, BaseAgent
 from google.adk.tools.agent_tool import AgentTool
 from utils import DEFAULT_MODEL_NAME
 from single import SingleAgent
-from utils.constants import AgentRunMode
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-
-from typing import Optional
-from utils.constants import AgentRunMode
 
 
 class EvalCodeGeneratorAgent(AgentBase):

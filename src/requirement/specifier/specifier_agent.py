@@ -13,6 +13,7 @@ from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode
 from utils.logger import setup_logging
 
 from .specifier_models import SpecifierInputModel
+from agents import (before_agent, after_agent, before_model, after_model)
 
 
 class SpecifierAgent(AgentBase):
@@ -44,6 +45,10 @@ class SpecifierAgent(AgentBase):
         tools=tools,
         input_schema=SpecifierInputModel,
         output_key="specifier_output",
+        before_agent_callback=before_agent,
+        after_agent_callback=after_agent,
+        before_model_callback=before_model,
+        after_model_callback=after_model,
     )
 
 

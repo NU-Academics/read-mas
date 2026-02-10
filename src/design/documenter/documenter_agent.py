@@ -11,6 +11,7 @@ from prompt_templates import DOCUMENTER_AGENT_SYSTEM_PROMPT
 from tools import save_to_file
 from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode
 from utils.logger import setup_logging
+from agents import (before_agent, after_agent, before_model, after_model)
 
 
 class DocumenterAgent(AgentBase):
@@ -40,6 +41,10 @@ class DocumenterAgent(AgentBase):
         tools=tools,
         input_schema=DesignerOutputModel,
         output_key="documenter_output",
+        before_agent_callback=before_agent,
+        after_agent_callback=after_agent,
+        before_model_callback=before_model,
+        after_model_callback=after_model,
     )
 
 
