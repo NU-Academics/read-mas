@@ -1,0 +1,6 @@
+outs:
+- md5: 69733aafca6e2488a5964b1392f9c8b3.dir
+  size: 76868
+  nfiles: 2
+  hash: md5
+  path: goldens
