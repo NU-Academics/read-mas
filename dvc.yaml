@@ -1,13 +1,18 @@
 stages:
   eval_optimize:
     cmd: python src/eval/evaluators/agent_evals/eval_optimize.py 
-      data/goldens/requirements.json
+      data/goldens/20260213_234211.json
     deps:
-    - data/goldens/requirements.json
+    - data/goldens/20260213_234211.json
     - src/eval/evaluators/agent_evals/eval_optimize.py
     params:
     - eval.agent_name
     - eval.llm_model_name
     - eval.rag
     outs:
-    - evals
+    - eval_runs
+metrics:
+- eval_runs/metrics.json
+plots:
+- eval_runss/plots/metrics:
+    x: step
