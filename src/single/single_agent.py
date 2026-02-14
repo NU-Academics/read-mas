@@ -15,13 +15,7 @@ from tools.save_to_file_tool import save_to_file
 from utils.constants import AgentRunMode
 from rag import retrieve_requirements
 from utils.logger import setup_logging
-
-
-def log_single_call(callback_context: CallbackContext) -> Optional[Content]:
-  design_output = callback_context.state.get("design_output")
-  logger.info(f"Design output from single agent: {design_output}")
-
-
+from agents import (before_agent, after_agent, before_model, after_model)
 class SingleAgent(AgentBase):
   """Defines a single agent that both generates requirements and designs the requested software."""
 
@@ -48,7 +42,10 @@ class SingleAgent(AgentBase):
         instruction=SINGLE_AGENT_SYSTEM_PROMPT,
         tools=tools,
         output_key="design_output",
-        after_agent_callback=[log_single_call],
+        before_agent_callback=before_agent,
+        after_agent_callback=after_agent,
+        before_model_callback=before_model,
+        after_model_callback=after_model,
     )
 
 

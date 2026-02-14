@@ -1,6 +1,8 @@
 """Utility functions common for agents."""
 
-from typing import Union
+from typing import Union, Optional, Tuple
+from utils.constants import OLLAMA_API_BASE, OLLAMA_BASE_URL
+import yaml
 
 from google.adk.models.lite_llm import LiteLlm
 
@@ -12,22 +14,32 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
   elif llm_model_name.startswith("ollama"):
     import litellm
 
-    # litellm.set_verbose = True
     litellm.drop_params = True
-    # NOTE: ADK emits OpenAI-style message "parts" (content arrays) and tool calls.
-    # Ollama's native `/api/chat` expects `messages[].content` to be a *string* and
-    # can choke on OpenAI-style structured content / tool call serialization.
-    #
-    # Route Ollama models through Ollama's OpenAI-compatible API (`/v1`) instead.
-    # This tends to be more forgiving and matches the schema LiteLLM expects for tools.
+
     if llm_model_name.startswith("ollama_chat/"):
       ollama_model = llm_model_name.split("/", 1)[1]
       return LiteLlm(
           model=f"openai/{ollama_model}",
-          api_base="http://localhost:11434/v1",
+          api_base=OLLAMA_API_BASE,
       )
 
-    # Fallback: if caller passed a different ollama prefix, keep existing behavior.
-    return LiteLlm(model=llm_model_name, api_base="http://localhost:11434")
+    return LiteLlm(model=llm_model_name, api_base=OLLAMA_BASE_URL)
   else:
     return LiteLlm(llm_model_name)
+
+
+def get_model_config() -> dict:
+  """Returns the model config from the config file for the given provider."""
+  with open("model_config.yaml", "r") as f:
+    return yaml.load(f)
+
+
+def get_model_name(provider: Optional[str] = "ollama") -> str:
+  """Returns the model name from the config file for the given provider."""
+  config = get_model_config()["models"][provider]
+  return config["name"]
+
+def get_model_temperature(provider: Optional[str] = "ollama") -> float:
+  """Returns the model temperature from the config file for the given provider."""
+  config = get_model_config()["models"][provider]
+  return config["temperature"]

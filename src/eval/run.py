@@ -1,4 +1,5 @@
 import asyncio
+import json
 import time
 from typing import Optional
 
@@ -101,17 +102,19 @@ def generate_goldens(
   setup_logging(str(ctx.params["run_id"]), "eval")
 
   logger.info(f"Starting run with ID: {run_id}")
+  
+  with open("datasets/eval/requirement_chunks.json", "r") as rj:
+      reqs = json.load(rj)
+
+  contexts = [r["requirement"].split("|") for r in reqs]
 
   filtration_config = FiltrationConfig(
       critic_model="gpt-5-mini", synthetic_input_quality_threshold=0.5
   )
   synthesizer = Synthesizer(model, filtration_config=filtration_config)
-  synthesizer.generate_goldens_from_docs(
-      document_paths=[
-          "datasets/rSDE-Bench/website/VolunteerMatch.md",
-          "datasets/rSDE-Bench/website/VirtualWellnessRetreats.md",
-          "datasets/rSDE-Bench/website/VirtualBookPublishing.md",
-      ],
+  synthesizer.generate_goldens_from_contexts(
+      contexts=contexts,
+      max_goldens_per_context=1
   )
   goldens = synthesizer.synthetic_goldens
   logger.info(f"Goldens: {str(goldens)}")
