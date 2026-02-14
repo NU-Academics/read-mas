@@ -24,6 +24,4 @@ CRITICAL:
 - DO NOT use structured objects with fields like description, title, or other nested structures.
 - Each item in the lists must be a plain string, not a dictionary or object.
 - The JSON MUST be valid JSON with NO trailing commas. Do NOT include a comma after the last item in arrays or after the last property in objects.
-- Example of CORRECT format: {{"FRs": ["req1", "req2"], "NFRs": ["req1"]}}
-- Example of INCORRECT format: {{"FRs": ["req1", "req2"], "NFRs": ["req1"],}}  // NO trailing comma
 """

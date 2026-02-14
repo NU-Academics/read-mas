@@ -22,13 +22,14 @@ class RequirementsWrapperAgent(AgentBase):
   def __init__(
       self,
       llm_model_name: str,
+      system_prompt: Optional[str] = RE_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
   ):
-    super().__init__(llm_model_name, run_mode, rag)
-    self._collector_agent = CollectorAgent(llm_model_name, run_mode, rag).get_agent()
-    self._analyzer_agent = AnalyzerAgent(llm_model_name, run_mode, rag).get_agent()
-    self._specifier_agent = SpecifierAgent(llm_model_name, run_mode, rag).get_agent()
+    super().__init__(llm_model_name, system_prompt, run_mode, rag)
+    self._collector_agent = CollectorAgent(llm_model_name, run_mode=run_mode, rag=rag).get_agent()
+    self._analyzer_agent = AnalyzerAgent(llm_model_name, run_mode=run_mode, rag=rag).get_agent()
+    self._specifier_agent = SpecifierAgent(llm_model_name, run_mode=run_mode, rag=rag).get_agent()
 
   def get_agent(self) -> Agent:
     tools = []
@@ -47,7 +48,7 @@ class RequirementsWrapperAgent(AgentBase):
         name="re_agent",
         model=get_model_from(self._llm_model_name),
         description="A requirements wrapper agent that uses RE agent tools to generate the SRS.",
-        instruction=RE_AGENT_SYSTEM_PROMPT,
+        instruction=self._system_prompt,
         tools=tools,
         output_key="requirements_output",
     )

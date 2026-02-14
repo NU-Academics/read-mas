@@ -22,10 +22,11 @@ class CollectorAgent(AgentBase):
   def __init__(
       self,
       llm_model_name: str,
+      system_prompt: Optional[str] = COLLECTOR_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
   ):
-    super().__init__(llm_model_name, run_mode, rag)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag)
 
   def get_agent(self) -> Agent:
     tools = []
@@ -45,7 +46,7 @@ class CollectorAgent(AgentBase):
         description=(
             "A requirements collector agent that generates raw requirements from a user's query"
         ),
-        instruction=COLLECTOR_AGENT_SYSTEM_PROMPT,
+        instruction=self._system_prompt,
         planner=planner,
         tools=tools,
         output_schema=CollectorOutputModel,

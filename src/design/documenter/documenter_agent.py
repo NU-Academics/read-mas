@@ -20,10 +20,11 @@ class DocumenterAgent(AgentBase):
   def __init__(
       self,
       llm_model_name: str,
+      system_prompt: Optional[str] = DOCUMENTER_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
   ):
-    super().__init__(llm_model_name, run_mode, rag)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag)
 
   def get_agent(self) -> Agent:
     tools = []
@@ -37,7 +38,7 @@ class DocumenterAgent(AgentBase):
             "A design documenter agent that specifies the system, file structure, and component"
             " designs for the requested system."
         ),
-        instruction=DOCUMENTER_AGENT_SYSTEM_PROMPT,
+        instruction=self._system_prompt,
         tools=tools,
         input_schema=DesignerOutputModel,
         output_key="documenter_output",

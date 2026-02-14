@@ -18,10 +18,11 @@ class DesignerAgent(AgentBase):
   def __init__(
       self,
       llm_model_name: str,
+      system_prompt: Optional[str] = DESIGNER_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
   ):
-    super().__init__(llm_model_name, run_mode, rag)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag)
 
   def get_agent(self) -> Agent:
     return Agent(
@@ -31,7 +32,7 @@ class DesignerAgent(AgentBase):
             "A designer agent that generates the system and component design for the given"
             " requirements."
         ),
-        instruction=DESIGNER_AGENT_SYSTEM_PROMPT,
+        instruction=self._system_prompt,
         output_schema=DesignerOutputModel,
         output_key="designer_output",
         before_agent_callback=before_agent,

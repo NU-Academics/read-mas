@@ -39,6 +39,7 @@ def get_model_name(provider: Optional[str] = "ollama") -> str:
   config = get_model_config()["models"][provider]
   return config["name"]
 
+
 def get_model_temperature(provider: Optional[str] = "ollama") -> float:
   """Returns the model temperature from the config file for the given provider."""
   config = get_model_config()["models"][provider]

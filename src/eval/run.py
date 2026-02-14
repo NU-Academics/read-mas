@@ -102,9 +102,9 @@ def generate_goldens(
   setup_logging(str(ctx.params["run_id"]), "eval")
 
   logger.info(f"Starting run with ID: {run_id}")
-  
+
   with open("datasets/eval/requirement_chunks.json", "r") as rj:
-      reqs = json.load(rj)
+    reqs = json.load(rj)
 
   contexts = [r["requirement"].split("|") for r in reqs]
 
@@ -112,10 +112,7 @@ def generate_goldens(
       critic_model="gpt-5-mini", synthetic_input_quality_threshold=0.5
   )
   synthesizer = Synthesizer(model, filtration_config=filtration_config)
-  synthesizer.generate_goldens_from_contexts(
-      contexts=contexts,
-      max_goldens_per_context=1
-  )
+  synthesizer.generate_goldens_from_contexts(contexts=contexts, max_goldens_per_context=1)
   goldens = synthesizer.synthetic_goldens
   logger.info(f"Goldens: {str(goldens)}")
   synthesizer.save_as(file_type="json", directory="data/goldens")

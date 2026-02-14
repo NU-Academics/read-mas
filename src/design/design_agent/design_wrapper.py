@@ -20,10 +20,11 @@ class DesignWrapperAgent(AgentBase):
   def __init__(
       self,
       llm_model_name: str,
+      system_prompt: Optional[str] = DESIGN_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
   ):
-    super().__init__(llm_model_name, run_mode, rag)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag)
     self._designer_agent = DesignerAgent(llm_model_name, run_mode, rag).get_agent()
     self._documenter_agent = DocumenterAgent(llm_model_name, run_mode, rag).get_agent()
 
@@ -44,7 +45,7 @@ class DesignWrapperAgent(AgentBase):
         description=(
             "A design wrapper agent that uses the design agent tools to generate the design."
         ),
-        instruction=DESIGN_AGENT_SYSTEM_PROMPT,
+        instruction=self._system_prompt,
         tools=tools,
         output_key="design_output",
     )

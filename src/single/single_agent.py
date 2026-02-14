@@ -16,16 +16,19 @@ from utils.constants import AgentRunMode
 from rag import retrieve_requirements
 from utils.logger import setup_logging
 from agents import (before_agent, after_agent, before_model, after_model)
+
+
 class SingleAgent(AgentBase):
   """Defines a single agent that both generates requirements and designs the requested software."""
 
   def __init__(
       self,
       llm_model_name: str,
+      system_prompt: Optional[str] = SINGLE_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = False,
   ):
-    super().__init__(llm_model_name, run_mode, rag)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag)
 
   def get_agent(self) -> Agent:
     tools = []
@@ -39,7 +42,7 @@ class SingleAgent(AgentBase):
         name="single_agent",
         model=get_model_from(self._llm_model_name),
         description="A single agent that generates a software design for a user's query",
-        instruction=SINGLE_AGENT_SYSTEM_PROMPT,
+        instruction=self._system_prompt,
         tools=tools,
         output_key="design_output",
         before_agent_callback=before_agent,

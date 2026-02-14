@@ -15,6 +15,7 @@ class AgentBase(ABC):
   def __init__(
       self,
       llm_model_name: str,
+      system_prompt: Optional[str],
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = False,
   ):
@@ -23,10 +24,12 @@ class AgentBase(ABC):
 
     Args:
       llm_model_name: The LLM model
+      system_prompt: The system prompt for the agent
       run_mode: The agent run mode, e.g. main, eval, or benchmark
       rag: Whether to use the RAG tool
     """
     self._llm_model_name = llm_model_name
+    self._system_prompt = system_prompt
     self._run_mode = run_mode
     self._rag = rag
 

@@ -18,12 +18,15 @@ class ReadWrapperAgent(AgentBase):
   def __init__(
       self,
       llm_model_name: str,
+      system_prompt: Optional[str],
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = False,
   ):
-    super().__init__(llm_model_name, run_mode, rag)
-    self._requirement_agent = RequirementsWrapperAgent(llm_model_name, run_mode, rag).get_agent()
-    self._design_agent = DesignWrapperAgent(llm_model_name, run_mode, rag).get_agent()
+    super().__init__(llm_model_name, system_prompt=system_prompt, run_mode=run_mode, rag=rag)
+    self._requirement_agent = RequirementsWrapperAgent(
+        llm_model_name, run_mode=run_mode, rag=rag
+    ).get_agent()
+    self._design_agent = DesignWrapperAgent(llm_model_name, run_mode=run_mode, rag=rag).get_agent()
 
   def get_agent(self) -> Agent:
     return SequentialAgent(
@@ -35,5 +38,5 @@ class ReadWrapperAgent(AgentBase):
 litellm._turn_on_debug()
 run_id = str(int(time.time() * 1000))
 setup_logging(run_id, "adk")
-agent = ReadWrapperAgent(DEFAULT_MODEL_NAME)
+agent = ReadWrapperAgent(DEFAULT_MODEL_NAME, "")
 root_agent = agent.get_agent()
