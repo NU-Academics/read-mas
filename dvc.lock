@@ -1,0 +1,25 @@
+schema: '2.0'
+stages:
+  eval_optimize:
+    cmd: python src/eval/evaluators/agent_evals/eval_optimize.py 
+      data/goldens/requirements.json
+    deps:
+    - path: data/goldens/requirements.json
+      hash: md5
+      md5: 1f429605f5fcc44289e6135aa76be698
+      size: 50657
+    - path: src/eval/evaluators/agent_evals/eval_optimize.py
+      hash: md5
+      md5: 7d171e556b3dd793b50a64336a535b21
+      size: 3712
+    params:
+      params.yaml:
+        eval.agent_name: collector_agent
+        eval.llm_model_name: ollama_chat/gpt-oss:20b
+        eval.rag: false
+    outs:
+    - path: evals
+      hash: md5
+      md5: d2a33250dcf641c3b5a8f1163445379c.dir
+      size: 4913
+      nfiles: 2

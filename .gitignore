@@ -224,7 +224,8 @@ Temporary Items
 runs/
 
 # Data
-data/
+data/*
+!data/*.dvc
 
 # Jupyter Notebooks
 **/.ipynb_checkpoints/
@@ -235,3 +236,4 @@ data/
 
 # DeepEval
 .deepeval/
+/evals
