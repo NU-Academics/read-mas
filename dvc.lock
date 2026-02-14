@@ -18,7 +18,7 @@ stages:
         eval.llm_model_name: ollama_chat/gpt-oss:20b
         eval.rag: true
     outs:
-    - path: evals
+    - path: eval_runs
       hash: md5
       md5: 5d87de38da90ac6c2b2639f1314b611c.dir
       size: 4009

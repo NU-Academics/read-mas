@@ -1,4 +1,4 @@
 eval:
   agent_name: "collector_agent"
   llm_model_name: "ollama_chat/gpt-oss:20b"
-  rag: true
+  rag: false

@@ -1,6 +1,7 @@
 """Searches for a query from the RAG index."""
 
 import json
+import sys
 
 import faiss
 import numpy as np
@@ -51,4 +52,8 @@ def retrieve_requirements(query: str) -> str:
 
 
 if __name__ == "__main__":
-  retrieve_requirements("Design a system accessible only by authorized users")
+  if len(sys.argv) != 1:
+    sys.exit(1)
+    
+  query = sys.argv(1)
+  retrieve_requirements(query)
