@@ -18,7 +18,7 @@ class ReadWrapperAgent(AgentBase):
   def __init__(
       self,
       llm_model_name: str,
-      system_prompt: Optional[str],
+      system_prompt: Optional[str] = None,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = False,
   ):
@@ -38,5 +38,5 @@ class ReadWrapperAgent(AgentBase):
 litellm._turn_on_debug()
 run_id = str(int(time.time() * 1000))
 setup_logging(run_id, "adk")
-agent = ReadWrapperAgent(DEFAULT_MODEL_NAME, "")
+agent = ReadWrapperAgent(DEFAULT_MODEL_NAME)
 root_agent = agent.get_agent()

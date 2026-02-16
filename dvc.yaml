@@ -13,12 +13,6 @@ stages:
     - eval_runs
 metrics:
 - eval_runs/metrics.json
-- eval_runs/metrics.json
-- evals/metrics.json
 plots:
 - eval_runs/plots/metrics:
-    x: step
-- eval_runs/plots/metrics:
-    x: step
-- evals/plots/metrics:
     x: step

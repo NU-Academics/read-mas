@@ -1,4 +1,4 @@
 eval:
   agent_name: "collector_agent"
-  llm_model_name: "ollama_chat/gpt-oss:20b"
-  rag: false
+  llm_model_name: "gemini-2.5-flash"
+  rag: true

@@ -15,7 +15,7 @@ class AgentBase(ABC):
   def __init__(
       self,
       llm_model_name: str,
-      system_prompt: Optional[str],
+      system_prompt: Optional[str] = None,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = False,
   ):
@@ -29,7 +29,7 @@ class AgentBase(ABC):
       rag: Whether to use the RAG tool
     """
     self._llm_model_name = llm_model_name
-    self._system_prompt = system_prompt
+    self._system_prompt = system_prompt or ""
     self._run_mode = run_mode
     self._rag = rag
 

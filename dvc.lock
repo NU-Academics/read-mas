@@ -6,20 +6,20 @@ stages:
     deps:
     - path: data/goldens/20260213_234211.json
       hash: md5
-      md5: da86792bfa10514fc387e7ae7dd28ff3
-      size: 26211
+      md5: 7ade1c25cfcf7790b51bcfc9771f41f7
+      size: 26175
     - path: src/eval/evaluators/agent_evals/eval_optimize.py
       hash: md5
-      md5: 3dedff4208f52283d48c665c5819224e
-      size: 4501
+      md5: 77dc581a409439b94a40ac4df66642ff
+      size: 5075
     params:
       params.yaml:
         eval.agent_name: collector_agent
-        eval.llm_model_name: ollama_chat/gpt-oss:20b
+        eval.llm_model_name: gemini-2.5-flash
         eval.rag: true
     outs:
     - path: eval_runs
       hash: md5
-      md5: 5d87de38da90ac6c2b2639f1314b611c.dir
-      size: 4009
+      md5: 027609c6423f8ac0178c3c7b72819227.dir
+      size: 2783
       nfiles: 4

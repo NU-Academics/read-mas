@@ -2,6 +2,7 @@
 
 import json
 import sys
+from typing import Optional, List
 
 import faiss
 import numpy as np
@@ -22,7 +23,7 @@ def _get_embedding(query: str):
   return np.array([res["embedding"]], dtype=np.float32)
 
 
-def retrieve_requirements(query: str) -> str:
+def retrieve_requirements(query: str) -> Optional[List[str]]:
   """Retrieves the top K chunks for the provided query.
 
   Args:
@@ -45,10 +46,9 @@ def retrieve_requirements(query: str) -> str:
   distances, indices = index.search(query_vector, RAG_TOP_K)
 
   result = [requirement_chunks[i]["chunk"] for i in indices[0]]
-  logger.debug(f"RAG retrieval for query: {query} is: {result}")
-  # Return a string to avoid downstream chat backends receiving an array as messages[].content
-  # (which breaks some providers).
-  return "\n\n---\n\n".join(result)
+  logger.debug(f"RAG retrieval for query: {query} is: {str(result)}")
+  
+  return result
 
 
 if __name__ == "__main__":

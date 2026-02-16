@@ -237,3 +237,4 @@ data/*
 # DeepEval
 .deepeval/
 /evals
+/eval_runs

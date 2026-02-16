@@ -1,4 +1,4 @@
-"""Evaluator to optimize the agent."""
+"""Evaluator to optimize the agents' system prompts."""
 
 import asyncio
 import json
@@ -7,12 +7,12 @@ import yaml
 
 from deepeval.dataset import Golden
 from deepeval import evaluate
-from deepeval.metrics import AnswerRelevancyMetric, ContextualRelevancyMetric
+from deepeval.metrics import AnswerRelevancyMetric, ContextualRelevancyMetric, BaseMetric
 from deepeval.metrics.ragas import RAGASFaithfulnessMetric
 from deepeval.prompt import Prompt
 from deepeval.optimizer import PromptOptimizer
 from deepeval.test_case import LLMTestCase
-from dvclive import Live
+from dvclive.live import Live
 from google.adk.agents import BaseAgent
 from prompt_templates import (
     SINGLE_AGENT_SYSTEM_PROMPT,
@@ -24,6 +24,7 @@ from prompt_templates import (
     DOCUMENTER_AGENT_SYSTEM_PROMPT,
     DESIGN_AGENT_SYSTEM_PROMPT,
 )
+from rag import retrieve_requirements
 from single import SingleAgent
 from requirement import (CollectorAgent, AnalyzerAgent, SpecifierAgent, RequirementsWrapperAgent)
 from design import (DesignerAgent, DocumenterAgent, DesignWrapperAgent)
@@ -56,35 +57,41 @@ AGENT_REGISTRY = {
     "design_agent": DesignWrapperAgent,
 }
 
-agent_name = None
-llm_model_name = None
-evaluated_agent = None
-rag = False
-prompt_to_optimize = None
-goldens = None
-metrics = [AnswerRelevancyMetric()]
+def _get_metrics(rag: bool = False) -> list[BaseMetric]:
+  if rag:
+    return [AnswerRelevancyMetric(), ContextualRelevancyMetric(), RAGASFaithfulnessMetric()]
+    
+  return [AnswerRelevancyMetric()]
 
 
 def _get_prompt(agent_name: str) -> Prompt:
   return AGENT_PROMPTS[agent_name]
 
 
-def _get_eval_agent(prompt: str) -> BaseAgent:
+def _get_eval_agent(prompt: Optional[str]) -> BaseAgent:
   agent_type = AGENT_REGISTRY[agent_name]
   return agent_type(llm_model_name, prompt, AgentRunMode.EVAL, rag).get_agent()
 
 
 async def agent_callback(prompt: Prompt, golden: Golden) -> str:
-  prompt = prompt.text_template
-  evaluated_agent = _get_eval_agent(prompt)
+  prompt_text = prompt.text_template
+  evaluated_agent = _get_eval_agent(prompt_text)
   return await run_agent(golden.input, evaluated_agent)
 
 
-def _get_goldens() -> list[Golden]:
+def _get_goldens(rag: bool) -> list[Golden]:
   with open("data/goldens/20260213_234211.json", "r") as jf:
     goldens_list = json.load(jf)
 
-  return [Golden.model_validate(g) for g in goldens_list]
+  goldens = [Golden.model_validate(g) for g in goldens_list]
+  
+  if rag:
+    for golden in goldens:
+      retrieval_context = retrieve_requirements(golden.input)
+      golden.retrieval_context = retrieval_context or None
+      
+  return goldens
+
 
 
 async def _log_metrics(prompt: Prompt, live: Live):
@@ -95,15 +102,22 @@ async def _log_metrics(prompt: Prompt, live: Live):
 
     test_cases.append(
         LLMTestCase(
-            input=golden.input, expected_output=golden.expected_output, actual_output=actual_output
+            input=golden.input, 
+            expected_output=golden.expected_output, 
+            actual_output=actual_output,
+            retrieval_context=golden.retrieval_context
         )
     )
 
   results = evaluate(test_cases=test_cases, metrics=metrics)
 
   for test_result in results.test_results:
-    scores = [m.score for m in test_result.metrics_data]
-    avg_score = sum(scores) / len(scores)
+    scores = [
+      m.score
+      for m in (test_result.metrics_data or [])
+      if getattr(m, "score", None) is not None
+    ]
+    avg_score = sum(scores) / len(scores) if scores else None
     live.log_metric(test_result.name, avg_score)
 
 
@@ -129,7 +143,7 @@ async def main():
 
 
 if __name__ == "__main__":
-  EVAL_PATH = "evals"
+  EVAL_PATH = "eval_runs"
 
   params = yaml.safe_load(open("params.yaml"))["eval"]
   agent_name = params["agent_name"]
@@ -137,6 +151,7 @@ if __name__ == "__main__":
   rag = params["rag"]
   prompt_to_optimize = _get_prompt(params["agent_name"])
   evaluated_agent = _get_eval_agent(prompt_to_optimize.text_template)
-  goldens = _get_goldens()
+  metrics = _get_metrics(rag)
+  goldens = _get_goldens(rag)
 
   asyncio.run(main())
