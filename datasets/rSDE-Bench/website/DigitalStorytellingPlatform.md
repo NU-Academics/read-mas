@@ -8,7 +8,7 @@ The required development language for this task is Python.
 
 ## 3. Page Design
 
-### Page 1: Login Page (If the user successfully logs in, redirect them to the Story Creation Page.)
+### 3.1 Login Page (If the user successfully logs in, redirect them to the Story Creation Page.)
 - **Page Title:** User Login
 - **Element List:**
   - ID: `username_field`
@@ -25,7 +25,7 @@ The required development language for this task is Python.
     - Text: "Create an Account"
 
 
-## Page 2: Registration Page
+## 3.2 Registration Page
 - **Page Title:** User Registration
 - **Element List:**
   - ID: `reg_username_input`
@@ -41,7 +41,7 @@ The required development language for this task is Python.
     - Type: Button
     - Text: "Register"
 
-### Page 3: Story Creation Page
+### 3.3 Story Creation Page
 - **Page Title:** Create Your Story
 - **Element List:**
   - ID: `story_title_field`

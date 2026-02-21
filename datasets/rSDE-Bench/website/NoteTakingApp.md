@@ -8,7 +8,7 @@ The required development language for the NoteTakingApp is Python.
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Overview:** This page allows users to log into the application with their credentials.
 - **Element IDs:**
@@ -19,7 +19,7 @@ The required development language for the NoteTakingApp is Python.
   - `error_message`: Display area for login errors
   - `register_link`: Link to the registration page
 
-### 3.2. Registration Page
+### 3.2 Registration Page
 - **Page Title:** Register
 - **Overview:** This page allows new users to create an account.
 - **Element IDs:**
@@ -30,7 +30,7 @@ The required development language for the NoteTakingApp is Python.
   - `register_button`: Button to submit registration details
   - `registration_success_message`: Display area for registration confirmations or errors
 
-### 3.3. Dashboard Page
+### 3.3 Dashboard Page
 - **Page Title:** Dashboard
 - **Overview:** This is the main page that displays the user's list of notes and provides options to create, edit, or delete notes.
 - **Element IDs:**
@@ -41,7 +41,7 @@ The required development language for the NoteTakingApp is Python.
   - `search_note_button`: Button to navigate to the Search Note page
   - `logout_button`: Button to log out of the application
 
-### 3.4. Add Note Page
+### 3.4 Add Note Page
 - **Page Title:** Add Note
 - **Overview:** This page allows users to create a new note by entering a title and content.
 - **Element IDs:**
@@ -51,7 +51,7 @@ The required development language for the NoteTakingApp is Python.
   - `save_note_button`: Button to save the new note
   - `cancel_button`: Button to discard changes and return to the dashboard
 
-### 3.5. Search Note Page
+### 3.5 Search Note Page
 - **Page Title:** Search Note
 - **Overview:** This page allows users to search note by entering a title.
 - **Element IDs:**
@@ -60,7 +60,7 @@ The required development language for the NoteTakingApp is Python.
   - `search_note_result`: Container to display the search result
   - `back_button`: Button to return to the dashboard
 
-### 3.6. View Note Page
+### 3.6 View Note Page
 - **Page Title:** View Note
 - **Overview:** This page displays the details of a selected note, allowing users to read and edit it.
 - **Element IDs:**

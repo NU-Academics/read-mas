@@ -8,7 +8,7 @@ The development language for the Nutrition Information Hub will be Python.
 
 ## 3. Page Design
 
-### Page 1: Login Page
+### 3.1 Login Page
 - **Page Title:** User Login
 - **Content and Functionality:** Users will enter their credentials (username and password) to access the application.
 - **Element IDs:**
@@ -17,7 +17,7 @@ The development language for the Nutrition Information Hub will be Python.
   - `loginButton`: Button to submit the login credentials.
   - `errorMessage`: Div for displaying error messages (if credentials are incorrect).
 
-### Page 2: Home Page
+### 3.2 Home Page
 - **Page Title:** Home
 - **Content and Functionality:** This will be the main dashboard, providing links to subpages like Nutrition Info, Recipe Tracker, and Health Tips.
 - **Element IDs:**
@@ -25,7 +25,7 @@ The development language for the Nutrition Information Hub will be Python.
   - `recipeTrackerLink`: Link to the Recipe Tracker page.
   - `logoutButton`: Button to log out of the application.
 
-### Page 3: Nutrition Information Page
+### 3.3 Nutrition Information Page
 - **Page Title:** Nutrition Information
 - **Content and Functionality:** A searchable database of foods with nutritional information displayed.
 - **Element IDs:**
@@ -34,7 +34,7 @@ The development language for the Nutrition Information Hub will be Python.
   - `searchButton`: Button to trigger the search.
   - `foodList`: Div or table to display search results.
 
-### Page 4: Recipe Tracker Page
+### 3.4 Recipe Tracker Page
 - **Page Title:** Recipe Tracker
 - **Content and Functionality:** Allows users to input, save, and view various recipes that they have created or plan to prepare.
 - **Element IDs:**

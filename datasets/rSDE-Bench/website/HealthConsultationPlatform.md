@@ -8,7 +8,7 @@ The required development language for this project is Python.
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Overview:** This page allows users to log into their accounts.Upon successful login, users will be redirected to the Schedule Consultation page.
 - **Elements:**
@@ -29,7 +29,7 @@ The required development language for this project is Python.
     - **Type:** Div
     - **Display:** Hidden by default, visible when login fails.
 
-### 3.2. Registration Page
+### 3.2 Registration Page
 - **Page Title:** User Registration
 - **Overview:** This page allows new users to register for an account.
 - **Elements:**
@@ -49,7 +49,7 @@ The required development language for this project is Python.
     - **Type:** Div
     - **Display:** Hidden by default, visible when registration is successful.
 
-### 3.3. Consultation Scheduling Page
+### 3.3 Consultation Scheduling Page
 - **Page Title:** Schedule Consultation
 - **Overview:** Users can select an available time slot to schedule a new consultation.
 - **Elements:**
@@ -71,7 +71,7 @@ The required development language for this project is Python.
     - **Type:** Div
     - **Display:** Hidden by default, visible when consultation is successfully scheduled.
 
-### 3.4. Appointment Tracking Page
+### 3.4 Appointment Tracking Page
 - **Page Title:** My Appointments
 - **Overview:** Displays a list of upcoming appointments and past consultations for the user.
 - **Elements:**
@@ -85,7 +85,7 @@ The required development language for this project is Python.
     - **Type:** Button
     - **Text:** "Logout"
 
-### 3.5. Feedback Page
+### 3.5 Feedback Page
 - **Page Title:** Feedback
 - **Overview:** Users can provide feedback on their recent consultations.
 - **Elements:**

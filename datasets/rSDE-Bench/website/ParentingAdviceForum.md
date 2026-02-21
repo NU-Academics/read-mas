@@ -9,7 +9,7 @@ The required development language for the ParentingAdviceForum is Python.
 ## 3. Page Design
 This section outlines the elements that should be included on each page, along with their corresponding IDs. The web application will consist of the following seven pages:
 
-### 1. Login Page
+### 3.1 Login Page
 - **Page Title**: Login
 - **Elements**:
   - **Username Input Field**: 
@@ -22,7 +22,7 @@ This section outlines the elements that should be included on each page, along w
     - ID: `register-button`
   
 
-### 2. Register Page
+### 3.2 Register Page
 - **Page Title**: Register
 - **Elements**:
   - **Username Input Field**: 
@@ -32,7 +32,7 @@ This section outlines the elements that should be included on each page, along w
   - **Register Button**: 
     - ID: `register-button`
 
-### 3. Home Page
+### 3.3 Home Page
 - **Page Title**: Home
 - **Elements**:
   - **Welcome Message**: 
@@ -49,7 +49,7 @@ This section outlines the elements that should be included on each page, along w
   - **Recent Posts Section**: 
     - ID: `recent-posts` (display posts' tiltes and contents)
 
-### 4. Forum Page
+### 3.4 Forum Page
 - **Page Title**: Forum
 - **Elements**:
   - **Discussion Threads List**: 
@@ -63,7 +63,7 @@ This section outlines the elements that should be included on each page, along w
   - **Submit Button**: 
     - ID: `submit-thread-button`
   
-### 5. View Thread Page
+### 3.5 View Thread Page
 - **Page Title**: View Thread
 - **Elements**:
   - **Thread Title Display**: 
@@ -77,7 +77,7 @@ This section outlines the elements that should be included on each page, along w
   - **Submit Comment Button**: 
     - ID: `submit-comment-button`
 
-### 6. Post Advice Page
+### 3.6 Post Advice Page
 - **Page Title**: Post Advice
 - **Elements**:
   - **Advice Title Input Field**: 
@@ -87,7 +87,7 @@ This section outlines the elements that should be included on each page, along w
   - **Submit Advice Button**: 
     - ID: `submit-advice-button`
 
-### 7. My Account Page
+### 3.7 My Account Page
 - **Page Title**: My Account
 - **Elements**:
   - **User Information Display**: 
@@ -97,7 +97,7 @@ This section outlines the elements that should be included on each page, along w
   - **Delete Account Button**: 
     - ID: `delete-account-button`
 
-### 8. Contact Us Page
+### 3.8 Contact Us Page
 - **Page Title**: Contact Us
 - **Elements**:
   - **Name Input Field**: 

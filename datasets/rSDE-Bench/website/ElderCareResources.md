@@ -8,7 +8,7 @@ The required development language for the ElderCareResources web application is 
 
 ## 3. Page Design
 
-### Page 1: Login Page
+### 3.1 Login Page
 - **Page Title:** User Login
 - **Overview:** This page allows users to sign in to their account to access the resources.
 - **Elements:**
@@ -24,7 +24,7 @@ The required development language for the ElderCareResources web application is 
         - **Type:** Button
         - **Text:** "Login"
 
-### Page 2: Dashboard Page
+### 3.2 Dashboard Page
 - **Page Title:** Elder Care Resources Dashboard
 - **Overview:** This page serves as the main hub for accessing different resources related to elder care.
 - **Elements:**
@@ -43,7 +43,7 @@ The required development language for the ElderCareResources web application is 
       - **Type:** Button: navigate to Login Page
       - **Text:** "Logout"
 
-### Page 3: Contact Page
+### 3.3 Contact Page
 - **Page Title:** Contact Us
 - **Overview:** This page allows users to submit inquiries or feedback related to elder care.
 - **Elements:**

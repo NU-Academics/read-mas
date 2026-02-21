@@ -8,7 +8,7 @@ The required development language for this application is Python.
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Overview:** This page allows users to log into the application with their credentials.
 - **Element IDs:**
@@ -18,7 +18,7 @@ The required development language for this application is Python.
   - `error_message`: Display area for login errors
   - `register_link`: Link to the registration page
 
-### 3.2. Registration Page
+### 3.2 Registration Page
 - **Page Title:** Register
 - **Overview:** This page allows new users to create an account.
 - **Element IDs:**
@@ -29,7 +29,7 @@ The required development language for this application is Python.
   - `register_button`: Button to submit registration details
   - `registration_success_message`: Display area for registration confirmations or errors
 
-### 3.3. Dashboard Page
+### 3.3 Dashboard Page
 - **Page Title:** Dashboard
 - **Overview:** This is the main page that displays the user's list of blog posts and provides options to add or search posts.
 - **Element IDs:**
@@ -38,7 +38,7 @@ The required development language for this application is Python.
   - `search_post_button`: Button to navigate to the Search Post page
   - `user_profile_button`: Button to navigate to the User Profile page
 
-### 3.4. Add Post Page
+### 3.4 Add Post Page
 - **Page Title:** `Add Post`
 - **Overview:** This page allows users to create a new blog post by entering a title, date, category, and content.
 - **Element IDs:**
@@ -49,7 +49,7 @@ The required development language for this application is Python.
   - `save_post_button`: Button to save the new post and return to the dashboard
   - `cancel_button`: Button to discard changes and return to the dashboard
 
-### 3.5. Search Post Page
+### 3.5 Search Post Page
 - **Page Title**: Search Post
 - **Overview**: This page allows users to navigate to specific category pages where posts related to different aspects of personal finance are listed. Users can choose a category to view all related posts.
 - **Element IDs**:
@@ -58,7 +58,7 @@ The required development language for this application is Python.
   - `insurance_button`: Button to navigate to the Insurance Post page
   - `back_button`: Button to return to the Dashboard page
 
-### 3.6. Category Post Page
+### 3.6 Category Post Page
 - **Page Title**: `Category` Post
 - **Overview**: This page displays all blog posts related to the selected `Category` (options: Investment, Banking, Insurance). Users can view, edit, or delete posts from this page.
 - **Element IDs**:
@@ -68,7 +68,7 @@ The required development language for this application is Python.
   - `delete_post_button`: Button to delete the post whose title is same as that entered in `post_title_field`
   - `back_button`: Button to return to the Dashboard page
 
-### 3.7. Post Details Page
+### 3.7 Post Details Page
 - **Page Title:** `Post Title`
 - **Overview:** This page displays detailed information about a specific post selected by the user. The page title dynamically reflects the title of the selected post (e.g., if the post title is "Bank Update," the Page Title will be "Bank Update"). This page allows users to view the full content of the post and edit the post.
 - **Element IDs:**
@@ -79,7 +79,7 @@ The required development language for this application is Python.
   - `save_button`: Button to save changes on the post details
   - `back_button`: Button to return to the Dashboard page
   
-### 3.8. User Profile Page
+### 3.8 User Profile Page
 - **Page Title**: User Profile
 - **Overview**: This page displays and allows users to edit their account information.
 - **Element IDs**:

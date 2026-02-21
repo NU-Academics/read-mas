@@ -8,10 +8,10 @@ The required development language for the GardeningForBeginners application is P
 
 ## 3. Page Design
 
-### 3.1. Page Titles and IDs
+### Page Titles and IDs
 The application will consist of the following pages:
 
-#### 1. Login Page
+#### 3.1 Login Page
 - **Page Title:** Login
 - **Element IDs:**
   - `login_page` (main container)
@@ -19,7 +19,7 @@ The application will consist of the following pages:
   - `password_input` (password text field)
   - `login_button` (submit button)
 
-#### 2. Gardening Tips Page
+#### 3.2 Gardening Tips Page
 - **Page Title:** Gardening Tips
 - **Element IDs:**
   - `gardening_tips_page` (main container)
@@ -29,7 +29,7 @@ The application will consist of the following pages:
   - `refresh_tips_button` (button to reload tips)
   - `forum_button` (button to navigate to Forum Page)
 
-#### 3. Forum Page
+#### 3.3 Forum Page
 - **Page Title:** Gardening Forum
 - **Element IDs:**
   - `forum_page` (main container)

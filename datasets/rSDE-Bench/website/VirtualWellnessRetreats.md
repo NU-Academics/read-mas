@@ -8,7 +8,7 @@ The required development language for this application is Python.
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Overview:** This page allows users to log into the application with their credentials.
 - **Element IDs:**
@@ -18,7 +18,7 @@ The required development language for this application is Python.
   - `error_message`: Display area for login errors
   - `register_link`: Link to the registration page
 
-### 3.2. Registration Page
+### 3.2 Registration Page
 - **Page Title:** Register
 - **Overview:** This page allows new users to create an account.
 - **Element IDs:**
@@ -28,7 +28,7 @@ The required development language for this application is Python.
   - `register_button`: Button to submit registration details
   - `registration_success_message`: Display area for registration confirmations or errors
 
-### 3.3. Dashboard Page
+### 3.3 Dashboard Page
 - **Page Title:** Dashboard
 - **Overview:** This is the main page that provides options to book or manage bookings of retreats.
 - **Element IDs:**
@@ -36,7 +36,7 @@ The required development language for this application is Python.
   - `view_bookings_button`: Button to navigate to the View Bookings page
   - `logout_button`: Button to log out of the application and back to the Login Page
 
-### 3.4. Schedule Retreat Page
+### 3.4 Schedule Retreat Page
 - **Page Title:** Schedule Retreat
 - **Overview:** This page allows users to schedule retreats by entering detailed information.
 - **Element IDs:**
@@ -47,7 +47,7 @@ The required development language for this application is Python.
   - `schedule_retreat_button`: Button to schedule this retreat
   - `back_to_dashboard_button`: Button to return to the dashboard
 
-### 3.5. View Bookings Page
+### 3.5 View Bookings Page
 - **Page Title**: View Bookings
 - **Overview**: This page allows users to view their scheduled wellness retreats, with options to cancel.
 - **Element IDs**:

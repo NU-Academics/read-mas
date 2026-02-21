@@ -10,7 +10,7 @@ The required development language for this application is Python.
 
 The web application will consist of the following pages:
 
-### Page 1: Login Page
+### 3.1 Login Page
 - **Page Title**: Login
 - **Page ID**: `loginPage`
   - **Element IDs**:
@@ -22,7 +22,7 @@ The web application will consist of the following pages:
 
 *Overview*: This page allows users to log in with their credentials. If they do not have an account, they can navigate to the registration page. They can also navigate to the about page
 
-### Page 2: Registration Page
+### 3.2 Registration Page
 - **Page Title**: Registration
 - **Page ID**: `registrationPage`
   - **Element IDs**:
@@ -33,7 +33,7 @@ The web application will consist of the following pages:
   
 *Overview*: Users can create a new account by providing a username, password.
 
-### Page 3: Dashboard Page
+### 3.3 Dashboard Page
 - **Page Title**: Dashboard
 - **Page ID**: `dashboardPage`
   - **Element IDs**:
@@ -43,7 +43,7 @@ The web application will consist of the following pages:
   
 *Overview*: Provides an overview for the logged-in user, including options to create a new book or view previously published books.
 
-### Page 4: Create New Book Page
+### 3.4 Create New Book Page
 - **Page Title**: Create New Book
 - **Page ID**: `createBookPage`
   - **Element IDs**:
@@ -55,7 +55,7 @@ The web application will consist of the following pages:
   
 *Overview*: Users can enter the book's title, author, and content, and submit the information to be saved.
 
-### Page 5: View My Books Page
+### 3.5 View My Books Page
 - **Page Title**: My Books
 - **Page ID**: `myBooksPage`
   - **Element IDs**:
@@ -64,7 +64,7 @@ The web application will consist of the following pages:
   
 *Overview*: Displays a list of books published by the user, with options to delete or view details for each book.
 
-### Page 6: View Book Details Page
+### 3.6 View Book Details Page
 - **Page Title**: Book Details
 - **Page ID**: `bookDetailsPage`
   - **Element IDs**:
@@ -75,7 +75,7 @@ The web application will consist of the following pages:
   
 *Overview*: Shows the details of a selected book, including title, author, and content, with a return option to the My Books page.
 
-### Page 7: About Page
+### 3.7 About Page
 - **Page Title**: About
 - **Page ID**: `aboutPage`
   - **Element IDs**:

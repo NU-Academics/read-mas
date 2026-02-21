@@ -9,9 +9,7 @@ The required development language for the Online Therapeutic Journaling web appl
 ## 3. Page Design
 This section outlines the elements that should be included on each page, along with their corresponding IDs.
 
-### 3.1 Page Overview
-
-1. **Login Page**
+### 3.1 **Login Page**
    - **Title**: User Login
    - **Functionality**: Allow users to log in to their accounts.
    - **Elements**:
@@ -24,7 +22,7 @@ This section outlines the elements that should be included on each page, along w
      - **ID: `login-button`**
        - Type: Button (Submit)
 
-2. **Dashboard Page**
+### 3.2 **Dashboard Page**
    - **Title**: User Dashboard
    - **Functionality**: Overview of the user's journal entries and options to create, edit, or delete entries.
    - **Elements**:
@@ -41,7 +39,7 @@ This section outlines the elements that should be included on each page, along w
      - **ID: `logout-button`**
        - Type: Button (Navigate to User Login Page)
 
-3. **Create Journal Entry Page**
+### 3.3 **Create Journal Entry Page**
    - **Title**: New Journal Entry
    - **Functionality**: Form for users to write and save a new journal entry.
    - **Elements**:
@@ -54,7 +52,7 @@ This section outlines the elements that should be included on each page, along w
      - **ID: `save-entry-button`**
        - Type: Button (Submit)
 
-4. **Edit Journal Entry Page**
+### 3.4 **Edit Journal Entry Page**
    - **Title**: Edit Journal Entry
    - **Functionality**: Form for users to modify an existing journal entry.
    - **Elements**:
@@ -67,7 +65,7 @@ This section outlines the elements that should be included on each page, along w
      - **ID: `update-entry-button`**
        - Type: Button (Submit changes)
 
-5. **About Page**
+### 3.5 **About Page**
    - **Title**: About Us
    - **Functionality**: Provide information about the application, its purpose, and usage instructions.
    - **Elements**:

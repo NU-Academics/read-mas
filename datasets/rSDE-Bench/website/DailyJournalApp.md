@@ -8,7 +8,7 @@ The required development language for the Daily Journal App is Python.
 
 ## 3. Page Design
 
-### Page 1: Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Overview:** This page authenticates users. Users must enter their credentials to access their journal entries.If a user does not have an account, they can navigate to the registration page.
   
@@ -29,7 +29,7 @@ The required development language for the Daily Journal App is Python.
 
 ---
 
-### Page 2: Registration Page
+### 3.2 Registration Page
 - **Page Title:** Register
 - **Overview:** This page allows new users to create an account by registering their credentials.
 
@@ -46,7 +46,7 @@ The required development language for the Daily Journal App is Python.
 
 ---
 
-### Page 3: Dashboard Page
+### 3.3 Dashboard Page
 - **Page Title:** Dashboard
 - **Overview:** Displays the user's journal entries and provides navigation to create a new entry or log out.
   
@@ -63,7 +63,7 @@ The required development language for the Daily Journal App is Python.
 
 ---
 
-### Page 4: New Entry Page
+### 3.4 New Entry Page
 - **Page Title:** New Journal Entry
 - **Overview:** Allows users to create a new journal entry and save it to a local text file.
 

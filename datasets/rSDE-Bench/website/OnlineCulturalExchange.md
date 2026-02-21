@@ -8,10 +8,10 @@ The required development language for this application is Python.
 
 ## 3. Page Design
 
-### 3.1. Page Overview
+### Page Overview
 The web application will consist of the following pages:
 
-1. **Login Page**
+### 3.1 **Login Page**
    - **Page Title**: Login
    - **Element IDs**:
      - `login-form`: Main form container
@@ -23,7 +23,7 @@ The web application will consist of the following pages:
      - Successful login redirects to the **Home Page**.
      - Unsuccessful login stays on the **Login Page** with an error message.
 
-2. **Home Page**
+### 3.2 **Home Page**
    - **Page Title**: Home
    - **Element IDs**:
      - `welcome-message`: Welcome message area
@@ -35,7 +35,7 @@ The web application will consist of the following pages:
      - Users can navigate to the **Profile Page**, or **Contact Page** using the corresponding hyperlinks.
      - Users can navigate to specific **Cultural Exchange Pages** by selecting topics and using the corresponding hyperlinks from the `culture-list`.
 
-3. **Cultural Exchange Page**
+### 3.3 **Cultural Exchange Page**
    - **Page Title**: Cultural Exchange
    - **Element IDs**:
      - `exchange-form`: Main form for submissions
@@ -48,7 +48,7 @@ The web application will consist of the following pages:
    - **Navigation**:
      - Users can return to the **Home Page** using the `home-link`.
   
-4. **Profile Page**
+### 3.4 **Profile Page**
    - **Page Title**: Profile
    - **Element IDs**:
      - `profile-header`: Header for user profile
@@ -59,7 +59,7 @@ The web application will consist of the following pages:
      - Users can return to the **Home Page** using the `home-link`.
      - Clicking the `logout-button` will redirect the user back to the **Login Page**.
 
-5. **Contact Page**
+### 3.5 **Contact Page**
    - **Page Title**: Contact
    - **Element IDs**:
      - `contact-form`: Main form for contact inquiries

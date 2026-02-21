@@ -8,7 +8,7 @@ The required development language for this application is Python.
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title:** User Login
 - **Element IDs:**
   - `username_input` (input field for username)
@@ -16,7 +16,7 @@ The required development language for this application is Python.
   - `login_button` (button to submit login credentials)
   - `register_link` (link to the registration page)
 
-### 3.2. Registration Page
+### 3.2 Registration Page
 - **Page Title:** User Registration
 - **Element IDs:**
   - `reg_username_input` (input field for desired username)
@@ -24,7 +24,7 @@ The required development language for this application is Python.
   - `reg_email_input` (input field for user email)
   - `register_button` (button to submit registration details)
 
-### 3.3. Product Listing Page
+### 3.3 Product Listing Page
 - **Page Title:** Product Listing
 - **Element IDs:**
   - `product_container` (div that contains all products)
@@ -32,21 +32,21 @@ The required development language for this application is Python.
   - `add_to_cart_button` (button for adding products to the shopping cart)
   - `cart_icon` (icon linking to the shopping cart page)
 
-### 3.4. Shopping Cart Page
+### 3.4 Shopping Cart Page
 - **Page Title:** Shopping Cart
 - **Element IDs:**
   - `cart_items_container` (div that lists all items in the cart)
   - `checkout_button` (button to proceed to checkout)
   - `remove_item_button` (button to remove an item from the cart)
 
-### 3.5. Checkout Page
+### 3.5 Checkout Page
 - **Page Title:** Checkout
 - **Element IDs:**
   - `shipping_address_input` (input field for shipping address)
   - `payment_info_input` (input field for payment information)
   - `confirm_order_button` (button to finalize the order)
 
-### 3.6. Order Confirmation Page
+### 3.6 Order Confirmation Page
 - **Page Title:** Order Confirmation
 - **Element IDs:**
   - `order_summary_container` (div displaying order details)

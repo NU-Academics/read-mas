@@ -9,7 +9,7 @@ The development language required for this project is Python.
 ## 3. Page Design
 The web application will consist of the following five pages:
 
-### 1. Login Page
+### 3.1 Login Page
 - **Page Title**: Login
 - **Elements**:
   - **Username Field**:  
@@ -23,7 +23,7 @@ The web application will consist of the following five pages:
   - **Error Message Container**:  
     - ID: `error_message`
 
-### 2. Register Page
+### 3.2 Register Page
 - **Page Title**: Register
 - **Elements**:
   - **Username Field**:  
@@ -35,7 +35,7 @@ The web application will consist of the following five pages:
   - **Error Message Container**:  
     - ID: `error_message`
     
-### 3. Home Page
+### 3.3 Home Page
 - **Page Title**: Home
 - **Elements**:
   - **Welcome Message**:  
@@ -61,7 +61,7 @@ The web application will consist of the following five pages:
     - ID: `manage_profile_button`
     - Navigate to Profile Management Page
     
-### 4. Freelancer Profile Page
+### 3.4 Freelancer Profile Page
 - **Page Title**: Freelancer Profile
 - **Elements**:
   - **Freelancer Name**:  
@@ -69,7 +69,7 @@ The web application will consist of the following five pages:
   - **Information Section**:  
     - ID: `information`
 
-### 5. Project Listing Page
+### 3.5 Project Listing Page
 - **Page Title**: Projects
 - **Elements**:
   - **New Project Name**:  
@@ -83,7 +83,7 @@ The web application will consist of the following five pages:
   - **Project List Section**:  
     - ID: `project_list`
     
-### 6. Profile Management Page
+### 3.6 Profile Management Page
 - **Page Title**: User Profile
 - **Elements**:
   - **User Name Field**:  

@@ -10,7 +10,7 @@ The required development language for this project is Python.
 
 This section outlines the elements that should be included on each page, along with their corresponding IDs. The web application will consist of the following 8 pages:
 
-### 1. Login Page
+### 3.1 Login Page
 - **Page Title:** User Login
 - **Overview:** A page where users can log in to access personalized content.
 - **Elements:**
@@ -31,7 +31,7 @@ This section outlines the elements that should be included on each page, along w
 - **Behavior:**
   - When the user successfully logs in, they are redirected to the Home Page.
 
-### 2. Register Page
+### 3.2 Register Page
 - **Page Title:** User Register
 - **Overview:** A page where users can create a new account
 - **Elements:**
@@ -47,7 +47,7 @@ This section outlines the elements that should be included on each page, along w
     - Type: Button
     - Text: "Register"
 
-### 3. Home Page
+### 3.3 Home Page
 - **Page Title:** Home
 - **Overview:** The landing page that provides an introduction to eco-friendly living and highlights key features.
 - **Elements:**
@@ -72,7 +72,7 @@ This section outlines the elements that should be included on each page, along w
     - Text: "Contact"
   
 
-### 4. Eco-Friendly Tips Page
+### 3.4 Eco-Friendly Tips Page
 - **Page Title:** Eco-Friendly Tips
 - **Overview:** Lists various tips for living responsibly and reducing environmental impact.
 - **Elements:**
@@ -86,7 +86,7 @@ This section outlines the elements that should be included on each page, along w
     - Type: Button
     - Text: "Submit Tip"
 
-### 5. Resources Page
+### 3.5 Resources Page
 - **Page Title:** Useful Resources
 - **Overview:** Provides links to external resources for further learning and engagement.
 - **Elements:**
@@ -98,7 +98,7 @@ This section outlines the elements that should be included on each page, along w
     - Type: Button
     - Text: "Add Resource"
 
-### 6. Community Forum Page
+### 3.6 Community Forum Page
 - **Page Title:** Community Forum
 - **Overview:** A space for users to discuss eco-friendly topics and share experiences.
 - **Elements:**
@@ -110,7 +110,7 @@ This section outlines the elements that should be included on each page, along w
     - Type: Button
     - Text: "Post"
 
-### 7. Profile Page
+### 3.7 Profile Page
 - **Page Title:** User Profile
 - **Overview:** Displays user profile information and allows profile updates.
 - **Elements:**
@@ -125,7 +125,7 @@ This section outlines the elements that should be included on each page, along w
     - Type: Button: navigate to Login Page
     - Text: "Log Out"
 
-### 8. Contact Page
+### 3.8 Contact Page
 - **Page Title:** Contact Us
 - **Overview:** Provides a form for users to get in touch with the support team.
 - **Elements:**

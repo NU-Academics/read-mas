@@ -9,7 +9,7 @@ The development language required for this project is Python.
 ## 3. Page Design
 This section outlines the elements that should be included on each page, along with their corresponding IDs.
 
-### Page 1: **Login Page**
+### 3.1 **Login Page**
 - **Page Title**: User Login
 - **Element IDs**:
   - Input for Username: `input_username`
@@ -17,7 +17,7 @@ This section outlines the elements that should be included on each page, along w
   - Button for Login: `btn_login`
   - Link for Register: `link_register`
 
-### Page 2: **Registration Page**
+### 3.2 **Registration Page**
 - **Page Title**: User Registration
 - **Element IDs**:
   - Input for Username: `input_username`
@@ -28,7 +28,7 @@ This section outlines the elements that should be included on each page, along w
   - Input for Confirm Password: `input_confirm_password`
   - Button for Register: `btn_register`
 
-### Page 3: **Dashboard Page**
+### 3.3 **Dashboard Page**
 - **Page Title**: Internships Dashboard
 - **Element IDs**:
   - Heading for Welcome Message: `heading_welcome`
@@ -37,7 +37,7 @@ This section outlines the elements that should be included on each page, along w
   - List of Internships: `list_internships` (display all interships' title)
   - Logout Button: `btn_logout`
 
-### Page 4: **Internship Listings Page**
+### 3.4 **Internship Listings Page**
 - **Page Title**: Available Internships
 - **Element IDs**:
   - Search Input for Internship: `input_search` (input the intership title which you want)
@@ -46,7 +46,7 @@ This section outlines the elements that should be included on each page, along w
   - List of Available Internships: `list_available_internships` (display all interships' internship_id and title)
   - Button for View Details (per internship): `btn_view_details_[internship_id]` (navigate to Internship Details Page which display the details information of the selected intership)
 
-### Page 5: **Post Internship Page**
+### 3.5 **Post Internship Page**
 - **Page Title**: Post a New Internship
 - **Element IDs**:
   - Input for Internship Title: `input_internship_title`
@@ -55,7 +55,7 @@ This section outlines the elements that should be included on each page, along w
   - Input for Application Deadline: `input_application_deadline`
   - Button for Submit: `btn_submit_internship`
 
-### Page 6: **Internship Details Page**
+### 3.6 **Internship Details Page**
 - **Page Title**: Internship Details
 - **Element IDs**:
   - Heading for Internship Title: `heading_internship_title`

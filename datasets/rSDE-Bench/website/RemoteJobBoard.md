@@ -8,7 +8,7 @@ The primary development language for this application will be Python.
 
 ## 3. Page Design
 
-### Page 1: Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Overview:** A secure login page for users to authenticate themselves.
 - **Elements:**
@@ -18,7 +18,7 @@ The primary development language for this application will be Python.
     - **Login Button (ID: register-button)**: Navigate to Register Page.
     - **Error Message Container (ID: error-message)**: Displays error messages if login fails.
 
-### Page 2: Register Page
+### 3.2 Register Page
 - **Page Title:** Register
 - **Overview:** A secure Register page for users to authenticate themselves.
 - **Elements:**
@@ -27,7 +27,7 @@ The primary development language for this application will be Python.
     - **Login Button (ID: register-button)**: Submits credentials to create a new account.
     - **Error Message Container (ID: error-message)**: Displays error messages if register fails.
 
-### Page 3: Home Page
+### 3.3 Home Page
 - **Page Title:** Home
 - **Overview:** The initial landing page that welcomes users and offers options to browse job listings or navigate to other sections of the application.
 - **Elements:**
@@ -37,7 +37,7 @@ The primary development language for this application will be Python.
     - **Edit Profile Button (ID: edit-profile-button)**: Redirects to the User Profile page.
     - **Login Link (ID: login-link)**: Links to the login page.
   
-### Page 4: Job Listings Page
+### 3.4 Job Listings Page
 - **Page Title:** Job Listings
 - **Overview:** Displays a list of all available remote job postings with options to filter/search.
 - **Elements:**
@@ -45,7 +45,7 @@ The primary development language for this application will be Python.
         - Each Job Posting (ID: job-posting-1, job-posting-2, ...): Includes title, company, and summary.
         - **Apply Button for each job posting (ID: apply-button-1, apply-button-2, ...)**: Button to apply for a specific job.
   
-### Page 5: Post Job Page
+### 3.5 Post Job Page
 - **Page Title:** Post a Job
 - **Overview:** A form for authorized users to post new remote job listings.
 - **Elements:**
@@ -54,7 +54,7 @@ The primary development language for this application will be Python.
     - **Job Description Textarea (ID: job-description-textarea)**: Area for detailing the job duties.
     - **Submit Button (ID: submit-job-button)**: Button to submit the new job listing.
   
-### Page 6: User Profile Page
+### 3.6 User Profile Page
 - **Page Title:** User Profile
 - **Overview:** Displays user information and allows for edit functionality.
 - **Elements:**

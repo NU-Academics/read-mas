@@ -8,7 +8,7 @@ The required development language for this web application is Python.
 
 ## 3. Page Design
 
-### Page 1: Login Page
+### 3.1 Login Page
 - **Page Title**: Login to Music Festival Directory
 - **Overview**: This page allows users to log in to their accounts to access the festival information.
 - **Elements**:
@@ -25,7 +25,7 @@ The required development language for this web application is Python.
     - ID: `error_message`
     - Type: Text area (display only)
 
-### Page 2: Festival List Page
+### 3.2 Festival List Page
 - **Page Title**: Festival List
 - **Overview**: This page displays a list of available music festivals with links to more details about each one.
 - **Elements**:
@@ -40,7 +40,7 @@ The required development language for this web application is Python.
     - Type: Button
     - **Action**: Redirects to the Add Festival page (Page 4)
 
-### Page 3: Festival Details Page
+### 3.3 Festival Details Page
 - **Page Title**: Festival Details
 - **Overview**: This page provides detailed information about a selected festival including location, date, and lineup.
 - **Elements**:
@@ -60,7 +60,7 @@ The required development language for this web application is Python.
     - ID: `back_to_list_button`
     - Type: Button
 
-### Page 4: Add Festival Page
+### 3.4 Add Festival Page
 - **Page Title**: Add Festival
 - **Overview**: This page allows users to add new music festival information.
 - **Elements**:

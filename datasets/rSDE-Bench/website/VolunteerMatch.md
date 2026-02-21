@@ -9,7 +9,7 @@ The required development language for the VolunteerMatch web application is Pyth
 ## 3. Page Design
 The VolunteerMatch application will consist of the following pages:
 
-### Page 1: Login Page
+### 3.1 Login Page
 - **Page Title:** VolunteerMatch - Login
 - **ID List:**
     - Login Form: `login-form`
@@ -22,7 +22,7 @@ The VolunteerMatch application will consist of the following pages:
 - The Login button will authenticate users and direct them to the main dashboard if successful.
 - An error message will display if the login credentials are incorrect.
 
-### Page 2: Volunteer Dashboard
+### 3.2 Volunteer Dashboard
 - **Page Title:** VolunteerMatch - Dashboard
 - **ID List:**
     - Header: `dashboard-header`
@@ -36,7 +36,7 @@ The VolunteerMatch application will consist of the following pages:
 - Each opportunity has an associated Apply button.
 - Users can log out via the Logout button.
 
-### Page 3: Opportunity Details Page 
+### 3.3 Opportunity Details Page 
 - **Page Title:** VolunteerMatch - Opportunity Details
 - **ID List:**
     - Header: `opp-details-header`

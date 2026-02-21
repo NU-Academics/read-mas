@@ -8,7 +8,7 @@ The required development language for RecipeHub is Python.
 
 ## 3. Page Design
 
-### 3.1 Page Overview
+### Page Overview
 RecipeHub will consist of the following five pages:
 
 1. **Login Page**
@@ -17,9 +17,9 @@ RecipeHub will consist of the following five pages:
 4. **Recipe Browsing Page**
 5. **User Profile Page**
 
-### 3.2 Detailed Page Design
+### Detailed Page Design
 
-#### 3.2.1 Login Page
+#### 3.1 Login Page
 - **Page Title:** Login
 - **Element IDs:**
   - `username_input` (Text Input)
@@ -28,7 +28,7 @@ RecipeHub will consist of the following five pages:
   - `register_button` (Button: navigate to Registration Page)
   - `error_message` (Text Output)
 
-#### 3.2.2 Registration Page
+#### 3.2 Registration Page
 - **Page Title:** Register
 - **Element IDs:**
   - `username_input` (Text Input)
@@ -36,7 +36,7 @@ RecipeHub will consist of the following five pages:
   - `register_button` (Button)
   - `error_message` (Text Output)
 
-#### 3.2.3 Home Page
+#### 3.3 Home Page
 - **Page Title:** Home
 - **Element IDs:**
   - `welcome_message` (Text Output)
@@ -45,7 +45,7 @@ RecipeHub will consist of the following five pages:
   - `profile_button` (Button: navigate to User Profile Page)
   - `logout_button` (Button)
 
-#### 3.2.4 Recipe Submission Page
+#### 3.4 Recipe Submission Page
 - **Page Title:** Submit Recipe
 - **Element IDs:**
   - `recipe_title_input` (Text Input)
@@ -55,7 +55,7 @@ RecipeHub will consist of the following five pages:
   - `submission_success_message` (Text Output)
   - `submission_error_message` (Text Output)
 
-#### 3.2.5 Recipe Browsing Page
+#### 3.5 Recipe Browsing Page
 - **Page Title:** Browse Recipes
 - **Element IDs:**
   - `search_input` (Text Input)
@@ -65,14 +65,14 @@ RecipeHub will consist of the following five pages:
   - `recipe_details_button_[id]` (Button for each recipe in recipe_list: navigate to the Recipe Details Page) - id refers to the recipe_id stored in the recipes.txt
   - `back_to_home_button` (Button)
 
-#### 3.2.6 User Profile Page
+#### 3.6 User Profile Page
 - **Page Title:** User Profile
 - **Element IDs:**
   - `username_display` (Text Output)
   - `user_recipes_list` (List Output)
   - `delete_account_button` (Button: delete current account from the users.txt and navigate to Login Page)
 
-#### 3.2.7 Recipe Details Page
+#### 3.7 Recipe Details Page
 - **Page Title:** Recipe Details
 - **Element IDs:**
   - `recipe_title` (Text Output)
@@ -80,7 +80,7 @@ RecipeHub will consist of the following five pages:
   - `recipe_instruction` (Text Output)
   - `back_to_home_button` (Button: nvigate to Home Page)
 
-### 3.3 Notes on IDs and Page Titles
+###  Notes on IDs and Page Titles
 Each element's ID is designed to be unique for easy reference in tests and integration, ensuring compliance with the requirements for traceability in application development.
 
 ## 4. Data Storage

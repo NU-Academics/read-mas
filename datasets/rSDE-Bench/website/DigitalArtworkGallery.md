@@ -8,7 +8,7 @@ The required development language for this application is Python.
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Overview:** This page allows users to log into the application with their credentials.
 - **Element IDs:**
@@ -17,7 +17,7 @@ The required development language for this application is Python.
   - `login_button`: Button to submit login credentials and navigate to the Gallery Page
   - `error_message`: Display area for login errors
 
-### 3.2. Gallery Page
+### 3.2 Gallery Page
 - **Page Title:** Gallery
 - **Overview:** This is the main page that displays the gallery of uploaded digital artworks and provides options to view, upload, or delete artworks.
 - **Element IDs:**
@@ -26,14 +26,14 @@ The required development language for this application is Python.
   - `delete_artwork_button`: Button to delete the artwork whose title is same as that in artwork_title
   - `upload_artwork_button`: Button to navigate to the Upload Artwork page
 
-### 3.3. View Artwork Page
+### 3.3 View Artwork Page
 - **Page Title:** View Artwork
 - **Overview:** This page allows the user to view detailed text information about the target full-size artwork.
 - **Element IDs:**
   - `full-size_artwork`: Container to display detailed text information about the target full-size artwork
   - `back_button`: Button to return to the gallery
 
-### 3.4. Upload Artwork Page
+### 3.4 Upload Artwork Page
 - **Page Title:** Upload Artwork
 - **Overview:** This page allows users to upload a new digital artwork by providing a title and description.
 - **Element IDs:**

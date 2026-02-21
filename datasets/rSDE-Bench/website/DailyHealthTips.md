@@ -8,7 +8,7 @@ The required development language for the DailyHealthTips web application is Pyt
 
 ## 3. Page Design
 
-### Page 1: Login Page
+### 3.1 Login Page
 - **Page Title**: User Login
 - **Overview**: This page allows users to log in to their accounts.
 - **Elements**:
@@ -19,7 +19,7 @@ The required development language for the DailyHealthTips web application is Pyt
   - **Login Button**: 
     - **ID**: `login_button`
 
-### Page 2: Daily Tips Page
+### 3.2 Daily Tips Page
 - **Page Title**: Daily Health Tips
 - **Overview**: This page displays the current daily health tip and allows users to view previous tips.
 - **Elements**:
@@ -38,7 +38,7 @@ The required development language for the DailyHealthTips web application is Pyt
     - **Submit Feedback Button**: 
       - **ID**: `submit_feedback_button`
 
-### Page 3: Tips Archive Page
+### 3.3 Tips Archive Page
 - **Page Title**: Tips Archive
 - **Overview**: Users can view a historical list of all daily health tips. Users can search for the tips they need using the search button. The tips_list will display only the searched tips; if no matching tips are found, the tips_list will be empty.
 - **Elements**:

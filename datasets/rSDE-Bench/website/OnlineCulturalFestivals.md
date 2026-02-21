@@ -8,7 +8,7 @@ The required development language for this web application is Python.
 
 ## 3. Page Design
 
-### Page 1: Login Page
+### 3.1 Login Page
 - **Page Title:** User Login
 - **Element IDs:**
   - `login-form`: The container for the login form.
@@ -17,7 +17,7 @@ The required development language for this web application is Python.
   - `login-button`: Button to submit the login form.
   - `error-message`: Area to display error messages on failed login attempts.
 
-### Page 2: Festival Overview Page
+### 3.2 Festival Overview Page
 - **Page Title:** Online Cultural Festivals Overview
 - **Overview:** This page displays a list of available cultural festivals, with each festival's name linked to a detailed view page.
 - **Element IDs:**
@@ -25,7 +25,7 @@ The required development language for this web application is Python.
   - `festival_item_<index>` (where `<index>` is the festival number starting from 0): The name of each festival in the list.(Type: Anchor tag)
   - `submit-experience-button`: Button that navigates the user to the User Submissions Page (Page 4).
   
-### Page 3: Festival Details Page
+### 3.3 Festival Details Page
 - **Page Title:** Festival Details
 - **Element IDs:**
   - `festival-title`: The title of the selected festival.
@@ -36,7 +36,7 @@ The required development language for this web application is Python.
   - `submit-comment-button`: Button to submit the comment.
   - `back-button`: Button to navigate back to the festival overview page.
 
-### Page 4: User Submissions Page
+### 3.4 User Submissions Page
 - **Page Title:** Submit Your Experience
 - **Element IDs:**
   - `submission-form`: The container for the submission form.

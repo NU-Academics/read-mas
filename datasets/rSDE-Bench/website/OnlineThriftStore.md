@@ -9,7 +9,7 @@ Develop a comprehensive web application called 'OnlineThriftStore' that enables 
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Overview:** This page allows users to log into the application with their credentials.
 - **Element IDs:**
@@ -19,7 +19,7 @@ Develop a comprehensive web application called 'OnlineThriftStore' that enables 
   - `error_message`: Display area for login errors
   - `register_link`: Link to the registration page
 
-### 3.2. Registration Page
+### 3.2 Registration Page
 - **Page Title:** Register
 - **Overview:** This page allows new users to create an account.
 - **Element IDs:**
@@ -29,7 +29,7 @@ Develop a comprehensive web application called 'OnlineThriftStore' that enables 
   - `register_button`: Button to submit registration details
   - `registration_success_message`: Display area for registration confirmations or errors
 
-### 3.3. Dashboard Page
+### 3.3 Dashboard Page
 - **Page Title:** Dashboard
 - **Overview:** This is the main page where users can search for items, navigate to shopping cart, checkout, sell item, user profile page.
 - **Element IDs:**
@@ -40,7 +40,7 @@ Develop a comprehensive web application called 'OnlineThriftStore' that enables 
   - `sell_item_button`: Button to navigate to the sell item page
   - `user_profile_button`: Button to navigate to the user profile page
 
-### 3.4. Item Details Page
+### 3.4 Item Details Page
 - **Page Title:** `item_title`
 - **Overview:** The title of this page is the title of the selected item (eg. if `item_title` is cell phone, the Page Title would be cell phone). This page dynamically displays detailed information for a specific item selected by the user. Each item listed for sale has a unique details page generated based on its specific data.
 - **Element IDs:**
@@ -51,7 +51,7 @@ Develop a comprehensive web application called 'OnlineThriftStore' that enables 
   - `add_to_cart_button`: Button to add the item to the shopping cart
   - `back_button`: Button to return to the Dashboard page
 
-### 3.5. Shopping Cart Page
+### 3.5 Shopping Cart Page
 - **Page Title**: Shopping Cart
 - **Overview**: This page shows the items added to the user's cart, allowing them to proceed to checkout or remove items.
 - **Element IDs**:
@@ -61,7 +61,7 @@ Develop a comprehensive web application called 'OnlineThriftStore' that enables 
   - `checkout_button`: Button to proceed to the Checkout page
   - `back_button`: Button to return to the Dashboard page
 
-### 3.6. Checkout Page
+### 3.6 Checkout Page
 - **Page Title:** Checkout
 - **Overview:** This page allows users to review their order, enter payment details, and complete the purchase.
 - **Element IDs:**
@@ -70,7 +70,7 @@ Develop a comprehensive web application called 'OnlineThriftStore' that enables 
   - `confirm_purchase_button`: Button to confirm and finish the purchase
   - `cancel_purchase_button`: Button to cancel the purchase and return to the Shopping Cart page
 
-### 3.7. Sell Item Page
+### 3.7 Sell Item Page
 - **Page Title**: Sell Item
 - **Overview**: This page allows users to list a new item for sale by providing details such as title, description, price.
 - **Element IDs**:
@@ -80,7 +80,7 @@ Develop a comprehensive web application called 'OnlineThriftStore' that enables 
   - `post_item_button`: Button to post the item for sale
   - `cancel_button`: Button to discard the listing and return to the Dashboard page
   
-### 3.8. User Profile Page
+### 3.8 User Profile Page
 - **Page Title**: User Profile
 - **Overview**: This page displays the user's profile information and provides options to view their listed items, order history, and account settings.
 - **Element IDs**:

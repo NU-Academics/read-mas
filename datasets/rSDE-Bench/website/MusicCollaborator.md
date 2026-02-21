@@ -9,7 +9,7 @@ The required development language for the Music_Collaborator web application is 
 ## 3. Page Design
 The web application will consist of the following seven pages:
 
-### Page 1: Login Page
+### 3.1 Login Page
 **Page Title:** Login  
 **Overview:** Users can access their accounts by entering their username and password.  
 **Element IDs:**
@@ -19,7 +19,7 @@ The web application will consist of the following seven pages:
 - `registerLink`: Link to redirect to the registration page.
 - `aboutLink`: Link to redirect to the About page.
   
-### Page 2: Registration Page
+### 3.2 Registration Page
 **Page Title:** Register  
 **Overview:** New users can create an account by filling out a registration form.  
 **Element IDs:**
@@ -28,7 +28,7 @@ The web application will consist of the following seven pages:
 - `registerButton`: Button to submit the registration form.
 - `loginLink`: Link to redirect back to the login page.
 
-### Page 3: Dashboard Page
+### 3.3 Dashboard Page
 **Page Title:** Dashboard  
 **Overview:** Users can view their projects, create new music projects, and access their profile settings. Each project listed in the `projectList` is clickable, allowing the user to navigate to the corresponding Project Details Page.  
 **Element IDs:**
@@ -37,7 +37,7 @@ The web application will consist of the following seven pages:
 - `createProjectButton`: Button to navigate to the project creation page.
 - `profileSettingsLink`: Link to the user profile settings page.
 
-### Page 4: Create Project Page
+### 3.4 Create Project Page
 **Page Title:** Create Project  
 **Overview:** Users can create a new music project by entering project details.  
 **Element IDs:**
@@ -46,7 +46,7 @@ The web application will consist of the following seven pages:
 - `collaboratorsField`: Input field for entering collaborator names.
 - `createButton`: Button to submit the newly created project.
 
-### Page 5: Project Details Page
+### 3.5 Project Details Page
 **Page Title:** Project Details  
 **Overview:** Users can view and edit details of the selected project, including collaborators and project files.  
 **Element IDs:**
@@ -57,7 +57,7 @@ The web application will consist of the following seven pages:
 - `uploadStatusMessage`: Area to display a message indicating whether the file upload was successful. This message appears only when the upload is successful; no message is shown if the upload fails.
 
 
-### Page 6: Profile Settings Page
+### 3.6 Profile Settings Page
 **Page Title:** Profile Settings  
 **Overview:** Users can update their account information, such as username and password.  
 **Element IDs:**
@@ -65,7 +65,7 @@ The web application will consist of the following seven pages:
 - `updatePasswordField`: Input field for the updated password.
 - `updateButton`: Button to save changes to the profile.
 
-### Page 7: About Page
+### 3.7 About Page
 **Page Title:** About  
 **Overview:** Information about the application and its functionalities, along with contact details.  
 **Element IDs:**

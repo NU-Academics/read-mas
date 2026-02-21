@@ -9,7 +9,7 @@ The required development language for the TravelDiary web application is Python.
 ## 3. Page Design
 This section outlines the elements that should be included on each page, along with their corresponding IDs. 
 
-### 1. Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **IDs and Elements:**
    - `inputUsername`: Username input field
@@ -17,7 +17,7 @@ This section outlines the elements that should be included on each page, along w
    - `btnLogin`: Login button
    - `linkRegister`: Link to the registration page 
 
-### 2. Registration Page
+### 3.2 Registration Page
 - **Page Title:** Register
 - **IDs and Elements:**
    - `inputUsername`: Username input field
@@ -26,7 +26,7 @@ This section outlines the elements that should be included on each page, along w
    - `btnRegister`: Register button
    - `linkLogin`: Link to the login page 
 
-### 3. Home Page
+### 3.3 Home Page
 - **Page Title:** Home
 - **IDs and Elements:**
    - `headerTitle`: Page title header
@@ -35,14 +35,14 @@ This section outlines the elements that should be included on each page, along w
    - `btnAbout`: Button to navigate to About Page
    - `listEntries`: Display area for existing travel entries
 
-### 4. Diary Entry Page
+### 3.4 Diary Entry Page
 - **Page Title:** Diary Entry
 - **IDs and Elements:**
    - `inputEntryTitle`: Input field for diary entry title
    - `textareaEntry`: Textarea for diary entry content
    - `btnSaveEntry`: Save entry button
 
-### 5. View Diary Page
+### 3.5 View Diary Page
 - **Page Title:** View Diary
 - **IDs and Elements:**
    - `listDiaryEntries`: List of all diary entries
@@ -50,14 +50,14 @@ This section outlines the elements that should be included on each page, along w
    - `btnDelete`: Button to delete selected diary entry (each diary entry has such a button)
    - `btnReturn`: Button to return to the home page
 
-### 6. Edit Diary Page
+### 3.6 Edit Diary Page
 - **Page Title:** Edit Diary Entry
 - **IDs and Elements:**
    - `inputEntryTitle`: Input field for diary entry title (pre-filled, can be clear to input a new one)
    - `textareaEntry`: Textarea for diary entry content (pre-filled, can be clear to input a new one)
    - `btnUpdateEntry`: Update entry button
 
-### 7. About Page
+### 3.7 About Page
 - **Page Title:** About
 - **IDs and Elements:**
    - `headerTitle`: Page title header

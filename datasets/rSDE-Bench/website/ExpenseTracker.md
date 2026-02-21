@@ -10,7 +10,7 @@ The required development language for the 'ExpenseTracker' application is Python
 
 The 'ExpenseTracker' web application will consist of the following five pages:
 
-### 1. Login Page
+### 3.1 Login Page
 - **Page Title**: User Login
 - **Overview**: A secure page for user authentication.
 - **Elements**:
@@ -32,7 +32,7 @@ The 'ExpenseTracker' web application will consist of the following five pages:
     - Type: Div
     - Description: Area to display error messages if login fails.
 
-### 2. Register Page
+### 3.2 Register Page
 - **Page Title**: User Register
 - **Overview**: A secure page for user registration.
 - **Elements**:
@@ -48,7 +48,7 @@ The 'ExpenseTracker' web application will consist of the following five pages:
     - Type: Button
     - Description: Button to submit user credentials for registration.
 
-### 3. Dashboard Page
+### 3.3 Dashboard Page
 - **Page Title**: Expense Dashboard
 - **Overview**: The main hub displaying the user's expense overview and navigation to other functionalities.
 - **Elements**:
@@ -74,7 +74,7 @@ The 'ExpenseTracker' web application will consist of the following five pages:
     - Type: Button
     - Description: Button to log out of the application, and then navigate to login page.
 
-### 4. Add Expense Page
+### 3.4 Add Expense Page
 - **Page Title**: Add New Expense
 - **Overview**: A page for users to enter new expense records.
 - **Elements**:
@@ -97,7 +97,7 @@ The 'ExpenseTracker' web application will consist of the following five pages:
     - Type: Button
     - Description: Button to submit the expense entry.
 
-### 5. Add Income Page
+### 3.5 Add Income Page
 - **Page Title**: Add New Income
 - **Overview**: A page for users to enter new income records.
 - **Elements**:
@@ -117,7 +117,7 @@ The 'ExpenseTracker' web application will consist of the following five pages:
     - Type: Button
     - Description: Button to submit the income entry.
 
-### 6. View Expenses Page
+### 3.6 View Expenses Page
 - **Page Title**: View All Expenses
 - **Overview**: A page displaying a list of all entered expenses.
 - **Elements**:
@@ -128,7 +128,7 @@ The 'ExpenseTracker' web application will consist of the following five pages:
     - Type: Button
     - Description: Button to delete selected expense from the list (each row will have this button).
 
-### 7. Reports Page
+### 3.7 Reports Page
 - **Page Title**: Expense Reports
 - **Overview**: A page for users to generate and view expense reports like monthly summaries and category analysis.
 - **Elements**:

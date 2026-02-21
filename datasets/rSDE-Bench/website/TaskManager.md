@@ -8,7 +8,7 @@ The development language required for the Task_Manager web application is **Pyth
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title**: Login
 - **Elements**:
   - **Username Input**: 
@@ -24,7 +24,7 @@ The development language required for the Task_Manager web application is **Pyth
     - ID: `register_link`
     - Type: Link (redirects to the registration page)
 
-### 3.2. Registration Page
+### 3.2 Registration Page
 - **Page Title**: User Registration
 - **Elements**:
   - **Username Input**:
@@ -41,7 +41,7 @@ The development language required for the Task_Manager web application is **Pyth
     - Type: Button
 
 
-### 3.3. Home Page
+### 3.3 Home Page
 - **Page Title**: Task Manager Home
 - **Elements**:
   - **Task List Display**: 

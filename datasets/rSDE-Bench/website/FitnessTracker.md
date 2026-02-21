@@ -9,7 +9,7 @@ The required development language for this application is Python.
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Overview:** This page allows users to log into the application with their credentials.
 - **Element IDs:**
@@ -19,7 +19,7 @@ The required development language for this application is Python.
   - `error_message`: Display area for login errors
   - `register_link`: Link to the registration page
 
-### 3.2. Registration Page
+### 3.2 Registration Page
 - **Page Title:** Register
 - **Overview:** This page allows new users to create an account.
 - **Element IDs:**
@@ -31,7 +31,7 @@ The required development language for this application is Python.
   - `register_button`: Button to submit registration details
   - `registration_success_message`: Display area for registration confirmations or errors
 
-### 3.3. Dashboard Page
+### 3.3 Dashboard Page
 - **Page Title:** Dashboard
 - **Overview:** This is the main page where users can view their fitness activity summary, set new goals, and log new activities.
 - **Element IDs:**
@@ -42,7 +42,7 @@ The required development language for this application is Python.
   - `view_activity_button`: Button to navigate to the View Activity page (for detailed activity logs)
   - `logout_button`: Button to log out of the application and back to the Login Page
 
-### 3.4. Update Goal Page
+### 3.4 Update Goal Page
 - **Page Title:** Update Goal
 - **Overview:** This page allows users to update goal weight.
 - **Element IDs:**
@@ -50,7 +50,7 @@ The required development language for this application is Python.
   - `save_goal_button`: Button to save the goal and return to the dashboard
   - `cancel_button`: Button to discard changes and return to the dashboard
 
-### 3.5. Log Activity Page
+### 3.5 Log Activity Page
 - **Page Title**: Log Activity
 - **Overview**: This page allows users to log details of their fitness activities
 - **Element IDs**:
@@ -60,7 +60,7 @@ The required development language for this application is Python.
   - `save_activity_button`: Button to save the activity log and return to the dashboard
   - `cancel_button`: Button to discard changes and return to the dashboard
 
-### 3.6. View Activity Page
+### 3.6 View Activity Page
 - **Page Title:** View Activity
 - **Overview:** This page displays a detailed log of all recorded fitness activities, with options to edit or delete individual records.
 - **Element IDs:**
@@ -70,7 +70,7 @@ The required development language for this application is Python.
   - `delete_activity_button`: Button to delete the activity log of the activity whose type is same as that in activity type field
   - `back_to_dashboard_button`: Button to return to the dashboard
 
-### 3.7. Edit Activity Page
+### 3.7 Edit Activity Page
 - **Page Title**: Edit Activity
 - **Overview**: This page allows users to edit details of their fitness activities (the original data is pre-filled)
 - **Element IDs**:

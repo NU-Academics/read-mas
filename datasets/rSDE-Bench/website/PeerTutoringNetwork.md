@@ -11,7 +11,7 @@ The required development language for the PeerTutoringNetwork web application is
 ### Overview of Pages
 The application will consist of the following seven pages:
 
-1. **Login Page**
+### 3.1 **Login Page**
    - **Title:** Login
    - **Element IDs:**
      - `txt_username` (Text input for username)
@@ -19,7 +19,7 @@ The application will consist of the following seven pages:
      - `btn_login` (Button to submit login)
      - `link_register` (Link to registration page)
 
-2. **Registration Page**
+### 3.2 **Registration Page**
    - **Title:** Register
    - **Element IDs:**
      - `txt_new_username` (Text input for new username)
@@ -28,7 +28,7 @@ The application will consist of the following seven pages:
      - `btn_register` (Button to submit registration)
      - `link_login` (Link to login page)
 
-3. **Dashboard Page**
+### 3.3 **Dashboard Page**
    - **Title:** Dashboard
    - **Element IDs:**
      - `btn_view_tutors` (Button to view available tutors)
@@ -37,12 +37,12 @@ The application will consist of the following seven pages:
      - `link_profile` (Link to profile page)
      - `link_contact_us` (Link to contact us page)
   
-4. **Tutors Page**
+### 3.4 **Tutors Page**
    - **Title:** Tutors
    - **Element IDs:**
      - `div_tutor_list` (Container for displaying tutors)
 
-5. **Request Tutoring Page**
+### 3.5 **Request Tutoring Page**
    - **Title:** Request Tutoring
    - **Element IDs:**
      - `txt_subject` (Text input for tutoring subject)
@@ -51,14 +51,14 @@ The application will consist of the following seven pages:
      - `btn_submit_request` (Button to submit tutoring request)
      - `link_cancel` (Link to return to dashboard)
 
-6. **Profile Page**
+### 3.6 **Profile Page**
    - **Title:** Profile
    - **Element IDs:**
      - `txt_username_display` (Text displaying username)
      - `txt_email_display` (Text displaying email)
      - `link_logout` (Link to logout)
 
-7. **Contact Us Page**
+### 3.7 **Contact Us Page**
    - **Title:** Contact Us
    - **Element IDs:**
      - `txt_contact_name` (Text input for name)

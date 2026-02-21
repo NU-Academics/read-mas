@@ -8,7 +8,7 @@ The required development language for the Movie Recommendation System is Python.
 
 ## 3. Page Design
 
-### a. Login Page
+### 3.1 Login Page
 - **Page Title:** User Login
 - **Elements:**
   - **Login Form**
@@ -24,7 +24,7 @@ The required development language for the Movie Recommendation System is Python.
     - **Link to Registration page**
       - **ID:** `registerLink`
 
-### b. Registration Page
+### 3.2 Registration Page
 - **Page Title:** User Register
 - **Elements:**
   - **Register Form**
@@ -38,7 +38,7 @@ The required development language for the Movie Recommendation System is Python.
     - **Error Message Display**
       - **ID:** `errorMessage`
 
-### c. Home Page
+### 3.3 Home Page
 - **Page Title:** Movie Recommendations
 - **Elements:**
   - **Welcome Message**
@@ -52,7 +52,7 @@ The required development language for the Movie Recommendation System is Python.
   - **View Details Button** (for each movie in the recommendations)
     - **ID:** `viewDetailsButton_[movieID]` (where `[movieID]` is the unique identifier for each movie)
 
-### d. Search Page
+### 3.4 Search Page
 - **Page Title:** Search Movies
 - **Elements:**
   - **Search Field**
@@ -62,7 +62,7 @@ The required development language for the Movie Recommendation System is Python.
   - **Search Results Display**
     - **ID:** `searchResult`
  
-### e. Movie Details Page
+### 3.5 Movie Details Page
 - **Page Title:** Movie Details
 - **Elements:**
   - **Movie Title**
@@ -76,7 +76,7 @@ The required development language for the Movie Recommendation System is Python.
   - **Back to Home Button**
     - **ID:** `backToHomeButton`
 
-### f. Favorites Page
+### 3.6 Favorites Page
 - **Page Title:** Favorite Movies
 - **Elements:**
   - **Favorites List**

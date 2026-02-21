@@ -8,7 +8,7 @@ The required development language for this application is Python.
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Overview:** This page allows users to log into the application with their credentials.
 - **Element IDs:**
@@ -18,7 +18,7 @@ The required development language for this application is Python.
   - `error_message`: Display area for login errors
   - `register_link`: Link to the registration page
 
-### 3.2. Registration Page
+### 3.2 Registration Page
 - **Page Title:** Register
 - **Overview:** This page allows new users to create an account.
 - **Element IDs:**
@@ -28,7 +28,7 @@ The required development language for this application is Python.
   - `register_button`: Button to submit registration details
   - `registration_success_message`: Display area for registration confirmations or errors
 
-### 3.3. Dashboard Page
+### 3.3 Dashboard Page
 - **Page Title:** Dashboard
 - **Overview:** This is the main page that displays the user's current subscriptions and provides options to manage them.
 - **Element IDs:**
@@ -38,7 +38,7 @@ The required development language for this application is Python.
   - `contact_us_button`: Button to navigate to the Contact Us Page
   - `logout_button`: Button to log out of the application
 
-### 3.4. Add Subscription Page
+### 3.4 Add Subscription Page
 - **Page Title:** Add Subscription
 - **Overview:** This page allows users to subscribe to a new gourmet food box by entering the type, frequency, and start date.
 - **Element IDs:**
@@ -48,7 +48,7 @@ The required development language for this application is Python.
   - `save_subscription_button`: Button to save the new subscription and return to the dashboard
   - `cancel_button`: Button to discard changes and return to the dashboard
 
-### 3.5. View Subscription Page
+### 3.5 View Subscription Page
 - **Page Title**: View Subscription
 - **Overview**: This page displays the details of subscriptions, allowing users to view or cancel them.
 - **Element IDs**:
@@ -60,7 +60,7 @@ The required development language for this application is Python.
   - `delete_subscription_button`: Button to delete the subscription whose type is same as that entered in `subscription_type_field`
   - `back_button`: Button to return to the Dashboard page
 
-### 3.6. Edit Subscription Page
+### 3.6 Edit Subscription Page
 - **Page Title**: Edit Subscription
 - **Overview**: This page displays detailed information about a specific subscription selected by the user with pre-filled information about the subscription. This page allows users to edit the information of this subscription.
 - **Element IDs**:
@@ -70,7 +70,7 @@ The required development language for this application is Python.
   - `save_subscription_button`: Button to save change to the subscription and return to the dashboard
   - `cancel_button`: Button to discard changes and return to the dashboard
 
-### 3.7. Contact Us Page
+### 3.7 Contact Us Page
 - **Page Title:** Contact Us
 - **Overview:** This page allows users to send inquiries or feedback to customer support.
 - **Element IDs:**

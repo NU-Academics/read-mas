@@ -8,10 +8,10 @@ The required development language for the FitnessEquipmentRental application is 
 
 ## 3. Page Design
 
-### 3.1 Overview of Pages
+### Overview of Pages
 This section outlines the elements that should be included on each page, along with their corresponding IDs. The web application will consist of the following 8 pages:
 
-1. **Login Page**
+### 3.1 **Login Page**
    - **Page Title**: Login
    - **Content and Functionality**: Users will enter their credentials to log into the application.
    - **Element IDs**:
@@ -21,7 +21,7 @@ This section outlines the elements that should be included on each page, along w
      - `login_button` - Button to submit the login form
      - `register_link` - Link to navigate to Register Page
 
-2. **Register Page**
+### 3.2 **Register Page**
    - **Page Title**: Register
    - **Content and Functionality**: Users will create a new account.
    - **Element IDs**:
@@ -32,7 +32,7 @@ This section outlines the elements that should be included on each page, along w
      - `email_field` - Input field for the email
      - `register_button` - Button to submit the register form
 
-3. **Homepage**
+### 3.3 **Homepage**
    - **Page Title**: Home
    - **Content and Functionality**: Overview of rental equipment, latest offers, and promotional banners. Links to browse equipment.
    - **Element IDs**:
@@ -43,7 +43,7 @@ This section outlines the elements that should be included on each page, along w
      - `my_rental_button` - Button to navigate to Rental Form Page
      - `help_button` - Button to navigate to Help Page
 
-4. **Equipment Page**
+### 3.4 **Equipment Page**
    - **Page Title**: Equipment
    - **Content and Functionality**: Detailed list of available fitness equipment with the option to rent.
    - **Element IDs**:
@@ -52,7 +52,7 @@ This section outlines the elements that should be included on each page, along w
      - `equipment_details` - Area displaying details of selected equipment
      - `rent_button` - Button to initiate the rental process for equipment displaying detailed information (navigate to Rental Form Page)
 
-5. **Rental Form Page**
+### 3.5 **Rental Form Page**
    - **Page Title**: Rental Form
    - **Content and Functionality**: A form to collect information for the rental, including rental duration and personal details.
    - **Element IDs**:
@@ -63,7 +63,7 @@ This section outlines the elements that should be included on each page, along w
      - `submit_rental_button` - Button to submit the rental request
      - `rental_confirmation_msg` - Area to show rental confirmation
 
-6. **My Rentals Page**
+### 3.6 **My Rentals Page**
    - **Page Title**: My Rentals
    - **Content and Functionality**: Users can view their current and past rentals.
    - **Element IDs**:
@@ -71,7 +71,7 @@ This section outlines the elements that should be included on each page, along w
      - `return_equipment_button` - Button to navigate to Return Equipment Page
      - `my_past_rentals_listing` - List showing user's past rentals including rental_id,equipment_id,rental_duration,start_date
 
-7. **Return Equipment Page**
+### 3.7 **Return Equipment Page**
    - **Page Title**: Return Equipment
    - **Content and Functionality**: A page where users can confirm the return of rented equipment.
    - **Element IDs**:
@@ -80,7 +80,7 @@ This section outlines the elements that should be included on each page, along w
      - `confirm_return_button` - Button to confirm the equipment return
      - `return_confirmation_msg` - Area for return confirmation message
 
-8. **Help Page**
+### 3.8 **Help Page**
    - **Page Title**: Help
    - **Content and Functionality**: Users can find FAQ, contact support, and accessibility information.
    - **Element IDs**:

@@ -8,7 +8,7 @@ Python is the required development language for the development of the Motivatio
 
 ## 3. Page Design
 
-### 1. Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Page ID:** login_page
 - **Content & Functionality:**
@@ -25,7 +25,7 @@ Python is the required development language for the development of the Motivatio
       - **ID:** about_button
       - **Function:** Redirects to the About page.
 
-### 2. Home Page
+### 3.2 Home Page
 - **Page Title:** Home
 - **Page ID:** home_page
 - **Content & Functionality:**
@@ -47,7 +47,7 @@ Python is the required development language for the development of the Motivatio
       - **ID:** favorites_button
       - **Function:** Redirects to the Favorites page.
 
-### 3. Add Quote Page
+### 3.3 Add Quote Page
 - **Page Title:** Add Quote
 - **Page ID:** add_quote_page
 - **Content & Functionality:**
@@ -61,7 +61,7 @@ Python is the required development language for the development of the Motivatio
       - **ID:** submit_quote_button
       - **Function:** Validates the input and saves the quote to storage.
 
-### 4. Edit Quote Page
+### 3.4 Edit Quote Page
 - **Page Title:** Edit Quote
 - **Page ID:** edit_quote_page
 - **Content & Functionality:**
@@ -75,7 +75,7 @@ Python is the required development language for the development of the Motivatio
       - **ID:** update_quote_button
       - **Function:** Validates the input and updates the existing quote.
 
-### 5. Delete Quote Confirmation Page
+### 3.5 Delete Quote Confirmation Page
 - **Page Title:** Delete Confirmation
 - **Page ID:** delete_confirmation_page
 - **Content & Functionality:**
@@ -88,7 +88,7 @@ Python is the required development language for the development of the Motivatio
       - **ID:** cancel_button
       - **Function:** Redirects back to the home page without deletion.
 
-### 6. Favorites Page
+### 3.6 Favorites Page
 - **Page Title:** Favorites
 - **Page ID:** favorites_page
 - **Content & Functionality:** 
@@ -97,7 +97,7 @@ Python is the required development language for the development of the Motivatio
       - **Function:** Lists all quotes marked as favorites.
 
 
-### 7. About Page
+### 3.7 About Page
 - **Page Title:** About
 - **Page ID:** about_page
 - **Content & Functionality:**

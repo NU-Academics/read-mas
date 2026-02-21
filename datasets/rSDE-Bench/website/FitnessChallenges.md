@@ -8,7 +8,7 @@ The development language for the 'FitnessChallenges' web application is Python.
 
 ### 3. Page Design
 
-#### Page 1: Login Page
+#### 3.1 Login Page
 - **Page Title:** User Login
 - **Overview:** Allows users to log into their accounts.
 - **Elements:**
@@ -21,7 +21,7 @@ The development language for the 'FitnessChallenges' web application is Python.
   - **ID:** `loginButton`  
     **Type:** Button (label: "Login")  
 
-#### Page 2: Dashboard
+#### 3.2 Dashboard
 - **Page Title:** User Dashboard
 - **Overview:** Displays user's profile, current challenges, and activity log. 
 - **Elements:**
@@ -36,7 +36,7 @@ The development language for the 'FitnessChallenges' web application is Python.
   - **ID:** `logoutButton`  
     **Type:** Button (label: "Logout")  
 
-#### Page 3: Challenges List
+#### 3.3 Challenges List
 - **Page Title:** Challenges
 - **Overview:** Lists available fitness challenges for users to join.
 - **Elements:**
@@ -45,7 +45,7 @@ The development language for the 'FitnessChallenges' web application is Python.
   - **ID:** `progressButton`  
     **Type:** Button (label: "Progress Tracker"): navigate to Progress Tracker Page
 
-#### Page 4: Progress Tracker
+#### 3.4 Progress Tracker
 - **Page Title:** Progress Tracker
 - **Overview:** Allows users to track their progress and view statistics related to their challenges.
 - **Elements:**

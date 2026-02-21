@@ -8,7 +8,7 @@ The required development language for the SkillShare application is Python.
 
 ## 3. Page Design
 
-### 1. Login Page
+### 3.1 Login Page
 - **Page Title**: Login
 - **Overview**: Users can enter their credentials to access their accounts.
 - **Elements**:
@@ -25,7 +25,7 @@ The required development language for the SkillShare application is Python.
     - **ID**: `registerButton`
     - **Type**: button
 
-### 2. Register Page
+### 3.2 Register Page
 - **Page Title**: Register
 - **Overview**: Users can enter their credentials to create a new account.
 - **Elements**:
@@ -39,7 +39,7 @@ The required development language for the SkillShare application is Python.
     - **ID**: `registerButton`
     - **Type**: button
 
-### 3. Dashboard Page
+### 3.3 Dashboard Page
 - **Page Title**: Dashboard
 - **Overview**: This is the landing page where users can see featured skills and navigate to other sections.
 - **Elements**:
@@ -59,7 +59,7 @@ The required development language for the SkillShare application is Python.
     - **ID**: `profileLink`
     - **Type**: link
 
-### 4. Skills Page
+### 3.4 Skills Page
 - **Page Title**: Skills
 - **Overview**: Users can browse, add, or remove skills they are interested in or currently working on.
 - **Elements**:
@@ -76,7 +76,7 @@ The required development language for the SkillShare application is Python.
     - **ID**: `removeSkillButton`
     - **Type**: each skill entry in Skills List has a button.
 
-### 5. Profile Page
+### 3.5 Profile Page
 - **Page Title**: Profile
 - **Overview**: Users can view and edit their profile information and skills.
 - **Elements**:
@@ -87,7 +87,7 @@ The required development language for the SkillShare application is Python.
     - **ID**: `saveChangesButton`
     - **Type**: button
   
-### 6. About Page
+### 3.6 About Page
 - **Page Title**: About
 - **Overview**: Information about SkillShare, its purpose, and how it works.
 - **Elements**:

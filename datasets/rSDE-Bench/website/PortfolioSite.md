@@ -11,7 +11,7 @@ The required development language for 'PortfolioSite' is Python.
 ### Overview of Pages
 The application will consist of the following five pages:
 
-1. **Login Page**
+### 3.1 **Login Page**
    - **Title:** User Login
    - **Content & Functionality:** Allows users to enter their credentials (username and password) to access the site.
    - **Element IDs:**
@@ -21,7 +21,7 @@ The application will consist of the following five pages:
      - Error Message Display Area: `login_error_message`
      - Redirect Link to Register: `link_register`
 
-2. **Registration Page**
+### 3.2 **Registration Page**
    - **Title:** User Registration
    - **Content & Functionality:** Facilitates new users in creating an account by filling out a form with their details.
    - **Element IDs:**
@@ -30,7 +30,7 @@ The application will consist of the following five pages:
      - Input Field for Password: `reg_password`
      - Register Button: `reg_button`
 
-3. **Portfolio Page**
+### 3.3 **Portfolio Page**
    - **Title:** User Portfolio
    - **Content & Functionality:** Displays the user's uploaded projects, including links and descriptions.
    - **Element IDs:**
@@ -42,7 +42,7 @@ The application will consist of the following five pages:
      - Blog Buttion: `blog_button`
      - Contact Buttion: `contact_button`
 
-4. **Blog Page**
+### 3.4 **Blog Page**
    - **Title:** User Blog
    - **Content & Functionality:** Contains a space for users to write and share blog posts.
    - **Element IDs:**
@@ -52,7 +52,7 @@ The application will consist of the following five pages:
      - Publish Blog Button: `publish_blog_button`
      - Delete Blog Button (for each blog): `delete_blog_button`
 
-5. **Contact Page**
+### 3.5 **Contact Page**
    - **Title:** Contact Information
    - **Content & Functionality:** Provides a contact form for users to send messages.
    - **Element IDs:**

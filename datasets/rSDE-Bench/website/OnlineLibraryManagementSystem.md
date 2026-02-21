@@ -8,19 +8,7 @@ The required development language for this project is Python.
 
 ## 3. Page Design
 
-### 3.1. Page Summary
-The application will consist of the following pages:
-1. **Login Page**
-2. **Registration Page**
-3. **Dashboard Page**
-4. **Book Management Page**
-5. **User Management Page**
-6. **Search Page**
-7. **Logout Page**
-
-### 3.2. Page Specifications
-
-#### 3.2.1. Login Page
+#### 3.1 Login Page
 - **Page Title:** Login
 - **Element IDs:**
   - Username Field: `login_username`
@@ -29,7 +17,7 @@ The application will consist of the following pages:
   - Error Message: `login_error`
   - Register Button: `register_button`
 
-#### 3.2.2. Registration Page
+#### 3.2 Registration Page
 - **Page Title:** Register
 - **Element IDs:**
   - Username Field: `reg_username_input`
@@ -37,7 +25,7 @@ The application will consist of the following pages:
   - Email Field: `reg_email_input`
   - Register Button: `register_button`
 
-#### 3.2.3. Dashboard Page
+#### 3.3 Dashboard Page
 - **Page Title:** Dashboard
 - **Element IDs:**
   - Welcome Message: `dashboard_welcome`
@@ -46,7 +34,7 @@ The application will consist of the following pages:
   - Search Books Button: `dashboard_search_books`
   - Logout Button: `dashboard_logout`
 
-#### 3.2.4. Book Management Page
+#### 3.4 Book Management Page
 - **Page Title:** Manage Books
 - **Element IDs:**
   - Add Book Form: `manage_books_form`
@@ -58,7 +46,7 @@ The application will consist of the following pages:
   - Book List Display: `book_list`
   - Book Item ID: `book_item_{id}` (for each book entry)
 
-#### 3.2.5. User Management Page
+#### 3.5 User Management Page
 - **Page Title:** Manage Users
 - **Element IDs:**
   - Add User Form: `manage_users_form`
@@ -68,14 +56,14 @@ The application will consist of the following pages:
   - User List Display: `user_list`
   - User Item ID: `user_item_{id}` (for each user entry)
 
-#### 3.2.6. Search Page
+#### 3.6 Search Page
 - **Page Title:** Search Books
 - **Element IDs:**
   - Search Field: `search_field`
   - Search Button: `search_button`
   - Search Results Display: `search_results`
   
-#### 3.2.7. Logout Page
+#### 3.7 Logout Page
 - **Page Title:** Logout
 - **Element IDs:**
   - Logout Message: `logout_message`

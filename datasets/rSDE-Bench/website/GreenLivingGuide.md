@@ -9,7 +9,7 @@ Python is the required development language for the GreenLivingGuide web applica
 ## 3. Page Design
 The application will consist of five pages with the following titles, content, and functionality described below:
 
-### Page 1: Login
+### 3.1 Login
 - **Page Title:** User Login
 - **Overview:** Users can log in to access personalized content and features.
 - **Element IDs:**
@@ -20,7 +20,7 @@ The application will consist of five pages with the following titles, content, a
   - `#register-button` (button to navigate to register page)
   - `#error-message` (div to display login errors)
 
-### Page 2: Register
+### 3.2 Register
 - **Page Title:** User Register
 - **Overview:** Users can create a new account.
 - **Element IDs:**
@@ -30,7 +30,7 @@ The application will consist of five pages with the following titles, content, a
   - `#register-button` (button to submit register form)
   - `#error-message` (div to display login errors)
 
-### Page 3: Home
+### 3.3 Home
 - **Page Title:** Home
 - **Overview:** The landing page that introduces users to sustainable living tips, recent articles, and navigation to other sections of the application.
 - **Element IDs:**
@@ -41,7 +41,7 @@ The application will consist of five pages with the following titles, content, a
   - `#community-link` (navigation link to Community Page)
   - `#explore-button` (button to explore more tips: navigate to Tips Page)
 
-### Page 4: Tips
+### 3.4 Tips
 - **Page Title:** Green Tips
 - **Overview:** A page dedicated to various tips for living sustainably, allowing users to view and submit new tips.
 - **Element IDs:**
@@ -52,7 +52,7 @@ The application will consist of five pages with the following titles, content, a
   - `#submit-tip-button` (button to submit the new tip)
   - `#success-message` (div to display confirmation of tip submission)
 
-### Page 5: Articles
+### 3.5 Articles
 - **Page Title:** Articles
 - **Overview:** A collection of articles on sustainable living practices and news, which users can read and submit their articles.
 - **Element IDs:**
@@ -61,7 +61,7 @@ The application will consist of five pages with the following titles, content, a
   - `#article-content` (input field for article content)
   - `#submit-article-button` (button to submit article)
 
-### Page 6: Community
+### 3.6 Community
 - **Page Title:** Community Forum
 - **Overview:** A space for users to engage with one another, share experiences, and ask questions about sustainable living.
 - **Element IDs:**

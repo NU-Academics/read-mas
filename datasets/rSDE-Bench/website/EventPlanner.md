@@ -8,7 +8,7 @@ The required development language for this application is Python.
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title:** Login
 - **Overview:** This page allows users to log into the application with their credentials.
 - **Element IDs:**
@@ -18,7 +18,7 @@ The required development language for this application is Python.
   - `error_message`: Display area for login errors
   - `register_link`: Link to the registration page
 
-### 3.2. Registration Page
+### 3.2 Registration Page
 - **Page Title:** Register
 - **Overview:** This page allows new users to create an account.
 - **Element IDs:**
@@ -28,7 +28,7 @@ The required development language for this application is Python.
   - `register_button`: Button to submit registration details
   - `registration_success_message`: Display area for registration confirmations or errors
 
-### 3.3. Dashboard Page
+### 3.3 Dashboard Page
 - **Page Title:** Dashboard
 - **Overview:** This is the main page that displays the user's list of events and provides options to create, edit, or delete events.
 - **Element IDs:**
@@ -38,7 +38,7 @@ The required development language for this application is Python.
   - `view_event_button`: Button to navigate to the View Event page (for each event in the Dashboard)
   - `logout_button`: Button to log out of the application
 
-### 3.4. Add Event Page
+### 3.4 Add Event Page
 - **Page Title:** Add Event
 - **Overview:** This page allows users to create a new event by entering a title, date, location, and description.
 - **Element IDs:**
@@ -49,7 +49,7 @@ The required development language for this application is Python.
   - `save_event_button`: Button to save the new event and return to the dashboard
   - `cancel_button`: Button to discard changes and return to the dashboard
 
-### 3.5. Search Event Page
+### 3.5 Search Event Page
 - **Page Title**: Search Event
 - **Overview**: This page allows users to search for events by entering a title or date.
 - **Element IDs**:
@@ -58,7 +58,7 @@ The required development language for this application is Python.
   - `search_event_result`: Container to display the search result
   - `back_button`: Button to return to the dashboard
 
-### 3.6. View Event Page
+### 3.6 View Event Page
 - **Page Title:** View Event
 - **Overview:** This page displays the details of a selected event, allowing users to read and edit it.
 - **Element IDs:**

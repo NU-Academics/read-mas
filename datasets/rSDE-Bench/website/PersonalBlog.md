@@ -8,7 +8,7 @@ The required development language for this application is **Python**.
 
 ## 3. Page Design
 
-### 3.1. Login Page
+### 3.1 Login Page
 - **Page Title:** User Login
 - **ID List:**
   - **Username Input:** `username_input`
@@ -18,7 +18,7 @@ The required development language for this application is **Python**.
   - **Register Link:** `register_link`
 - **Overview:** This page allows users to enter their credentials to access the blog. Upon successful login, users will be redirected to the main blog page. If unsuccessful, an error message will be displayed.
 
-### 3.2. Registration Page
+### 3.2 Registration Page
 - **Page Title:** User Registration
 - **ID List:**
   - **Username Input:** `reg_username_input`
@@ -28,7 +28,7 @@ The required development language for this application is **Python**.
   - **Message Display:** `register_message`
 - **Overview:** This page allows users to register their accounts to access the blog. Upon successful register, users will be redirected to the main blog page. If unsuccessful, an error message will be displayed.
 
-### 3.3. Main Blog Page
+### 3.3 Main Blog Page
 - **Page Title:** My Personal Blog
 - **ID List:**
   - **Blog Title Display:** `blog_title`
@@ -39,7 +39,7 @@ The required development language for this application is **Python**.
   - **Message Display:** `blog_message`
 - **Overview:** This page displays the list of blog posts. Users can create a new post or view existing ones. There's an option to logout from the application.
 
-### 3.4. New Post Page
+### 3.4 New Post Page
 - **Page Title:** Create New Post
 - **ID List:**
   - **Post Title Input:** `post_title_input`
@@ -48,7 +48,7 @@ The required development language for this application is **Python**.
   - **Message Display:** `post_message`
 - **Overview:** This page allows users to create a new blog post by providing a title and content. After submitting, the new post will be saved and the user will be redirected back to the main blog page.
 
-### 3.5. View Post Page
+### 3.5 View Post Page
 - **Page Title:** View Blog Post
 - **ID List:**
   - **Post Title Display:** `view_post_title`
@@ -58,7 +58,7 @@ The required development language for this application is **Python**.
   - **Back to Blog Button:** `back_to_blog_button`
 - **Overview:** This page displays the full content of a selected blog post with options to edit or delete the post. Users can navigate back to the main blog page from here.
 
-### 3.6. Edit Post Page
+### 3.6 Edit Post Page
 - **Page Title:** Edit Blog Post
 - **ID List:**
   - **Post Title Input:** `post_title_input`
