@@ -1,2 +1,4 @@
 [core]
     autostage = true
+['remote "readmas"']
+    url = ../eval_data
