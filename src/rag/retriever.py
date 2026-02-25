@@ -1,26 +1,31 @@
 """Searches for a query from the RAG index."""
 
+from dotenv import load_dotenv
 import json
+import os
+from pathlib import Path
 import sys
 from typing import Optional, List
 
 import faiss
 import numpy as np
-import ollama
+from google import genai
 from loguru import logger
 
 from .constants import (
     BASE_REQUIREMENTS_PATH,
     FAISS_INDEX_NAME,
-    OLLAMA_EMBEDDING_MODEL,
+    GEMINI_EMBEDDING_MODEL,
     RAG_TOP_K,
     REQUIREMENT_CHUNKS_NAME,
 )
 
+load_dotenv(dotenv_path=Path(__file__).parent.parent.parent / ".env", override=False)
 
 def _get_embedding(query: str):
-  res = ollama.embeddings(model=OLLAMA_EMBEDDING_MODEL, prompt=query)
-  return np.array([res["embedding"]], dtype=np.float32)
+  client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+  res = client.models.embed_content(model=GEMINI_EMBEDDING_MODEL, contents=query)
+  return res.embeddings[0].values
 
 
 def retrieve_requirements(query: str) -> Optional[List[str]]:

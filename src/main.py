@@ -1,5 +1,4 @@
 import asyncio
-import time
 from typing import Optional
 
 import typer
@@ -9,6 +8,7 @@ from rich import print
 from orchestrator.orchestrator import get_agent_response
 from utils import DEFAULT_MODEL_NAME
 from utils.constants import AgentRunMode
+from utils.logger import get_run_id
 from utils.logger import setup_logging
 
 app = typer.Typer(help="READ-MAS CLI for automated software design")
@@ -17,7 +17,7 @@ app = typer.Typer(help="READ-MAS CLI for automated software design")
 @app.command()
 def run(
     run_id: str = typer.Option(
-        lambda: str(int(time.time() * 1000)),
+        lambda: get_run_id(),
         "--run-id",
         "-i",
         help="Unique run identifier",

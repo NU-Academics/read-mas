@@ -4,11 +4,12 @@ import asyncio
 import json
 from typing import Optional
 import yaml
+from loguru import logger
 
 from deepeval.dataset import Golden
 from deepeval import evaluate
 from deepeval.metrics import AnswerRelevancyMetric, ContextualRelevancyMetric, BaseMetric
-from deepeval.metrics.ragas import RAGASFaithfulnessMetric
+from deepeval.metrics import FaithfulnessMetric
 from deepeval.prompt import Prompt
 from deepeval.optimizer import PromptOptimizer
 from deepeval.test_case import LLMTestCase
@@ -31,9 +32,9 @@ from design import (DesignerAgent, DocumenterAgent, DesignWrapperAgent)
 from orchestrator import run_agent
 from utils import DEFAULT_MODEL_NAME
 from utils.constants import AgentRunMode
+from utils.logger import get_run_id
 from utils.logger import setup_logging
 
-# logger = setup_logging(__name__)
 
 AGENT_PROMPTS = {
     "single_agent": Prompt(text_template=SINGLE_AGENT_SYSTEM_PROMPT),
@@ -59,7 +60,7 @@ AGENT_REGISTRY = {
 
 def _get_metrics(rag: bool = False) -> list[BaseMetric]:
   if rag:
-    return [AnswerRelevancyMetric(), ContextualRelevancyMetric(), RAGASFaithfulnessMetric()]
+    return [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()]
     
   return [AnswerRelevancyMetric()]
 
@@ -118,6 +119,7 @@ async def _log_metrics(prompt: Prompt, live: Live):
       if getattr(m, "score", None) is not None
     ]
     avg_score = sum(scores) / len(scores) if scores else None
+    logger.debug(f"Average optimization score is: {avg_score}")
     live.log_metric(test_result.name, avg_score)
 
 
@@ -126,6 +128,8 @@ async def _optimize_agent(live: Live):
       metrics=metrics, model_callback=agent_callback, optimizer_model="gpt-5-nano"
   )
   optimized_prompt = optimizer.optimize(prompt=prompt_to_optimize, goldens=goldens)
+  logger.debug(f"Original prompt: {prompt_to_optimize.text_template}")
+  logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")
 
   if not live.summary:
     live.summary = {"prompts": {}, "metrics": []}
@@ -138,12 +142,14 @@ async def _optimize_agent(live: Live):
 
 
 async def main():
-  with Live(EVAL_PATH) as live:
+  with Live(EVAL_PATH, report="notebook") as live:
     await _optimize_agent(live)
 
 
 if __name__ == "__main__":
   EVAL_PATH = "eval_runs"
+  
+  logger = setup_logging(get_run_id(), "eval_optimize")
 
   params = yaml.safe_load(open("params.yaml"))["eval"]
   agent_name = params["agent_name"]

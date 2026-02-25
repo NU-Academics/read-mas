@@ -4,6 +4,7 @@ import threading
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
+import time
 
 from loguru import logger
 
@@ -182,6 +183,8 @@ def setup_logging(run_id: str, logger_path: str):
 
   return log_path
 
+def get_run_id():
+  return str(int(time.time() * 1000))
 
 def get_log_path() -> Optional[Path]:
   """Get the current log path from thread-local storage."""

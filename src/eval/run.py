@@ -1,6 +1,5 @@
 import asyncio
 import json
-import time
 from typing import Optional
 
 from deepeval.synthesizer import Synthesizer
@@ -16,6 +15,7 @@ import typer
 from utils.logger import setup_logging
 from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
 from orchestrator import get_agent
+from utils.logger import get_run_id
 
 
 app = typer.Typer(help="READ-MAS CLI for running Evals")
@@ -26,7 +26,7 @@ def generate_samples(
     benchmark_name: str,
     ctx: typer.Context,
     run_id: str = typer.Option(
-        lambda: str(int(time.time() * 1000)),
+        lambda: get_run_id(),
         "--run-id",
         "-i",
         help="Unique run identifier",
