@@ -1,4 +1,4 @@
-eval:
+train:
   agent_name: "collector_agent"
-  llm_model_name: "gemini-2.5-flash"
-  rag: true
+  model: "gemini-2.5-flash"
+  rag: false

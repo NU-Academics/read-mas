@@ -5,8 +5,9 @@ from typing import Optional
 from deepeval.synthesizer import Synthesizer
 from deepeval.synthesizer.config import FiltrationConfig
 from eval.eval_agents.eval_code_generator import EvalCodeGeneratorAgent
-from eval.evaluators.benchmark_evals.benchmark_evaluator import (
+from eval.evaluators import (
     generate_benchmark_samples,
+    AgentTrainer
 )
 from loguru import logger
 from utils import DEFAULT_MODEL_NAME
@@ -85,6 +86,36 @@ def generate_samples(
     print(f"[red]Error: {str(e)}[/red]")
     raise typer.Exit(1)
 
+@app.command("train")
+def train_agent(
+    ctx: typer.Context,
+    run_id: str = typer.Option(
+        lambda: get_run_id(),
+        "--run-id",
+        "-i",
+        help="Unique run identifier",
+    ),
+    model: Optional[str] = typer.Option(
+        DEFAULT_MODEL_NAME, "--model", "-m", help="The LLM model name"
+    ),
+    agent_type: Optional[str] = typer.Option(
+        "single",
+        "--agent-type",
+        "-t",
+        help="The agent to be trained.",
+    ),
+    rag: bool = typer.Option(
+        False,
+        "--rag",
+        "-r",
+        help="Whether to use the RAG tool",
+    ),
+):
+  setup_logging(str(ctx.params["run_id"]), "eval")
+  
+  trainer = AgentTrainer(agent_type, model, rag)
+  asyncio.run(trainer.train_agent())
+
 
 @app.command("generate-goldens")
 def generate_goldens(
@@ -92,7 +123,7 @@ def generate_goldens(
     run_id: str = typer.Option(
         lambda: str(int(time.time() * 1000)),
         "--run-id",
-        "-r",
+        "-i",
         help="Unique run identifier",
     ),
     model: Optional[str] = typer.Option(

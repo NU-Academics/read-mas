@@ -1,16 +1,47 @@
 stages:
-  eval_optimize:
-    cmd: python src/eval/evaluators/agent_evals/eval_optimize.py 
-      data/goldens/20260213_234211.json
+  train:
+    cmd: python src/eval/run.py train -t ${train.agent_name} -m ${train.model} -r ${train.rag}
     deps:
-    - data/goldens/20260213_234211.json
-    - src/eval/evaluators/agent_evals/eval_optimize.py
+    - src/eval/run.py
+    - data/goldens/${agent_name}/train.json
     params:
+    - train.agent_name
+    - train.model
+    - train.rag
+    outs:
+    - runs/train_runs
+  eval:
+    cmd: python src/eval/run.py eval -t ${train.agent_name} -m ${train.model} -r ${train.rag}
+    deps:
+    - src/eval/run.py
+    - data/goldens/${agent_name}/eval.json
+  params:
     - eval.agent_name
-    - eval.llm_model_name
+    - eval.model
     - eval.rag
     outs:
-    - eval_runs
+    - runs/eval_runs
+  benchmark:
+    cmd: python src/eval/run.py benchmark -t ${train.agent_name} -m ${train.model} -r ${train.rag}
+    deps:
+    - src/eval/run.py  
+    - data/goldens/${agent_name}/benchmark.json
+    params:
+    - benchmark.agent_name
+    - benchmark.model
+    - benchmark.rag
+    outs:
+    - runs/benchmark_runs
+  code_benchmark:
+    cmd: python src/eval/run.py code-bench -t ${train.agent_name} -m ${train.model} -r ${train.rag}
+    deps:
+    - src/eval/run.py
+    params:
+    - code.agent_name
+    - code.model
+    - code.rag
+    outs:
+    - runs/code_benchmark_runs
 metrics:
 - eval_runs/metrics.json
 plots:
