@@ -33,13 +33,13 @@ AGENT_GOLDENS_MAP = {
 }
 
 AGENT_METRICS_MAP = {
-  "analyzer_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "collector_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "designer_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "documenter_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "read_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "single_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "specifier_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
+  "analyzer_agent": [AnswerRelevancyMetric()],
+  "collector_agent": [AnswerRelevancyMetric()],
+  "designer_agent": [AnswerRelevancyMetric()],
+  "documenter_agent": [AnswerRelevancyMetric()],
+  "read_agent": [AnswerRelevancyMetric()],
+  "single_agent": [AnswerRelevancyMetric()],
+  "specifier_agent": [AnswerRelevancyMetric()],
 }
 
 AGENT_RAG_METRICS_MAP = {

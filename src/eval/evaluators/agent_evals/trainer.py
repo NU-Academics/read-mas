@@ -36,7 +36,7 @@ class AgentTrainer:
   
   EVAL_PATH = "runs/train_runs"
 
-  def __init__(self, agent_name: str, model: str, rag: bool):
+  def __init__(self, agent_name: str, model: str, rag: bool, experiment: bool):
     
     self.logger = setup_logging(get_run_id(), "eval")
 
@@ -44,6 +44,7 @@ class AgentTrainer:
     self._agent_name = agent_name
     self._model = model
     self._rag = rag
+    self._experiment = experiment
     self._prompt_to_optimize = self._get_prompt(self._agent_name)
     self._evaluated_agent = self._get_eval_agent(self._prompt_to_optimize.text_template)
     self._metrics = self._get_metrics(self._agent_name, self._rag)
@@ -117,10 +118,20 @@ class AgentTrainer:
 
 
   async def train_agent(self):
+    """Train/optimize a READ-MAS agent using prompt optimization algorithms.
+    When not running as a DVC experiment, results are not logged to DVC.
+    """
+    logger.info(f"Optimizing {self._agent_name}'s system prompt.")
+    
+    optimizer = PromptOptimizer(
+        metrics=self._metrics, model_callback=self.agent_callback, optimizer_model=PROMPT_OPTIMIZER_MODEL
+    )
+
+    if(not self._experiment):
+      optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._goldens)
+      return {self._prompt_to_optimize.text_template}, {optimized_prompt.text_template}
+
     with Live(EVAL_PATH, report="notebook") as live:
-      optimizer = PromptOptimizer(
-          metrics=self._metrics, model_callback=self.agent_callback, optimizer_model=PROMPT_OPTIMIZER_MODEL
-      )
       optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._goldens)
       logger.debug(f"Original prompt: {self._prompt_to_optimize.text_template}")
       logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")

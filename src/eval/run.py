@@ -99,7 +99,7 @@ def train_agent(
         DEFAULT_MODEL_NAME, "--model", "-m", help="The LLM model name"
     ),
     agent_type: Optional[str] = typer.Option(
-        "single",
+        "single_agent",
         "--agent-type",
         "-t",
         help="The agent to be trained.",
@@ -110,10 +110,16 @@ def train_agent(
         "-r",
         help="Whether to use the RAG tool",
     ),
+    experiment: bool = typer.Option(
+        False,
+        "--experiment",
+        "-e",
+        help="Whether to run a DVC experiment",
+    ),
 ):
   setup_logging(str(ctx.params["run_id"]), "eval")
   
-  trainer = AgentTrainer(agent_type, model, rag)
+  trainer = AgentTrainer(agent_type, model, rag, experiment)
   asyncio.run(trainer.train_agent())
 
 

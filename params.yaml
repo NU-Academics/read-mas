@@ -2,3 +2,15 @@ train:
   agent_name: "collector_agent"
   model: "gemini-2.5-flash"
   rag: false
+eval:
+  agent_name: "collector_agent"
+  model: "gemini-2.5-flash"
+  rag: false
+benchmark:
+  agent_name: "collector_agent"
+  model: "gemini-2.5-flash"
+  rag: false
+code:
+  agent_name: "collector_agent"
+  model: "gemini-2.5-flash"
+  rag: false

@@ -3,7 +3,7 @@ stages:
     cmd: python src/eval/run.py train -t ${train.agent_name} -m ${train.model} -r ${train.rag}
     deps:
     - src/eval/run.py
-    - data/goldens/${agent_name}/train.json
+    - data/goldens/${train.agent_name}/train.json
     params:
     - train.agent_name
     - train.model
@@ -11,21 +11,21 @@ stages:
     outs:
     - runs/train_runs
   eval:
-    cmd: python src/eval/run.py eval -t ${train.agent_name} -m ${train.model} -r ${train.rag}
+    cmd: python src/eval/run.py eval -t ${eval.agent_name} -m ${eval.model} -r ${eval.rag}
     deps:
     - src/eval/run.py
-    - data/goldens/${agent_name}/eval.json
-  params:
+    - data/goldens/${eval.agent_name}/eval.json
+    params:
     - eval.agent_name
     - eval.model
     - eval.rag
     outs:
     - runs/eval_runs
   benchmark:
-    cmd: python src/eval/run.py benchmark -t ${train.agent_name} -m ${train.model} -r ${train.rag}
+    cmd: python src/eval/run.py benchmark -t ${benchmark.agent_name} -m ${benchmark.model} -r ${benchmark.rag}
     deps:
     - src/eval/run.py  
-    - data/goldens/${agent_name}/benchmark.json
+    - data/goldens/${benchmark.agent_name}/benchmark.json
     params:
     - benchmark.agent_name
     - benchmark.model
@@ -33,7 +33,7 @@ stages:
     outs:
     - runs/benchmark_runs
   code_benchmark:
-    cmd: python src/eval/run.py code-bench -t ${train.agent_name} -m ${train.model} -r ${train.rag}
+    cmd: python src/eval/run.py code-bench -t ${code.agent_name} -m ${code.model} -r ${code.rag}
     deps:
     - src/eval/run.py
     params:
