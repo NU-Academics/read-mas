@@ -4,7 +4,6 @@ Sources:
   - PROMISE: Labeled requirements from CSV (256-char chunks)
   - PURE XML: Structured SRS sections (natural section boundaries)
   - PURE docs: PDF/DOCX/HTML SRS documents (512-char chunks)
-  - Knowledge base: RE methodology knowledge (heading-based splits)
 """
 
 from dotenv import load_dotenv
@@ -44,11 +43,9 @@ load_dotenv(dotenv_path=Path(__file__).parent.parent.parent / ".env", override=F
 
 def _get_doc_base_name(filename: str) -> str:
   """Extract base name without extension for holdout matching.
-
-  Handles .doc/.docx pairs by stripping the extension.
   """
   stem = filename
-  for ext in [".docx", ".doc", ".pdf", ".html", ".rtf"]:
+  for ext in [".docx", ".pdf", ".html", ".rtf"]:
     if stem.endswith(ext):
       stem = stem[: -len(ext)]
       break
