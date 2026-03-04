@@ -6,7 +6,7 @@ The primary goal of this application is to provide a user-friendly, efficient, a
 
 # Features and Functionalities
 
-## 1. HomePage
+1. **HomePage**
 - **Purpose:** Display a list of registered users.
 - **User Benefit:** Enables users to see other members of the platform.
 - **Functionality:** Dynamically fetch and display a list of users from the backend.
@@ -16,7 +16,7 @@ The primary goal of this application is to provide a user-friendly, efficient, a
   - On creation, dispatches getAllUsers action.
   - When delete link is clicked, dispatches deleteUser action.
 
-## 2. LoginPage
+2. **LoginPage**
 - **Purpose:** Facilitate user login.
 - **User Benefit:** Allows existing users to securely access their accounts.
 - **Functionality:**
@@ -28,7 +28,7 @@ The primary goal of this application is to provide a user-friendly, efficient, a
   - When the form triggers submit.prevent, and form is invalid, displays error message with .invalid-feedback style.
   - When the form triggers submit.prevent, and form is valid, dispatches login action.
 
-## 3. RegisterPage
+3. **RegisterPage**
 - **Purpose:** Enable new user registration.
 - **User Benefit:** Provides a straightforward way for new users to create an account.
 - **Functionality:**
