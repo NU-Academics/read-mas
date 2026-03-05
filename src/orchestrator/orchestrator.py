@@ -1,11 +1,13 @@
 """A routing agent that orchestrates the multiple RE and design agents and outputs the design."""
 
-import asyncio
 from typing import Optional
 
 import litellm
+import json
 from google.adk.agents import BaseAgent
 from google.adk.runners import Runner
+from google.adk.apps import App
+from google.adk.plugins import DebugLoggingPlugin
 from google.genai import types
 from loguru import logger
 
@@ -14,11 +16,13 @@ from orchestrator.constants import APP_NAME, MAX_RETRIES, RETRY_DELAY
 from orchestrator.session_manager import SessionManager
 from single import SingleAgent
 from utils.constants import AgentRunMode
-from utils.logger import log_adk_event
+from utils.logger import get_log_path
+from orchestrator.plugins import ReadMasRetryPlugin
 
 # Enable this to debug litellm
 # litellm._turn_on_debug()
 
+_NO_RESPONSE = json.dumps({"error": "agent_no_response", "message": "Agent returned no response."})
 
 def get_agent(llm_model_name: str, agent_type: str, run_mode: AgentRunMode, rag: bool) -> BaseAgent:
   """Returns the agent based on the specified parameters.
@@ -83,80 +87,34 @@ async def run_agent(
   if (
       current_session_id is None or current_user_id is None or current_runner is None
   ) and entry_agent is not None:
+    log_path = get_log_path()
+    debug_output = str(log_path / "adk_events.yaml") if log_path else "adk_events.yaml"
+    app = App(name=app_name, root_agent=entry_agent, plugins=[ReadMasRetryPlugin(max_retries=MAX_RETRIES), DebugLoggingPlugin(output_path=debug_output)])
+    
     session_manager = SessionManager()
-    current_session_id, current_runner, current_user_id = await session_manager.initialize_session(
-        entry_agent=entry_agent, app_name=app_name
-    )
+    current_session_id, current_runner, current_user_id = await session_manager.initialize_session(app=app)
   elif entry_agent is None:
     raise ValueError("Entry agent is required")
   elif current_session_id is None or current_user_id is None or current_runner is None:
     raise ValueError("Session ID, user ID, and runner are required")
 
-  async def _execute_agent() -> str:
-    """Inner function that executes the agent logic."""
-    content = types.Content(
-        role="user",
-        parts=[types.Part(text=query)],
-    )
-    response = "Sorry, no response."
-    escalated_response: Optional[str] = None
+  content = types.Content(role="user", parts=[types.Part(text=query)])
+  response = _NO_RESPONSE
+  escalated_response: Optional[str] = None
 
-    running = current_runner.run_async(
-        user_id=current_user_id, session_id=current_session_id, new_message=content
-    )
-
-    try:
-      async for event in running:
-        log_adk_event(
-            event,
-            query=query,
-            session_id=current_session_id,
-            user_id=current_user_id,
-        )
-
-        # If an agent escalates, surface it but continue consuming the stream
-        # to avoid prematurely terminating a multi-agent pipeline.
-        if event.actions and event.actions.escalate:
-          escalated_response = f"Agent escalated: {event.error_message or 'No specific message.'}"
-
-        if event.is_final_response():
-          if event.content and event.content.parts:
-            response = event.content.parts[0].text
-          else:
-            continue
-    finally:
-      await running.aclose()
-
-    return escalated_response or response
-
-  # Retry logic for exceptions and "Sorry, no response." during agent execution
-  for attempt in range(MAX_RETRIES + 1):
-    try:
-      response = await _execute_agent()
-      # Retry if agent returns "Sorry, no response."
-      if response == "Sorry, no response.":
-        if attempt < MAX_RETRIES:
-          logger.warning(
-              f"Agent returned 'Sorry, no response.' on attempt {attempt + 1}/{MAX_RETRIES + 1}. "
-              f"Retrying in {RETRY_DELAY} seconds..."
-          )
-          await asyncio.sleep(RETRY_DELAY)
-          continue
+  running = current_runner.run_async(
+      user_id=current_user_id, session_id=current_session_id, new_message=content
+  )
+  try:
+    async for event in running:
+      if event.actions and event.actions.escalate:
+        escalated_response = f"Agent escalated: {event.error_message or 'No specific message.'}"
+      if event.is_final_response():
+        if event.content and event.content.parts:
+          response = event.content.parts[0].text
         else:
-          logger.error(
-              f"Agent returned 'Sorry, no response.' for query: {query} after"
-              f" {MAX_RETRIES + 1} attempts."
-          )
-      return response
-    except Exception as e:
-      if attempt < MAX_RETRIES:
-        logger.warning(
-            f"Error on attempt {attempt + 1}/{MAX_RETRIES + 1}: {str(e)}. "
-            f"Retrying in {RETRY_DELAY} seconds..."
-        )
-        await asyncio.sleep(RETRY_DELAY)
-      else:
-        logger.error(f"Agent execution failed for query: {query} after {MAX_RETRIES + 1} attempts.")
-        raise RuntimeError(
-            f"Error executing agent for query: {query} after {MAX_RETRIES + 1} attempts."
-        ) from e
+          continue
+  finally:
+    await running.aclose()
+
+  return escalated_response or response

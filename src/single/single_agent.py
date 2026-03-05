@@ -4,14 +4,11 @@ from typing import Optional
 import time
 
 from google.adk.agents import Agent
-from google.adk.agents.callback_context import CallbackContext
-from google.genai.types import Content
 from loguru import logger
 
 from agents import (AgentBase, get_model_from)
 from utils.constants import DEFAULT_MODEL_NAME
 from prompt_templates.single_prompt import SINGLE_AGENT_SYSTEM_PROMPT
-from tools.save_to_file_tool import save_to_file
 from utils.constants import AgentRunMode
 from rag import retrieve_requirements
 from utils.logger import setup_logging
@@ -32,9 +29,6 @@ class SingleAgent(AgentBase):
 
   def get_agent(self) -> Agent:
     tools = []
-    if self._run_mode != AgentRunMode.BENCHMARK:
-      tools.append(save_to_file)
-
     if self._rag:
       tools.append(retrieve_requirements)
 
