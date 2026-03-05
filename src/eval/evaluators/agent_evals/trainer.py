@@ -1,95 +1,55 @@
 """Trainer to optimize the agents' system prompts using prompt optimization algorithms."""
 
-import json
-from typing import Optional
 from loguru import logger
 import os
 
 from deepeval.dataset import Golden
 from deepeval import evaluate
-from deepeval.metrics import BaseMetric
 from deepeval.prompt import Prompt
 from deepeval.optimizer import PromptOptimizer
 from deepeval.optimizer.configs import AsyncConfig
 from deepeval.test_case import LLMTestCase
 from dvclive.live import Live
-from google.adk.agents import BaseAgent
 
 from eval.utils.constants import (
-  AGENT_GOLDENS_MAP,
-  AGENT_METRICS_MAP,
-  AGENT_RAG_METRICS_MAP,
-  AGENT_PROMPTS,
-  AGENT_REGISTRY,
+  PROMPT_OPTIMIZER_MODEL
 )
-from rag import retrieve_requirements
 from orchestrator import run_agent
-from utils import DEFAULT_MODEL_NAME
 from utils.constants import AgentRunMode
 from utils.logger import get_run_id
 from utils.logger import setup_logging
-
-PROMPT_OPTIMIZER_MODEL = "gpt-5-nano"
+from eval.utils import (
+  get_metrics,
+  get_prompt,
+  get_eval_agent,
+  get_goldens
+)
 
 os.environ["DEEPEVAL_PER_TASK_TIMEOUT_SECONDS_OVERRIDE"] = "1200" 
 os.environ["DEEPEVAL_PER_ATTEMPT_TIMEOUT_SECONDS_OVERRIDE"] = "240"
 
+TRAIN_RUN_PATH = "runs/train_runs"
 class AgentTrainer:
   """This class utilizes DeepEval's prompt optimizer to optimize system prompts of agents."""
   
-  EVAL_PATH = "runs/train_runs"
 
-  def __init__(self, agent_name: str, model: str, rag: bool, experiment: bool):
+  def __init__(self, agent_type: str, model: str, rag: bool, experiment: bool):
     
     self.logger = setup_logging(get_run_id(), "eval")
 
-    # params = yaml.safe_load(open("params.yaml"))["eval"]
-    self._agent_name = agent_name
+    self._agent_type = agent_type
     self._model = model
     self._rag = rag
     self._experiment = experiment
-    self._prompt_to_optimize = self._get_prompt(self._agent_name)
-    self._evaluated_agent = self._get_eval_agent(self._prompt_to_optimize.text_template)
-    self._metrics = self._get_metrics(self._agent_name, self._rag)
-    self._goldens = self._get_goldens(self._agent_name, self._rag)
-
-
-  def _get_metrics(self, agent_name: str, rag: bool = False) -> list[BaseMetric]:
-    if rag:
-      return AGENT_RAG_METRICS_MAP[agent_name]
-      
-    return AGENT_METRICS_MAP[agent_name]
-
-
-  def _get_prompt(self, agent_name: str) -> Prompt:
-    return AGENT_PROMPTS[agent_name]
-
-
-  def _get_eval_agent(self, prompt: Optional[str]) -> BaseAgent:
-    agent_type = AGENT_REGISTRY[self._agent_name]
-    return agent_type(self._model, prompt, AgentRunMode.EVAL, self._rag).get_agent()
+    self._prompt_to_optimize = get_prompt(self._agent_type)
+    self._evaluated_agent = get_eval_agent(self._agent_type, self._model, self._prompt_to_optimize.text_template, self._rag, AgentRunMode.TRAIN)
+    self._metrics = get_metrics(self._agent_type, self._rag)
+    self._goldens = get_goldens(self._agent_type, self._rag, AgentRunMode.TRAIN)
 
 
   async def agent_callback(self, prompt: Prompt, golden: Golden) -> str:
     prompt_text = prompt.text_template
-    evaluated_agent = self._get_eval_agent(prompt_text)
-    return await run_agent(golden.input, evaluated_agent)
-
-
-  def _get_goldens(self, agent_name: str, rag: bool) -> list[Golden]:
-    golden_path = AGENT_GOLDENS_MAP[agent_name] / "train.json"
-    with open(golden_path, "r") as jf:
-      goldens_list = json.load(jf)
-
-    goldens = [Golden.model_validate(g) for g in goldens_list]
-    
-    if rag:
-      for golden in goldens:
-        retrieval_context = retrieve_requirements(golden.input)
-        golden.retrieval_context = retrieval_context or None
-        
-    return goldens
-
+    return await run_agent(golden.input, self._evaluated_agent)
 
 
   async def _log_metrics(self, prompt: Prompt, live: Live):
@@ -124,7 +84,7 @@ class AgentTrainer:
     """Train/optimize a READ-MAS agent using prompt optimization algorithms.
     When not running as a DVC experiment, results are not logged to DVC.
     """
-    logger.info(f"Optimizing {self._agent_name}'s system prompt.")
+    logger.info(f"Optimizing {self._agent_type}'s system prompt.")
     
     async_config = AsyncConfig(
       run_async=True,
@@ -142,7 +102,7 @@ class AgentTrainer:
       logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")
       return self._prompt_to_optimize.text_template, optimized_prompt.text_template
 
-    with Live(EVAL_PATH, report="notebook") as live:
+    with Live(TRAIN_RUN_PATH, report="notebook") as live:
       optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._goldens)
       logger.debug(f"Original prompt: {self._prompt_to_optimize.text_template}")
       logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")

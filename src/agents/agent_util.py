@@ -26,21 +26,3 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
     return LiteLlm(model=llm_model_name, api_base=OLLAMA_BASE_URL)
   else:
     return LiteLlm(llm_model_name)
-
-
-def get_model_config() -> dict:
-  """Returns the model config from the config file for the given provider."""
-  with open("model_config.yaml", "r") as f:
-    return yaml.load(f)
-
-
-def get_model_name(provider: Optional[str] = "ollama") -> str:
-  """Returns the model name from the config file for the given provider."""
-  config = get_model_config()["models"][provider]
-  return config["name"]
-
-
-def get_model_temperature(provider: Optional[str] = "ollama") -> float:
-  """Returns the model temperature from the config file for the given provider."""
-  config = get_model_config()["models"][provider]
-  return config["temperature"]

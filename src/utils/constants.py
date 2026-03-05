@@ -11,9 +11,10 @@ OLLAMA_API_BASE = f"{OLLAMA_BASE_URL}/v1"
 class AgentRunMode(StrEnum):
   """Run modes for the READ-MAS agents: eval, benchmark, or main"""
 
-  EVAL = "EVAL"
-  BENCHMARK = "BENCHMARK"
-  MAIN = "MAIN"
+  TRAIN = "train"
+  EVAL = "eval"
+  BENCHMARK = "benchmark"
+  MAIN = "main"
 
 
 NUMBER_OF_TRIES = 2

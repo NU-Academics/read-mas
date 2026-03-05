@@ -19,6 +19,11 @@ from prompt_templates import (
     DOCUMENTER_AGENT_SYSTEM_PROMPT,
     DESIGN_AGENT_SYSTEM_PROMPT,
 )
+from eval.metrics.readmas_metrics import (
+  architecture_soundness,
+)
+
+PROMPT_OPTIMIZER_MODEL = "gpt-5-nano"
 
 GOLDENS_BASE_PATH = Path("data/goldens")
 
@@ -38,7 +43,7 @@ AGENT_METRICS_MAP = {
   "designer_agent": [AnswerRelevancyMetric()],
   "documenter_agent": [AnswerRelevancyMetric()],
   "read_agent": [AnswerRelevancyMetric()],
-  "single_agent": [AnswerRelevancyMetric()],
+  "single_agent": [architecture_soundness],
   "specifier_agent": [AnswerRelevancyMetric()],
 }
 
