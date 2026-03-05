@@ -1,16 +1,16 @@
 """Trainer to optimize the agents' system prompts using prompt optimization algorithms."""
 
-import asyncio
 import json
 from typing import Optional
-import yaml
 from loguru import logger
+import os
 
 from deepeval.dataset import Golden
 from deepeval import evaluate
 from deepeval.metrics import BaseMetric
 from deepeval.prompt import Prompt
 from deepeval.optimizer import PromptOptimizer
+from deepeval.optimizer.configs import AsyncConfig
 from deepeval.test_case import LLMTestCase
 from dvclive.live import Live
 from google.adk.agents import BaseAgent
@@ -30,6 +30,9 @@ from utils.logger import get_run_id
 from utils.logger import setup_logging
 
 PROMPT_OPTIMIZER_MODEL = "gpt-5-nano"
+
+os.environ["DEEPEVAL_PER_TASK_TIMEOUT_SECONDS_OVERRIDE"] = "1200" 
+os.environ["DEEPEVAL_PER_ATTEMPT_TIMEOUT_SECONDS_OVERRIDE"] = "240"
 
 class AgentTrainer:
   """This class utilizes DeepEval's prompt optimizer to optimize system prompts of agents."""
@@ -123,13 +126,21 @@ class AgentTrainer:
     """
     logger.info(f"Optimizing {self._agent_name}'s system prompt.")
     
+    async_config = AsyncConfig(
+      run_async=True,
+      throttle_value=1,
+      max_concurrent = 32
+    )
     optimizer = PromptOptimizer(
-        metrics=self._metrics, model_callback=self.agent_callback, optimizer_model=PROMPT_OPTIMIZER_MODEL
+        metrics=self._metrics, model_callback=self.agent_callback, optimizer_model=PROMPT_OPTIMIZER_MODEL, 
+        async_config=async_config
     )
 
     if(not self._experiment):
       optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._goldens)
-      return {self._prompt_to_optimize.text_template}, {optimized_prompt.text_template}
+      logger.debug(f"Original prompt: {self._prompt_to_optimize.text_template}")
+      logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")
+      return self._prompt_to_optimize.text_template, optimized_prompt.text_template
 
     with Live(EVAL_PATH, report="notebook") as live:
       optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._goldens)
@@ -144,3 +155,6 @@ class AgentTrainer:
       live.summary["metrics"] = [m.__name__ for m in self._metrics]
 
       await self._log_metrics(optimized_prompt, live)
+    
+    logger.debug(f"Final optimized prompt: {optimized_prompt.text_template}")
+    return self._prompt_to_optimize.text_template, optimized_prompt.text_template

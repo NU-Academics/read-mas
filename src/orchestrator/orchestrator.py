@@ -117,4 +117,4 @@ async def run_agent(
   finally:
     await running.aclose()
 
-  return escalated_response or response
+  return  response or escalated_response

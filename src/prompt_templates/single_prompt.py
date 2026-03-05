@@ -36,4 +36,5 @@ Use these functional and non-functional requirements as examples for the system:
 6. Design the software architecture, file structure, and component design including class and sequence diagrams using the mermaid notation.
 7. Generate the complete design document that follows the design template {DESIGN_TEMPLATE}.
 8. Return ONLY the design document as the FINAL response.
+9. DO NOT include the SRS in the final response.
 """

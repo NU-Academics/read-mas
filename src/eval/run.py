@@ -120,7 +120,9 @@ def train_agent(
   setup_logging(str(ctx.params["run_id"]), "eval")
   
   trainer = AgentTrainer(agent_type, model, rag, experiment)
-  asyncio.run(trainer.train_agent())
+  agent_prompt, optimized_prompt = asyncio.run(trainer.train_agent())
+  logger.info(f"Agent prompt: {agent_prompt}")
+  logger.info(f"Optimized prompt: {optimized_prompt}")
 
 
 @app.command("generate-goldens")
