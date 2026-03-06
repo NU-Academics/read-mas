@@ -25,7 +25,7 @@ load_dotenv(dotenv_path=Path(__file__).parent.parent.parent / ".env", override=F
 def _get_embedding(query: str):
   client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
   res = client.models.embed_content(model=GEMINI_EMBEDDING_MODEL, contents=query)
-  return res.embeddings[0].values
+  return np.array(res.embeddings[0].values)
 
 
 def retrieve_requirements(query: str) -> Optional[List[str]]:
@@ -48,7 +48,7 @@ def retrieve_requirements(query: str) -> Optional[List[str]]:
 
   # Embed the query using the same embedding model and search the index
   query_vector = _get_embedding(query)
-  distances, indices = index.search(query_vector, RAG_TOP_K)
+  distances, indices = index.search(np.array([query_vector]), RAG_TOP_K)
 
   result = [requirement_chunks[i]["chunk"] for i in indices[0]]
   logger.debug(f"RAG retrieval for query: {query} is: {str(result)}")
