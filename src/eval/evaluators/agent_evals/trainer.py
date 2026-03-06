@@ -11,9 +11,6 @@ from deepeval.optimizer.configs import AsyncConfig
 from deepeval.test_case import LLMTestCase
 from dvclive.live import Live
 
-from eval.utils.constants import (
-  PROMPT_OPTIMIZER_MODEL
-)
 from orchestrator import run_agent
 from utils.constants import AgentRunMode
 from utils.logger import get_run_id
@@ -22,11 +19,13 @@ from eval.utils import (
   get_metrics,
   get_prompt,
   get_eval_agent,
-  get_goldens
+  get_goldens,
+  get_eval_result
 )
+from eval.utils.constants import PROMPT_OPTIMIZER_MODEL
 
-os.environ["DEEPEVAL_PER_TASK_TIMEOUT_SECONDS_OVERRIDE"] = "1200" 
-os.environ["DEEPEVAL_PER_ATTEMPT_TIMEOUT_SECONDS_OVERRIDE"] = "240"
+os.environ["DEEPEVAL_PER_TASK_TIMEOUT_SECONDS_OVERRIDE"] = "1500" 
+os.environ["DEEPEVAL_PER_ATTEMPT_TIMEOUT_SECONDS_OVERRIDE"] = "300"
 
 TRAIN_RUN_PATH = "runs/train_runs"
 class AgentTrainer:
@@ -49,10 +48,11 @@ class AgentTrainer:
 
   async def agent_callback(self, prompt: Prompt, golden: Golden) -> str:
     prompt_text = prompt.text_template
-    return await run_agent(golden.input, self._evaluated_agent)
+    eval_agent = get_eval_agent(self._agent_type, self._model, prompt_text, self._rag, AgentRunMode.TRAIN)
+    return await run_agent(golden.input, eval_agent)
 
 
-  async def _log_metrics(self, prompt: Prompt, live: Live):
+  async def _collect_metrics(self, prompt: Prompt):
     test_cases = []
 
     for golden in self._goldens:
@@ -63,21 +63,13 @@ class AgentTrainer:
               input=golden.input, 
               expected_output=golden.expected_output, 
               actual_output=actual_output,
+              context=golden.context,
               retrieval_context=golden.retrieval_context
           )
       )
 
-    results = evaluate(test_cases=test_cases, metrics=self._metrics)
-
-    for test_result in results.test_results:
-      scores = [
-        m.score
-        for m in (test_result.metrics_data or [])
-        if getattr(m, "score", None) is not None
-      ]
-      avg_score = sum(scores) / len(scores) if scores else None
-      logger.debug(f"Average optimization score is: {avg_score}")
-      live.log_metric(test_result.name, avg_score)
+    train_results = evaluate(test_cases=test_cases, metrics=self._metrics)
+    return get_eval_result(train_results, self._evaluated_agent.name, self._model, self._rag)
 
 
   async def train_agent(self):
@@ -96,25 +88,25 @@ class AgentTrainer:
         async_config=async_config
     )
 
-    if(not self._experiment):
-      optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._goldens)
-      logger.debug(f"Original prompt: {self._prompt_to_optimize.text_template}")
-      logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")
-      return self._prompt_to_optimize.text_template, optimized_prompt.text_template
+    optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._goldens)
+    optimized_metrics = await self._collect_metrics(optimized_prompt)
 
-    with Live(TRAIN_RUN_PATH, report="notebook") as live:
-      optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._goldens)
-      logger.debug(f"Original prompt: {self._prompt_to_optimize.text_template}")
-      logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")
+    if(self._experiment):
+      with Live(TRAIN_RUN_PATH, report="notebook") as live:
+        optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._goldens)
+        logger.debug(f"Original prompt: {self._prompt_to_optimize.text_template}")
+        logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")
 
-      if not live.summary:
-        live.summary = {"prompts": {}, "metrics": []}
+        if not live.summary:
+          live.summary = {"agent": self._evaluated_agent.name, "model": self._model, "rag": self._rag, "prompts": {}, "metrics": []}
 
-      live.summary["prompts"]["original"] = self._prompt_to_optimize.text_template
-      live.summary["prompts"]["optimized"] = optimized_prompt.text_template
-      live.summary["metrics"] = [m.__name__ for m in self._metrics]
+        live.summary["prompts"]["original"] = self._prompt_to_optimize.text_template
+        live.summary["prompts"]["optimized"] = optimized_prompt.text_template
+        live.summary["metrics"] = [m.__name__ for m in self._metrics]
 
-      await self._log_metrics(optimized_prompt, live)
+        for result in optimized_metrics:
+          live.log_metric(name=result['metric'], val=result['score'])
     
-    logger.debug(f"Final optimized prompt: {optimized_prompt.text_template}")
-    return self._prompt_to_optimize.text_template, optimized_prompt.text_template
+    logger.debug(f"Original prompt: {self._prompt_to_optimize.text_template}")
+    logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")
+    logger.debug(f"{AgentRunMode.TRAIN.capitalize()} results: {optimized_metrics}")

@@ -1,17 +1,14 @@
 import asyncio
-import json
 from typing import Optional
 
-from deepeval.synthesizer import Synthesizer
-from deepeval.synthesizer.config import FiltrationConfig
-from eval.eval_agents.eval_code_generator import EvalCodeGeneratorAgent
+from eval.eval_agents import EvalCodeGeneratorAgent
 from eval.evaluators import (
     generate_benchmark_samples,
-    AgentTrainer
+    AgentTrainer,
+    AgentEvaluator
 )
 from loguru import logger
 from utils import DEFAULT_MODEL_NAME
-from tqdm import tqdm
 import typer
 from utils.logger import setup_logging
 from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
@@ -120,16 +117,13 @@ def train_agent(
   setup_logging(str(ctx.params["run_id"]), "eval")
   
   trainer = AgentTrainer(agent_type, model, rag, experiment)
-  agent_prompt, optimized_prompt = asyncio.run(trainer.train_agent())
-  logger.info(f"Agent prompt: {agent_prompt}")
-  logger.info(f"Optimized prompt: {optimized_prompt}")
+  asyncio.run(trainer.train_agent())
 
-
-@app.command("generate-goldens")
-def generate_goldens(
+@app.command("eval")
+def eval_agent(
     ctx: typer.Context,
     run_id: str = typer.Option(
-        lambda: str(int(time.time() * 1000)),
+        lambda: get_run_id(),
         "--run-id",
         "-i",
         help="Unique run identifier",
@@ -137,24 +131,65 @@ def generate_goldens(
     model: Optional[str] = typer.Option(
         DEFAULT_MODEL_NAME, "--model", "-m", help="The LLM model name"
     ),
+    agent_type: Optional[str] = typer.Option(
+        "single_agent",
+        "--agent-type",
+        "-t",
+        help="The agent to be evaluated.",
+    ),
+    rag: bool = typer.Option(
+        False,
+        "--rag",
+        "-r",
+        help="Whether to use the RAG tool",
+    ),
+    experiment: bool = typer.Option(
+        False,
+        "--experiment",
+        "-e",
+        help="Whether to run a DVC experiment",
+    ),
 ):
   setup_logging(str(ctx.params["run_id"]), "eval")
+  
+  evaluator = AgentEvaluator(agent_type, model, rag, AgentRunMode.EVAL, experiment)
+  asyncio.run(evaluator.eval_agent())
 
-  logger.info(f"Starting run with ID: {run_id}")
-
-  with open("datasets/eval/requirement_chunks.json", "r") as rj:
-    reqs = json.load(rj)
-
-  contexts = [r["requirement"].split("|") for r in reqs]
-
-  filtration_config = FiltrationConfig(
-      critic_model="gpt-5-mini", synthetic_input_quality_threshold=0.5
-  )
-  synthesizer = Synthesizer(model, filtration_config=filtration_config)
-  synthesizer.generate_goldens_from_contexts(contexts=contexts, max_goldens_per_context=1)
-  goldens = synthesizer.synthetic_goldens
-  logger.info(f"Goldens: {str(goldens)}")
-  synthesizer.save_as(file_type="json", directory="data/goldens")
+@app.command("benchmark")
+def benchmark_agent(
+    ctx: typer.Context,
+    run_id: str = typer.Option(
+        lambda: get_run_id(),
+        "--run-id",
+        "-i",
+        help="Unique run identifier",
+    ),
+    model: Optional[str] = typer.Option(
+        DEFAULT_MODEL_NAME, "--model", "-m", help="The LLM model name"
+    ),
+    agent_type: Optional[str] = typer.Option(
+        "single_agent",
+        "--agent-type",
+        "-t",
+        help="The agent to be benchmarked.",
+    ),
+    rag: bool = typer.Option(
+        False,
+        "--rag",
+        "-r",
+        help="Whether to use the RAG tool",
+    ),
+    experiment: bool = typer.Option(
+        False,
+        "--experiment",
+        "-e",
+        help="Whether to run a DVC experiment",
+    ),
+):
+  setup_logging(str(ctx.params["run_id"]), "eval")
+  
+  benchmarker = AgentEvaluator(agent_type, model, rag, AgentRunMode.BENCHMARK, experiment)
+  asyncio.run(benchmarker.eval_agent())
 
 
 if __name__ == "__main__":

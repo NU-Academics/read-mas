@@ -19,11 +19,11 @@ from prompt_templates import (
     DOCUMENTER_AGENT_SYSTEM_PROMPT,
     DESIGN_AGENT_SYSTEM_PROMPT,
 )
-from eval.metrics.readmas_metrics import (
+from eval.metrics import (
   architecture_soundness,
 )
 
-PROMPT_OPTIMIZER_MODEL = "gpt-5-nano"
+PROMPT_OPTIMIZER_MODEL = "gpt-5-mini"
 
 GOLDENS_BASE_PATH = Path("data/goldens")
 
