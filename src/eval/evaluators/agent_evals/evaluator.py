@@ -22,10 +22,6 @@ from eval.utils import (
 from utils.constants import (
   AgentRunMode,
 )
-
-os.environ["DEEPEVAL_PER_TASK_TIMEOUT_SECONDS_OVERRIDE"] = "1200" 
-os.environ["DEEPEVAL_PER_ATTEMPT_TIMEOUT_SECONDS_OVERRIDE"] = "240"
-
 class AgentEvaluator:
   """This class utilizes DeepEval's GEval framework to evaluate agents using LLM-as-a-Judge."""
   
