@@ -13,7 +13,7 @@ stages:
     outs:
     - runs/train_runs
     metrics:
-    - runs/train_runs/metrics.json
+    - runs/train_runs/metrics/metrics.json
     plots:
     - runs/train_runs/plots/metrics:
         x: step
@@ -30,7 +30,7 @@ stages:
     outs:
     - runs/eval_runs
     metrics:
-    - runs/eval_runs/metrics.json
+    - runs/eval_runs/metrics/metrics.json
     plots:
     - runs/eval_runs/plots/metrics:
         x: step
@@ -48,7 +48,7 @@ stages:
     outs:
     - runs/benchmark_runs
     metrics:
-    - runs/benchmark_runs/metrics.json
+    - runs/benchmark_runs/metrics/metrics.json
     plots:
     - runs/benchmark_runs/plots/metrics:
         x: step
@@ -64,7 +64,7 @@ stages:
     outs:
     - runs/code_benchmark_runs
     metrics:
-    - runs/code_benchmark_runs/metrics.json
+    - runs/code_benchmark_runs/metrics/metrics.json
     plots:
     - runs/code_benchmark_runs/plots/metrics:
         x: step
