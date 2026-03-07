@@ -26,7 +26,7 @@ stages:
     outs:
     - runs/eval_runs
   benchmark:
-    cmd: python src/eval/run.py benchmark -t ${benchmark.agent_name} -m 
+    cmd: python -m src.eval.run benchmark -t ${benchmark.agent_name} -m 
       ${benchmark.model} -r ${benchmark.rag} -e
     deps:
     - src/eval/run.py
@@ -39,13 +39,22 @@ stages:
     outs:
     - runs/benchmark_runs
   code_benchmark:
-    cmd: python src/eval/run.py code-bench -t ${code.agent_name} -m 
-      ${code.model} -r ${code.rag} -e
+    cmd: python -m src.eval.run code-benchmark -t ${code.agent_name} -m 
+      ${code.model} -d ${code.dataset} -s ${code.samples} -r ${code.rag} -e
     deps:
     - src/eval/run.py
+    - src/eval/evaluators/benchmark_evals/coding_benchmarker.py
+    - ${code.samples}
     params:
     - code.agent_name
     - code.model
     - code.rag
+    - code.dataset
+    - code.samples
     outs:
     - runs/code_benchmark_runs
+metrics:
+- runs/code_benchmark_runs/metrics.json
+plots:
+- runs/code_benchmark_runs/plots/metrics:
+    x: step

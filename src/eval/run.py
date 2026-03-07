@@ -5,7 +5,8 @@ from eval.eval_agents import EvalCodeGeneratorAgent
 from eval.evaluators import (
     generate_benchmark_samples,
     AgentTrainer,
-    AgentEvaluator
+    AgentEvaluator,
+    CodingBenchmarker
 )
 from loguru import logger
 from utils import DEFAULT_MODEL_NAME
@@ -53,8 +54,8 @@ def generate_samples(
         "-n",
         help="Number of samples to generate per task",
     ),
-    rag: bool = typer.Option(
-        False,
+    rag: str = typer.Option(
+        "False",
         "--rag",
         "-r",
         help="Whether to use the RAG tool",
@@ -66,7 +67,7 @@ def generate_samples(
 
   async def a_generate_benchmark_samples():
     """Run evaluation."""
-    evaluated = get_agent(model, agent_type, AgentRunMode.BENCHMARK, rag)
+    evaluated = get_agent(model, agent_type, AgentRunMode.BENCHMARK, bool(rag))
     entry_agent = EvalCodeGeneratorAgent(model, evaluated).get_agent()
     await generate_benchmark_samples(
         entry_agent,
@@ -82,6 +83,54 @@ def generate_samples(
     logger.error(f"Error during execution: {str(e)}")
     print(f"[red]Error: {str(e)}[/red]")
     raise typer.Exit(1)
+
+@app.command("code-benchmark")
+def code_benchmark_agent(
+    ctx: typer.Context,
+    run_id: str = typer.Option(
+        lambda: get_run_id(),
+        "--run-id",
+        "-i",
+        help="Unique run identifier",
+    ),
+    model: Optional[str] = typer.Option(
+        DEFAULT_MODEL_NAME, "--model", "-m", help="The LLM model name"
+    ),
+    agent_type: Optional[str] = typer.Option(
+        "single_agent",
+        "--agent-type",
+        "-t",
+        help="The agent to be trained.",
+    ),
+    rag: str = typer.Option(
+        "False",
+        "--rag",
+        "-r",
+        help="Whether to use the RAG tool",
+    ),
+    dataset: Optional[str] = typer.Option(
+        "humaneval",
+        "--dataset",
+        "-d",
+        help="The coding benchmarking dataset: humaneval or mbpp.",
+    ),
+    samples_file: Optional[str] = typer.Option(
+        None,
+        "--samples-file",
+        "-s",
+        help="The sanitized samples file for the dataset.",
+    ),
+    experiment: bool = typer.Option(
+        False,
+        "--experiment",
+        "-e",
+        help="Whether to run a DVC experiment",
+    ),
+):
+  setup_logging(str(ctx.params["run_id"]), "code_benchmark")
+  
+  benchmarker = CodingBenchmarker(run_id, agent_type, dataset, samples_file, model, bool(rag), AgentRunMode.CODE_BENCHMARK, experiment)
+  asyncio.run(benchmarker.benchmark())
 
 @app.command("train")
 def train_agent(
@@ -101,8 +150,8 @@ def train_agent(
         "-t",
         help="The agent to be trained.",
     ),
-    rag: bool = typer.Option(
-        False,
+    rag: str = typer.Option(
+        "False",
         "--rag",
         "-r",
         help="Whether to use the RAG tool",
@@ -114,9 +163,9 @@ def train_agent(
         help="Whether to run a DVC experiment",
     ),
 ):
-  setup_logging(str(ctx.params["run_id"]), "eval")
+  setup_logging(str(ctx.params["run_id"]), "train")
   
-  trainer = AgentTrainer(agent_type, model, rag, experiment)
+  trainer = AgentTrainer(agent_type, model, bool(rag), experiment)
   asyncio.run(trainer.train_agent())
 
 @app.command("eval")
@@ -137,8 +186,8 @@ def eval_agent(
         "-t",
         help="The agent to be evaluated.",
     ),
-    rag: bool = typer.Option(
-        False,
+    rag: str = typer.Option(
+        "False",
         "--rag",
         "-r",
         help="Whether to use the RAG tool",
@@ -152,7 +201,7 @@ def eval_agent(
 ):
   setup_logging(str(ctx.params["run_id"]), "eval")
   
-  evaluator = AgentEvaluator(agent_type, model, rag, AgentRunMode.EVAL, experiment)
+  evaluator = AgentEvaluator(agent_type, model, bool(rag), AgentRunMode.EVAL, experiment)
   asyncio.run(evaluator.eval_agent())
 
 @app.command("benchmark")
@@ -173,8 +222,8 @@ def benchmark_agent(
         "-t",
         help="The agent to be benchmarked.",
     ),
-    rag: bool = typer.Option(
-        False,
+    rag: str = typer.Option(
+        "False",
         "--rag",
         "-r",
         help="Whether to use the RAG tool",
@@ -186,9 +235,9 @@ def benchmark_agent(
         help="Whether to run a DVC experiment",
     ),
 ):
-  setup_logging(str(ctx.params["run_id"]), "eval")
+  setup_logging(str(ctx.params["run_id"]), "benchmark")
   
-  benchmarker = AgentEvaluator(agent_type, model, rag, AgentRunMode.BENCHMARK, experiment)
+  benchmarker = AgentEvaluator(agent_type, model, bool(rag), AgentRunMode.BENCHMARK, experiment)
   asyncio.run(benchmarker.eval_agent())
 
 

@@ -1,16 +1,19 @@
 train:
-  agent_name: "single_agent"
-  model: "gemini-2.5-flash"
-  rag: false
+  agent_name: single_agent
+  model: gemini-2.5-flash
+  rag: False
 eval:
-  agent_name: "single_agent"
-  model: "gemini-2.5-flash"
-  rag: false
+  agent_name: single_agent
+  model: gemini-2.5-flash
+  rag: False
 benchmark:
-  agent_name: "collector_agent"
-  model: "gemini-2.5-flash"
-  rag: false
+  agent_name: single_agent
+  model: gemini-2.5-flash
+  rag: False
 code:
-  agent_name: "collector_agent"
-  model: "gemini-2.5-flash"
-  rag: false
+  agent_name: single_agent
+  model: gemini-2.5-flash
+  rag: False
+  dataset: humaneval
+  samples: 
+    data/samples/humaneval/humaneval_samples_1769887028759-sanitized.jsonl

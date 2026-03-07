@@ -1,4 +1,4 @@
-"""Trainer to optimize the agents' system prompts using prompt optimization algorithms."""
+"""Agent evaluator class to evaluate and benchmark READ-MAS agents using custom LLM-as-a-Judge and RAGAS metrics."""
 
 from typing import Optional
 from loguru import logger
@@ -26,9 +26,6 @@ class AgentEvaluator:
   """This class utilizes DeepEval's GEval framework to evaluate agents using LLM-as-a-Judge."""
   
   def __init__(self, agent_type: str, model: Optional[str], rag: Optional[bool], run_mode: Optional[AgentRunMode] = AgentRunMode.EVAL, experiment: Optional[bool] = False):
-    
-    self.logger = setup_logging(get_run_id(), "eval")
-
     self._agent_type = agent_type
     self._model = model
     self._rag = rag

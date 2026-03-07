@@ -33,9 +33,6 @@ class AgentTrainer:
   
 
   def __init__(self, agent_type: str, model: str, rag: bool, experiment: bool):
-    
-    self.logger = setup_logging(get_run_id(), "eval")
-
     self._agent_type = agent_type
     self._model = model
     self._rag = rag
