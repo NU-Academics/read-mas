@@ -1,9 +1,9 @@
 train:
-  agent_name: "collector_agent"
+  agent_name: "single_agent"
   model: "gemini-2.5-flash"
   rag: false
 eval:
-  agent_name: "collector_agent"
+  agent_name: "single_agent"
   model: "gemini-2.5-flash"
   rag: false
 benchmark:

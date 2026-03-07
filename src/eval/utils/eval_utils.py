@@ -56,5 +56,5 @@ def get_goldens(agent_type: str, rag: bool, run_mode: Optional[AgentRunMode] = A
   return goldens
 
 def get_eval_result(eval_results: EvaluationResult, agent_name: str, model: str, rag: bool) -> list[dict[str, bool|str|float]]:
-  return [{'agent': agent_name, 'model': model, 'rag': rag, 'test_name': test.name, 'metric': m.name, 'score': m.score, 'threshold': m.threshold, 'success': m.success, 'reason': m.reason} for test in eval_results.test_results for m in test.metrics_data]
+  return [{'agent': agent_name, 'model': model, 'rag': rag, 'test_name': test.name, 'metric': m.name, 'score': m.score, 'cost': m.evaluation_cost, 'threshold': m.threshold, 'success': m.success, 'reason': m.reason} for test in eval_results.test_results for m in test.metrics_data]
 

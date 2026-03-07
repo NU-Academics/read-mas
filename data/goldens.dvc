@@ -1,6 +1,6 @@
 outs:
-- md5: 3ab7a14d0e5ef977435629044c8eb08a.dir
-  size: 1475317
+- md5: 8afbbacdacbc49c32f7eb4a5ae066bef.dir
+  size: 1612977
   nfiles: 16
   hash: md5
   path: goldens

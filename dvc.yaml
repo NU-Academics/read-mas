@@ -1,8 +1,10 @@
 stages:
   train:
-    cmd: python src/eval/run.py train -t ${train.agent_name} -m ${train.model} -r ${train.rag}
+    cmd: python -m src.eval.run train -t ${train.agent_name} -m ${train.model} 
+      -e
     deps:
     - src/eval/run.py
+    - src/eval/evaluators/agent_evals/trainer.py
     - data/goldens/${train.agent_name}/train.json
     params:
     - train.agent_name
@@ -10,10 +12,16 @@ stages:
     - train.rag
     outs:
     - runs/train_runs
+    metrics:
+    - runs/train_runs/metrics.json
+    plots:
+    - runs/train_runs/plots/metrics:
+        x: step
   eval:
-    cmd: python src/eval/run.py eval -t ${eval.agent_name} -m ${eval.model} -r ${eval.rag}
+    cmd: python -m src.eval.run eval -t ${eval.agent_name} -m ${eval.model} -e
     deps:
     - src/eval/run.py
+    - src/eval/evaluators/agent_evals/evaluator.py
     - data/goldens/${eval.agent_name}/eval.json
     params:
     - eval.agent_name
@@ -21,10 +29,17 @@ stages:
     - eval.rag
     outs:
     - runs/eval_runs
+    metrics:
+    - runs/eval_runs/metrics.json
+    plots:
+    - runs/eval_runs/plots/metrics:
+        x: step
   benchmark:
-    cmd: python src/eval/run.py benchmark -t ${benchmark.agent_name} -m ${benchmark.model} -r ${benchmark.rag}
+    cmd: python src/eval/run.py benchmark -t ${benchmark.agent_name} -m 
+      ${benchmark.model} -r ${benchmark.rag} -e
     deps:
-    - src/eval/run.py  
+    - src/eval/run.py
+    - src/eval/evaluators/agent_evals/evaluator.py
     - data/goldens/${benchmark.agent_name}/benchmark.json
     params:
     - benchmark.agent_name
@@ -32,8 +47,14 @@ stages:
     - benchmark.rag
     outs:
     - runs/benchmark_runs
+    metrics:
+    - runs/benchmark_runs/metrics.json
+    plots:
+    - runs/benchmark_runs/plots/metrics:
+        x: step
   code_benchmark:
-    cmd: python src/eval/run.py code-bench -t ${code.agent_name} -m ${code.model} -r ${code.rag}
+    cmd: python src/eval/run.py code-bench -t ${code.agent_name} -m 
+      ${code.model} -r ${code.rag} -e
     deps:
     - src/eval/run.py
     params:
@@ -42,8 +63,8 @@ stages:
     - code.rag
     outs:
     - runs/code_benchmark_runs
-metrics:
-- eval_runs/metrics.json
-plots:
-- eval_runs/plots/metrics:
-    x: step
+    metrics:
+    - runs/code_benchmark_runs/metrics.json
+    plots:
+    - runs/code_benchmark_runs/plots/metrics:
+        x: step
