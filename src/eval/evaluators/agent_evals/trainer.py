@@ -93,10 +93,6 @@ class AgentTrainer:
 
     if(self._experiment):
       with Live(TRAIN_RUN_PATH, report="notebook") as live:
-        optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._goldens)
-        logger.debug(f"Original prompt: {self._prompt_to_optimize.text_template}")
-        logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")
-
         if not live.summary:
           live.summary = {"agent": self._evaluated_agent.name, "model": self._model, "rag": self._rag, "prompts": {}, "metrics": []}
 
