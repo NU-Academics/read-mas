@@ -5,6 +5,7 @@ stages:
     deps:
     - src/eval/run.py
     - src/eval/evaluators/agent_evals/trainer.py
+    - src/prompt_templates/*
     - data/goldens/${train.agent_name}/train.json
     params:
     - train.agent_name
