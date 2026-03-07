@@ -12,11 +12,6 @@ stages:
     - train.rag
     outs:
     - runs/train_runs
-    metrics:
-    - runs/train_runs/metrics/metrics.json
-    plots:
-    - runs/train_runs/plots/metrics:
-        x: step
   eval:
     cmd: python -m src.eval.run eval -t ${eval.agent_name} -m ${eval.model} -e
     deps:
@@ -29,11 +24,6 @@ stages:
     - eval.rag
     outs:
     - runs/eval_runs
-    metrics:
-    - runs/eval_runs/metrics/metrics.json
-    plots:
-    - runs/eval_runs/plots/metrics:
-        x: step
   benchmark:
     cmd: python src/eval/run.py benchmark -t ${benchmark.agent_name} -m 
       ${benchmark.model} -r ${benchmark.rag} -e
@@ -47,11 +37,6 @@ stages:
     - benchmark.rag
     outs:
     - runs/benchmark_runs
-    metrics:
-    - runs/benchmark_runs/metrics/metrics.json
-    plots:
-    - runs/benchmark_runs/plots/metrics:
-        x: step
   code_benchmark:
     cmd: python src/eval/run.py code-bench -t ${code.agent_name} -m 
       ${code.model} -r ${code.rag} -e
@@ -63,8 +48,3 @@ stages:
     - code.rag
     outs:
     - runs/code_benchmark_runs
-    metrics:
-    - runs/code_benchmark_runs/metrics/metrics.json
-    plots:
-    - runs/code_benchmark_runs/plots/metrics:
-        x: step
