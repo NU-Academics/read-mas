@@ -16,6 +16,16 @@ from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
 from orchestrator import get_agent
 from utils.logger import get_run_id
 
+def str_to_bool(s: str) -> bool:
+    """Converts a string to a boolean value."""
+    s_lower = s.strip().lower()
+    if s_lower in ('true', 'yes', '1'):
+        return True
+    elif s_lower in ('false', 'no', '0'):
+        return False
+    else:
+        # Optional: Raise an error for invalid input
+        raise typer.BadParameter(f"'{s}' is not a valid boolean string. Use true/false/yes/no/1/0.")
 
 app = typer.Typer(help="READ-MAS CLI for running Evals")
 
@@ -55,7 +65,7 @@ def generate_samples(
         help="Number of samples to generate per task",
     ),
     rag: str = typer.Option(
-        "False",
+        False,
         "--rag",
         "-r",
         help="Whether to use the RAG tool",
@@ -67,7 +77,7 @@ def generate_samples(
 
   async def a_generate_benchmark_samples():
     """Run evaluation."""
-    evaluated = get_agent(model, agent_type, AgentRunMode.BENCHMARK, bool(rag))
+    evaluated = get_agent(model, agent_type, AgentRunMode.BENCHMARK, rag)
     entry_agent = EvalCodeGeneratorAgent(model, evaluated).get_agent()
     await generate_benchmark_samples(
         entry_agent,
@@ -106,6 +116,7 @@ def code_benchmark_agent(
         "False",
         "--rag",
         "-r",
+        callback=str_to_bool,
         help="Whether to use the RAG tool",
     ),
     dataset: Optional[str] = typer.Option(
@@ -129,7 +140,7 @@ def code_benchmark_agent(
 ):
   setup_logging(str(ctx.params["run_id"]), "code_benchmark")
   
-  benchmarker = CodingBenchmarker(run_id, agent_type, dataset, samples_file, model, bool(rag), AgentRunMode.CODE_BENCHMARK, experiment)
+  benchmarker = CodingBenchmarker(run_id, agent_type, dataset, samples_file, model, rag, AgentRunMode.CODE_BENCHMARK, experiment)
   asyncio.run(benchmarker.benchmark())
 
 @app.command("train")
@@ -154,6 +165,7 @@ def train_agent(
         "False",
         "--rag",
         "-r",
+        callback=str_to_bool,
         help="Whether to use the RAG tool",
     ),
     experiment: bool = typer.Option(
@@ -165,7 +177,7 @@ def train_agent(
 ):
   setup_logging(str(ctx.params["run_id"]), "train")
   
-  trainer = AgentTrainer(agent_type, model, bool(rag), experiment)
+  trainer = AgentTrainer(agent_type, model, rag, experiment)
   asyncio.run(trainer.train_agent())
 
 @app.command("eval")
@@ -190,6 +202,7 @@ def eval_agent(
         "False",
         "--rag",
         "-r",
+        callback=str_to_bool,
         help="Whether to use the RAG tool",
     ),
     experiment: bool = typer.Option(
@@ -201,7 +214,7 @@ def eval_agent(
 ):
   setup_logging(str(ctx.params["run_id"]), "eval")
   
-  evaluator = AgentEvaluator(agent_type, model, bool(rag), AgentRunMode.EVAL, experiment)
+  evaluator = AgentEvaluator(agent_type, model, rag, AgentRunMode.EVAL, experiment)
   asyncio.run(evaluator.eval_agent())
 
 @app.command("benchmark")
@@ -226,6 +239,7 @@ def benchmark_agent(
         "False",
         "--rag",
         "-r",
+        callback=str_to_bool,
         help="Whether to use the RAG tool",
     ),
     experiment: bool = typer.Option(
@@ -237,7 +251,7 @@ def benchmark_agent(
 ):
   setup_logging(str(ctx.params["run_id"]), "benchmark")
   
-  benchmarker = AgentEvaluator(agent_type, model, bool(rag), AgentRunMode.BENCHMARK, experiment)
+  benchmarker = AgentEvaluator(agent_type, model, rag, AgentRunMode.BENCHMARK, experiment)
   asyncio.run(benchmarker.eval_agent())
 
 
