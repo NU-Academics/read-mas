@@ -1,11 +1,9 @@
 """Constants used by the Eval module."""
 
-from typing import Literal
 from pathlib import Path
 
-from deepeval.metrics import AnswerRelevancyMetric, ContextualRelevancyMetric, BaseMetric
-from deepeval.metrics import FaithfulnessMetric
 from deepeval.prompt import Prompt
+
 from single import SingleAgent
 from requirement import (CollectorAgent, AnalyzerAgent, SpecifierAgent, RequirementsWrapperAgent)
 from design import (DesignerAgent, DocumenterAgent, DesignWrapperAgent)
@@ -20,7 +18,15 @@ from prompt_templates import (
     DESIGN_AGENT_SYSTEM_PROMPT,
 )
 from eval.metrics import (
-  architecture_soundness,
+  analysis_accuracy,
+  design_accuracy,
+  designer_accuracy,
+  design_document_accuracy,
+  hallucination,
+  ragas_faithfulness,
+  requirements_accuracy,
+  specification_accuracy,
+  topic_adherence
 )
 
 PROMPT_OPTIMIZER_MODEL = "gpt-5-mini"
@@ -38,23 +44,23 @@ AGENT_GOLDENS_MAP = {
 }
 
 AGENT_METRICS_MAP = {
-  "analyzer_agent": [AnswerRelevancyMetric()],
-  "collector_agent": [AnswerRelevancyMetric()],
-  "designer_agent": [AnswerRelevancyMetric()],
-  "documenter_agent": [AnswerRelevancyMetric()],
-  "read_agent": [AnswerRelevancyMetric()],
-  "single_agent": [architecture_soundness],
-  "specifier_agent": [AnswerRelevancyMetric()],
+  "analyzer_agent": [analysis_accuracy, hallucination, topic_adherence],
+  "collector_agent": [requirements_accuracy, hallucination, topic_adherence],
+  "designer_agent": [designer_accuracy, hallucination, topic_adherence],
+  "documenter_agent": [design_document_accuracy, hallucination, topic_adherence],
+  "read_agent": [design_accuracy],
+  "single_agent": [design_accuracy],
+  "specifier_agent": [specification_accuracy, hallucination, topic_adherence],
 }
 
 AGENT_RAG_METRICS_MAP = {
-  "analyzer_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "collector_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "designer_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "documenter_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "read_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "single_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
-  "specifier_agent": [AnswerRelevancyMetric(), ContextualRelevancyMetric(), FaithfulnessMetric()],
+  "analyzer_agent": [analysis_accuracy, hallucination, topic_adherence],
+  "collector_agent": [requirements_accuracy, ragas_faithfulness, hallucination, topic_adherence],
+  "designer_agent": [designer_accuracy, hallucination, topic_adherence],
+  "documenter_agent": [design_document_accuracy, hallucination, topic_adherence],
+  "read_agent": [design_accuracy, ragas_faithfulness],
+  "single_agent": [design_accuracy, ragas_faithfulness],
+  "specifier_agent": [specification_accuracy, hallucination, topic_adherence],
 }
 
 AGENT_PROMPTS = {
