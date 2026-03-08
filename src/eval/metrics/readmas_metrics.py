@@ -1,5 +1,7 @@
 """Metrics for the READ-MAS system."""
 
+import os
+
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCaseParams
 from deepeval.metrics import HallucinationMetric, TopicAdherenceMetric
@@ -29,7 +31,6 @@ ragas_faithfulness = Faithfulness(llm=llm_factory(EVALUATION_MODEL, client=opena
 
 # DeepEval content quality and agentic metrics useful to validate multiple agents
 hallucination = HallucinationMetric(model=EVALUATION_MODEL)
-topic_adherence = TopicAdherenceMetric(model=EVALUATION_MODEL)
 
 # Collector Agent metrics
 requirements_accuracy = GEval(

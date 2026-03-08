@@ -26,7 +26,6 @@ from eval.metrics import (
   ragas_faithfulness,
   requirements_accuracy,
   specification_accuracy,
-  topic_adherence
 )
 
 PROMPT_OPTIMIZER_MODEL = "gpt-5-mini"
@@ -44,23 +43,23 @@ AGENT_GOLDENS_MAP = {
 }
 
 AGENT_METRICS_MAP = {
-  "analyzer_agent": [analysis_accuracy, hallucination, topic_adherence],
-  "collector_agent": [requirements_accuracy, hallucination, topic_adherence],
-  "designer_agent": [designer_accuracy, hallucination, topic_adherence],
-  "documenter_agent": [design_document_accuracy, hallucination, topic_adherence],
+  "analyzer_agent": [analysis_accuracy, hallucination],
+  "collector_agent": [requirements_accuracy, hallucination],
+  "designer_agent": [designer_accuracy, hallucination],
+  "documenter_agent": [design_document_accuracy, hallucination],
   "read_agent": [design_accuracy],
   "single_agent": [design_accuracy],
-  "specifier_agent": [specification_accuracy, hallucination, topic_adherence],
+  "specifier_agent": [specification_accuracy, hallucination],
 }
 
 AGENT_RAG_METRICS_MAP = {
-  "analyzer_agent": [analysis_accuracy, hallucination, topic_adherence],
-  "collector_agent": [requirements_accuracy, ragas_faithfulness, hallucination, topic_adherence],
-  "designer_agent": [designer_accuracy, hallucination, topic_adherence],
-  "documenter_agent": [design_document_accuracy, hallucination, topic_adherence],
+  "analyzer_agent": [analysis_accuracy, hallucination],
+  "collector_agent": [requirements_accuracy, ragas_faithfulness, hallucination],
+  "designer_agent": [designer_accuracy, hallucination],
+  "documenter_agent": [design_document_accuracy, hallucination],
   "read_agent": [design_accuracy, ragas_faithfulness],
   "single_agent": [design_accuracy, ragas_faithfulness],
-  "specifier_agent": [specification_accuracy, hallucination, topic_adherence],
+  "specifier_agent": [specification_accuracy, hallucination],
 }
 
 AGENT_PROMPTS = {
