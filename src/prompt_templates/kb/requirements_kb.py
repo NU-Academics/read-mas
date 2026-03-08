@@ -1,15 +1,15 @@
 """Prompt snippets for the requirements knowledge base adopted from the Software Engineer GPT."""
 
 REQUIREMENT_TYPES = """
-- Business requirements
-- Features
-- User requirements
-- Functional requirements
-- Quality attributes, also known as non-functional requirements
-- Business rules
-- External interface requirements
-- Constraints
-- Data requirements"""
+  - Business requirements
+  - Features and user stories
+  - Functional requirements (write as “The system shall …” statements, testable and granular)
+  - Non-functional requirements / quality attributes (performance, memory, latency, concurrency, determinism, portability, security, reliability, observability)
+  - Business rules
+  - External interface requirements (file formats, network APIs, CLI)
+  - Constraints (hardware, language, banned libraries, build system)
+  - Data requirements and persistence
+"""
 
 USER_REQUIREMENTS_DESCRIPTION = """
 User requirements describe goals or tasks the users must be able to perform with the system-to-be that will provide value to some stakeholders. User requirements are also known as user needs, user goals, tasks need to be done with the system-to-be. This is a user-centric and usage-centric requirements engineering approach. User requirements are usually elicited by business analysts and user representatives or a product manager depending on the type of the software (Software for internal corporate use or Software for commercial sale). They must align with the context and objectives that the business requirements and features establish. User requirements are most typically represented as use cases, scenarios, or user stories.
