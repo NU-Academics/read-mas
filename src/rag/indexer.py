@@ -41,9 +41,9 @@ from .constants import (
 
 load_dotenv(dotenv_path=Path(__file__).parent.parent.parent / ".env", override=False)
 
+
 def _get_doc_base_name(filename: str) -> str:
-  """Extract base name without extension for holdout matching.
-  """
+  """Extract base name without extension for holdout matching."""
   stem = filename
   for ext in [".docx", ".pdf", ".html", ".rtf"]:
     if stem.endswith(ext):
@@ -220,7 +220,6 @@ def _chunk_pure_docs() -> list[dict]:
       skipped_count += 1
       continue
 
-
     ext = filepath.suffix.lower()
     if ext == ".pdf":
       text = _extract_text_from_pdf(filepath)
@@ -255,13 +254,14 @@ def _chunk_pure_docs() -> list[dict]:
 def _batch_chunks(seq, size):
   """Splits chunks into multiple batches based on the batch size."""
   for pos in range(0, len(seq), size):
-    yield seq[pos:pos+size]
+    yield seq[pos : pos + size]
+
 
 def _embed_chunks(chunks: list[dict]) -> np.ndarray:
   """Embed all chunks using Ollama."""
   emb_list = []
   texts = [c["chunk"] for c in chunks]
-  
+
   client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
   for batch in _batch_chunks(texts, EMBED_BATCH_SIZE):
     res = client.models.embed_content(model=GEMINI_EMBEDDING_MODEL, contents=batch)
@@ -273,7 +273,7 @@ def _embed_chunks(chunks: list[dict]) -> np.ndarray:
 
 def index_requirements():
   """Build multi-source FAISS index from all configured data sources."""
-  
+
   setup_logging(get_run_id(), "rag_indexer")
   logger.info("Starting multi-source FAISS index build...")
 
@@ -320,6 +320,7 @@ def index_requirements():
 
   except Exception as e:
     logger.debug(f"Error while indexing RAG data in FAISS: {str(e)}")
+
 
 if __name__ == "__main__":
   index_requirements()

@@ -22,6 +22,7 @@ from .constants import (
 
 load_dotenv(dotenv_path=Path(__file__).parent.parent.parent / ".env", override=False)
 
+
 def _get_embedding(query: str):
   client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
   res = client.models.embed_content(model=GEMINI_EMBEDDING_MODEL, contents=query)
@@ -52,13 +53,13 @@ def retrieve_requirements(query: str) -> Optional[List[str]]:
 
   result = [requirement_chunks[i]["chunk"] for i in indices[0]]
   logger.debug(f"RAG retrieval for query: {query} is: {str(result)}")
-  
+
   return result
 
 
 if __name__ == "__main__":
   if len(sys.argv) != 1:
     sys.exit(1)
-    
+
   query = sys.argv(1)
   retrieve_requirements(query)

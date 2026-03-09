@@ -24,6 +24,7 @@ from orchestrator.plugins import ReadMasRetryPlugin
 
 _NO_RESPONSE = json.dumps({"error": "agent_no_response", "message": "Agent returned no response."})
 
+
 def get_agent(llm_model_name: str, agent_type: str, run_mode: AgentRunMode, rag: bool) -> BaseAgent:
   """Returns the agent based on the specified parameters.
 
@@ -79,7 +80,6 @@ async def run_agent(
 
   Retries up to 3 times with 2 minute pauses if LLM model errors occur.
   """
-  # Initialize session if needed (will be reused across retries)
   current_session_id = session_id
   current_user_id = user_id
   current_runner = runner
@@ -89,10 +89,19 @@ async def run_agent(
   ) and entry_agent is not None:
     log_path = get_log_path()
     debug_output = str(log_path / "adk_events.yaml") if log_path else "adk_events.yaml"
-    app = App(name=app_name, root_agent=entry_agent, plugins=[ReadMasRetryPlugin(max_retries=MAX_RETRIES), DebugLoggingPlugin(output_path=debug_output)])
-    
+    app = App(
+        name=app_name,
+        root_agent=entry_agent,
+        plugins=[
+            ReadMasRetryPlugin(max_retries=MAX_RETRIES),
+            DebugLoggingPlugin(output_path=debug_output),
+        ],
+    )
+
     session_manager = SessionManager()
-    current_session_id, current_runner, current_user_id = await session_manager.initialize_session(app=app)
+    current_session_id, current_runner, current_user_id = await session_manager.initialize_session(
+        app=app
+    )
   elif entry_agent is None:
     raise ValueError("Entry agent is required")
   elif current_session_id is None or current_user_id is None or current_runner is None:
@@ -117,4 +126,4 @@ async def run_agent(
   finally:
     await running.aclose()
 
-  return  response or escalated_response
+  return response or escalated_response

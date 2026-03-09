@@ -6,7 +6,8 @@ from typing import Optional
 from google.adk.apps import App
 from google.adk.sessions import InMemorySessionService
 from google.adk.sessions.base_session_service import BaseSessionService
-from google.adk.runners import Runner 
+from google.adk.runners import Runner
+
 
 class SessionManager:
   """Manages the session for the orchestrator agent."""
@@ -29,7 +30,7 @@ class SessionManager:
 
   async def initialize_session(self, app: App = None) -> tuple:
     if app is None:
-        raise ValueError("App is required")
+      raise ValueError("App is required")
     session_id = self.get_session_id()
     await self._session_service.create_session(
         app_name=app.name, user_id=self._user_id, session_id=session_id

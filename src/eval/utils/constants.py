@@ -18,14 +18,14 @@ from prompt_templates import (
     DESIGN_AGENT_SYSTEM_PROMPT,
 )
 from eval.metrics import (
-  analysis_accuracy,
-  design_accuracy,
-  designer_accuracy,
-  design_document_accuracy,
-  hallucination,
-  ragas_faithfulness,
-  requirements_accuracy,
-  specification_accuracy,
+    analysis_accuracy,
+    design_accuracy,
+    designer_accuracy,
+    design_document_accuracy,
+    hallucination,
+    ragas_faithfulness,
+    requirements_accuracy,
+    specification_accuracy,
 )
 
 PROMPT_OPTIMIZER_MODEL = "gpt-5-mini"
@@ -33,33 +33,33 @@ PROMPT_OPTIMIZER_MODEL = "gpt-5-mini"
 GOLDENS_BASE_PATH = Path("data/goldens")
 
 AGENT_GOLDENS_MAP = {
-  "analyzer_agent": GOLDENS_BASE_PATH / "analyzer_agent",
-  "collector_agent": GOLDENS_BASE_PATH / "collector_agent",
-  "designer_agent": GOLDENS_BASE_PATH / "designer_agent",
-  "documenter_agent": GOLDENS_BASE_PATH / "documenter_agent",
-  "read_agent": GOLDENS_BASE_PATH / "read_agent",
-  "single_agent": GOLDENS_BASE_PATH / "single_agent",
-  "specifier_agent": GOLDENS_BASE_PATH / "specifier_agent",
+    "analyzer_agent": GOLDENS_BASE_PATH / "analyzer_agent",
+    "collector_agent": GOLDENS_BASE_PATH / "collector_agent",
+    "designer_agent": GOLDENS_BASE_PATH / "designer_agent",
+    "documenter_agent": GOLDENS_BASE_PATH / "documenter_agent",
+    "read_agent": GOLDENS_BASE_PATH / "read_agent",
+    "single_agent": GOLDENS_BASE_PATH / "single_agent",
+    "specifier_agent": GOLDENS_BASE_PATH / "specifier_agent",
 }
 
 AGENT_METRICS_MAP = {
-  "analyzer_agent": [analysis_accuracy, hallucination],
-  "collector_agent": [requirements_accuracy, hallucination],
-  "designer_agent": [designer_accuracy, hallucination],
-  "documenter_agent": [design_document_accuracy, hallucination],
-  "read_agent": [design_accuracy],
-  "single_agent": [design_accuracy],
-  "specifier_agent": [specification_accuracy, hallucination],
+    "analyzer_agent": [analysis_accuracy, hallucination],
+    "collector_agent": [requirements_accuracy, hallucination],
+    "designer_agent": [designer_accuracy, hallucination],
+    "documenter_agent": [design_document_accuracy, hallucination],
+    "read_agent": [design_accuracy],
+    "single_agent": [design_accuracy],
+    "specifier_agent": [specification_accuracy, hallucination],
 }
 
 AGENT_RAG_METRICS_MAP = {
-  "analyzer_agent": [analysis_accuracy, hallucination],
-  "collector_agent": [requirements_accuracy, ragas_faithfulness, hallucination],
-  "designer_agent": [designer_accuracy, hallucination],
-  "documenter_agent": [design_document_accuracy, hallucination],
-  "read_agent": [design_accuracy, ragas_faithfulness],
-  "single_agent": [design_accuracy, ragas_faithfulness],
-  "specifier_agent": [specification_accuracy, hallucination],
+    "analyzer_agent": [analysis_accuracy, hallucination],
+    "collector_agent": [requirements_accuracy, ragas_faithfulness, hallucination],
+    "designer_agent": [designer_accuracy, hallucination],
+    "documenter_agent": [design_document_accuracy, hallucination],
+    "read_agent": [design_accuracy, ragas_faithfulness],
+    "single_agent": [design_accuracy, ragas_faithfulness],
+    "specifier_agent": [specification_accuracy, hallucination],
 }
 
 AGENT_PROMPTS = {

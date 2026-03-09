@@ -45,7 +45,7 @@ stages:
     deps:
     - src/eval/run.py
     - src/eval/evaluators/benchmark_evals/coding_benchmarker.py
-    - ${code.samples}
+    - data/samples/${code.dataset}
     params:
     - code.agent_name
     - code.model

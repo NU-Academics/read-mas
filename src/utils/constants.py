@@ -21,4 +21,3 @@ class AgentRunMode(StrEnum):
 NUMBER_OF_TRIES = 2
 
 EVALUATION_MODEL = "gpt-5-mini"
-
