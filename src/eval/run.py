@@ -17,14 +17,13 @@ from orchestrator import get_agent
 from utils.logger import get_run_id
 
 def str_to_bool(s: str) -> bool:
-    """Converts a string to a boolean value."""
+    """Converts a string to a boolean value to enable using the --rag argument without being a flag."""
     s_lower = s.strip().lower()
     if s_lower in ('true', 'yes', '1'):
         return True
     elif s_lower in ('false', 'no', '0'):
         return False
     else:
-        # Optional: Raise an error for invalid input
         raise typer.BadParameter(f"'{s}' is not a valid boolean string. Use true/false/yes/no/1/0.")
 
 app = typer.Typer(help="READ-MAS CLI for running Evals")

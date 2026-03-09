@@ -1,0 +1,9 @@
+{
+    "agent": "single_agent",
+    "model": "gemini-2.5-flash",
+    "rag": false,
+    "metrics": [
+        "OutputAccuracy [GEval]"
+    ],
+    "OutputAccuracy [GEval]": 0.7
+}

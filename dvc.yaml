@@ -14,7 +14,8 @@ stages:
     outs:
     - runs/train_runs
   eval:
-    cmd: python -m src.eval.run eval -t ${eval.agent_name} -m ${eval.model} -e
+    cmd: python -m src.eval.run eval -t ${eval.agent_name} -m ${eval.model} -r 
+      ${eval.rag} -e
     deps:
     - src/eval/run.py
     - src/eval/evaluators/agent_evals/evaluator.py
@@ -57,10 +58,13 @@ metrics:
 - runs/code_benchmark_runs/metrics.json
 - runs/train_runs/metrics.json
 - runs/eval_runs/metrics.json
+- runs/benchmark_runs/metrics.json
 plots:
 - runs/code_benchmark_runs/plots/metrics:
     x: step
 - runs/train_runs/plots/metrics:
     x: step
 - runs/eval_runs/plots/metrics:
+    x: step
+- runs/benchmark_runs/plots/metrics:
     x: step
