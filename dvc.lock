@@ -32,3 +32,29 @@ stages:
       md5: e6042774aa2e20428805134762d9c392.dir
       size: 9099
       nfiles: 2
+  eval:
+    cmd: python -m src.eval.run eval -t single_agent -m gemini-2.5-flash -e
+    deps:
+    - path: data/goldens/single_agent/eval.json
+      hash: md5
+      md5: b9b6a6fc0ce4bf72cd0e9d266ddbb478
+      size: 43313
+    - path: src/eval/evaluators/agent_evals/evaluator.py
+      hash: md5
+      md5: 8643fa325282775a00d644d57828fe6c
+      size: 2924
+    - path: src/eval/run.py
+      hash: md5
+      md5: 81519c0548cd769334affd1b890c790b
+      size: 7188
+    params:
+      params.yaml:
+        eval.agent_name: single_agent
+        eval.model: gemini-2.5-flash
+        eval.rag: false
+    outs:
+    - path: runs/eval_runs
+      hash: md5
+      md5: 0e3f3b4b8fdfc32431358bc6010fea0c.dir
+      size: 227
+      nfiles: 2

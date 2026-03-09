@@ -56,8 +56,11 @@ stages:
 metrics:
 - runs/code_benchmark_runs/metrics.json
 - runs/train_runs/metrics.json
+- runs/eval_runs/metrics.json
 plots:
 - runs/code_benchmark_runs/plots/metrics:
     x: step
 - runs/train_runs/plots/metrics:
+    x: step
+- runs/eval_runs/plots/metrics:
     x: step
