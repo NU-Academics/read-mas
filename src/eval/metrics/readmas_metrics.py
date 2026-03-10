@@ -13,7 +13,7 @@ from utils.constants import EVALUATION_MODEL
 
 # A custom metric to measure the performance of the end-to-end READ-MAS system (for single and read_wrapper agents. The metric's criteria include both RE and design objectives.
 design_accuracy = GEval(
-    name="OutputAccuracy",
+    name="DesignAccuracy",
     criteria=(
         "- Completeness: The design addresses all the requirements in the SRS.   - Modularity: The"
         " system architecture reflects a separation of concerns between its components and is"
