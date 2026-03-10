@@ -15,7 +15,10 @@ from utils.logger import setup_logging
 from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
 from orchestrator import get_agent
 from utils.logger import get_run_id
+from dotenv import load_dotenv
 
+# Load configs from .env file, if available.
+load_dotenv() 
 
 def str_to_bool(s: str) -> bool:
   """Converts a string to a boolean value to enable using the --rag argument without being a flag."""
@@ -73,7 +76,7 @@ def generate_samples(
     ),
 ):
   """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder."""
-  log_path = setup_logging(str(ctx.params["run_id"]), f"{benchmark_name}")
+  setup_logging(str(ctx.params["run_id"]), f"{benchmark_name}")
   logger.info(f"Starting run with ID: {run_id}")
 
   async def a_generate_benchmark_samples():
@@ -83,7 +86,7 @@ def generate_samples(
     await generate_benchmark_samples(
         entry_agent,
         benchmark_name,
-        app_name="agents",
+        app_name="coding_benchmarker",
         samples_file_path=samples_file,
         num_samples=num_samples,
     )

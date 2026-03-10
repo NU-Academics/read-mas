@@ -1,7 +1,6 @@
 """Trainer to optimize the agents' system prompts using prompt optimization algorithms."""
 
 from loguru import logger
-import os
 
 from deepeval.dataset import Golden
 from deepeval import evaluate
@@ -18,11 +17,7 @@ from utils.logger import setup_logging
 from eval.utils import (get_metrics, get_prompt, get_eval_agent, get_goldens, get_eval_result)
 from eval.utils.constants import PROMPT_OPTIMIZER_MODEL
 
-os.environ["DEEPEVAL_PER_TASK_TIMEOUT_SECONDS_OVERRIDE"] = "1500"
-os.environ["DEEPEVAL_PER_ATTEMPT_TIMEOUT_SECONDS_OVERRIDE"] = "300"
-
 TRAIN_RUN_PATH = "runs/train_runs"
-
 
 class AgentTrainer:
   """This class utilizes DeepEval's prompt optimizer to optimize system prompts of agents."""

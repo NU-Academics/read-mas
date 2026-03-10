@@ -14,6 +14,7 @@ CODE_GENERATOR_TOOL_SYSTEM_PROMPT = """Generate code based on the following soft
     - **FORBIDDEN**: DO NOT write unit tests - only generate the function implementation code
     - Generate ONLY the function implementation that solves the problem
     - Return only the code without explanations or markdown formatting unless the code itself requires markdown.
+    - **CRITICAL**: LIMIT doc strings and code comments to at most 2 sentences.
     """
 
 

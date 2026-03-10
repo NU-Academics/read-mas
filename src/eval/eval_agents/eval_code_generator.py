@@ -11,6 +11,7 @@ from google.adk.agents import Agent, BaseAgent
 from google.adk.tools.agent_tool import AgentTool
 from utils import DEFAULT_MODEL_NAME
 from single import SingleAgent
+from agents import (before_agent, after_agent, before_model, after_model)
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -37,6 +38,10 @@ class EvalCodeGeneratorAgent(AgentBase):
         ),
         tools=[self._agent_tool, generate_code],
         instruction=EVAL_AGENT_SYSTEM_PROMPT,
+        before_agent_callback=before_agent,
+        after_agent_callback=after_agent,
+        before_model_callback=before_model,
+        after_model_callback=after_model,
     )
 
 
