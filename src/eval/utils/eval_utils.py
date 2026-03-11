@@ -13,6 +13,7 @@ from eval.utils.constants import (
     AGENT_GOLDENS_MAP,
     AGENT_METRICS_MAP,
     AGENT_RAG_METRICS_MAP,
+    AGENT_RAG_TRAIN_METRICS_MAP,
     AGENT_PROMPTS,
     AGENT_REGISTRY,
 )
@@ -20,8 +21,12 @@ from rag import retrieve_requirements
 from utils.constants import AgentRunMode
 
 
-def get_metrics(agent_type: str, rag: bool = False) -> list[BaseMetric]:
-  """Gets the list of metrics for an agent."""
+def get_metrics(agent_type: str, rag: bool = False, run_mode: Optional[AgentRunMode] = AgentRunMode.EVAL
+) -> list[BaseMetric]:
+  """Gets the list of metrics for an agent. The RAG mode for training uses the Faithfullness metric from deepeval since PromptOptimizer accepts only deepeval metrics."""
+  if rag and run_mode == AgentRunMode.TRAIN:
+    return AGENT_RAG_TRAIN_METRICS_MAP[agent_type]
+  
   if rag:
     return AGENT_RAG_METRICS_MAP[agent_type]
 
