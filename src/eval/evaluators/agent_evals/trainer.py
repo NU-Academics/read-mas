@@ -33,7 +33,7 @@ class AgentTrainer:
         self._rag,
         AgentRunMode.TRAIN,
     )
-    self._metrics = get_metrics(self._agent_type, self._rag)
+    self._metrics = get_metrics(self._agent_type, self._rag, AgentRunMode.TRAIN)
     self._goldens = get_goldens(self._agent_type, self._rag, AgentRunMode.TRAIN)
 
   async def agent_callback(self, prompt: Prompt, golden: Golden) -> str:
