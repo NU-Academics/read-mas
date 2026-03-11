@@ -12,8 +12,6 @@ from dvclive.live import Live
 
 from orchestrator import run_agent
 from utils.constants import AgentRunMode
-from utils.logger import get_run_id
-from utils.logger import setup_logging
 from eval.utils import (get_metrics, get_prompt, get_eval_agent, get_goldens, get_eval_result)
 from eval.utils.constants import PROMPT_OPTIMIZER_MODEL
 

@@ -23,7 +23,7 @@ def run(
         help="Unique run identifier",
     ),
     agent_type: Optional[str] = typer.Option(
-        "single",
+        "single_agent",
         "--agent-type",
         "-t",
         help="Single or Multi-agent option.",
