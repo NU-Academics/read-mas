@@ -6,13 +6,11 @@ from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
 import time
 
 from google.adk.agents import Agent
-from tools import save_to_file
-from rag import retrieve_requirements
 from utils.logger import setup_logging
 from prompt_templates import ANALYZER_AGENT_SYSTEM_PROMPT
 from requirement.collector import CollectorOutputModel
 from .analyzer_models import AnalyzerOutputModel
-from agents import (before_agent, after_agent, before_model, after_model)
+from agents import (add_rag_mcp, before_agent, after_agent, before_model, after_model)
 
 
 class AnalyzerAgent(AgentBase):
@@ -29,11 +27,8 @@ class AnalyzerAgent(AgentBase):
 
   def get_agent(self) -> Agent:
     tools = []
-    if self._run_mode != AgentRunMode.BENCHMARK:
-      tools.append(save_to_file)
-
     if self._rag:
-      tools.append(retrieve_requirements)
+      add_rag_mcp(tools)
 
     return Agent(
         name="analyzer_agent",

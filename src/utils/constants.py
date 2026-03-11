@@ -21,3 +21,5 @@ class AgentRunMode(StrEnum):
 NUMBER_OF_TRIES = 2
 
 EVALUATION_MODEL = "gpt-5-mini"
+
+MCP_URL_RAG = "http://127.0.0.1:8001/mcp"

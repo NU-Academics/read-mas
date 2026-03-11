@@ -8,13 +8,11 @@ import time
 from google.adk.agents import Agent
 from google.adk.planners import BuiltInPlanner
 from google.genai.types import ThinkingConfig
-from tools import save_to_file
-from rag import retrieve_requirements
+
 from utils.logger import setup_logging
 from prompt_templates import COLLECTOR_AGENT_SYSTEM_PROMPT
 from .collector_models import CollectorOutputModel
-from agents import (before_agent, after_agent, before_model, after_model)
-
+from agents import (add_rag_mcp, before_agent, after_agent, before_model, after_model)
 
 class CollectorAgent(AgentBase):
   """This class defines the collector agent in the RE phase of the SDLC."""
@@ -30,11 +28,7 @@ class CollectorAgent(AgentBase):
 
   def get_agent(self) -> Agent:
     tools = []
-    if self._run_mode != AgentRunMode.BENCHMARK:
-      tools.append(save_to_file)
-
-    if self._rag:
-      tools.append(retrieve_requirements)
+    add_rag_mcp(tools)
 
     # Create a ThinkingConfig and planner
     thinking_config = ThinkingConfig(include_thoughts=True, thinking_budget=256)

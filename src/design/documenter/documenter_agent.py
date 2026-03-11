@@ -8,11 +8,9 @@ from google.adk.agents import Agent
 from agents import AgentBase, get_model_from
 from design.designer import DesignerOutputModel
 from prompt_templates import DOCUMENTER_AGENT_SYSTEM_PROMPT
-from tools import save_to_file
 from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode
 from utils.logger import setup_logging
 from agents import (before_agent, after_agent, before_model, after_model)
-
 
 class DocumenterAgent(AgentBase):
   """This class defines the documenter agent in the Design phase of the SDLC."""
@@ -27,10 +25,6 @@ class DocumenterAgent(AgentBase):
     super().__init__(llm_model_name, system_prompt, run_mode, rag)
 
   def get_agent(self) -> Agent:
-    tools = []
-    if self._run_mode != AgentRunMode.BENCHMARK:
-      tools.append(save_to_file)
-
     return Agent(
         name="documenter_agent",
         model=get_model_from(self._llm_model_name),
@@ -39,7 +33,6 @@ class DocumenterAgent(AgentBase):
             " designs for the requested system."
         ),
         instruction=self._system_prompt,
-        tools=tools,
         input_schema=DesignerOutputModel,
         output_key="documenter_output",
         before_agent_callback=before_agent,

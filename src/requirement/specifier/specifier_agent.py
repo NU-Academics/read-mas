@@ -5,10 +5,8 @@ from typing import Optional
 
 from google.adk.agents import Agent
 
-from agents import AgentBase, get_model_from
+from agents import (add_rag_mcp, AgentBase, get_model_from)
 from prompt_templates import SPECIFIER_AGENT_SYSTEM_PROMPT
-from rag import retrieve_requirements
-from tools import save_to_file
 from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode
 from utils.logger import setup_logging
 
@@ -30,11 +28,8 @@ class SpecifierAgent(AgentBase):
 
   def get_agent(self) -> Agent:
     tools = []
-    if self._run_mode != AgentRunMode.BENCHMARK:
-      tools.append(save_to_file)
-
     if self._rag:
-      tools.append(retrieve_requirements)
+      add_rag_mcp(tools)
 
     return Agent(
         name="specifier_agent",

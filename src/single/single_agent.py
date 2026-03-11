@@ -4,16 +4,14 @@ from typing import Optional
 import time
 
 from google.adk.agents import Agent
-from loguru import logger
+from google.adk.tools.mcp_tool import MCPToolset, StreamableHTTPConnectionParams
 
-from agents import (AgentBase, get_model_from)
+from agents import (AgentBase, get_model_from, add_rag_mcp)
 from utils.constants import DEFAULT_MODEL_NAME
 from prompt_templates.single_prompt import SINGLE_AGENT_SYSTEM_PROMPT
 from utils.constants import AgentRunMode
-from rag import retrieve_requirements
 from utils.logger import setup_logging
 from agents import (before_agent, after_agent, before_model, after_model)
-
 
 class SingleAgent(AgentBase):
   """Defines a single agent that both generates requirements and designs the requested software."""
@@ -29,8 +27,7 @@ class SingleAgent(AgentBase):
 
   def get_agent(self) -> Agent:
     tools = []
-    if self._rag:
-      tools.append(retrieve_requirements)
+    add_rag_mcp(tools)
 
     return Agent(
         name="single_agent",

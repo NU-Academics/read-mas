@@ -11,7 +11,6 @@ from prompt_templates import DESIGNER_AGENT_SYSTEM_PROMPT
 from .designer_models import DesignerOutputModel
 from agents import (before_agent, after_agent, before_model, after_model)
 
-
 class DesignerAgent(AgentBase):
   """This class defines the designer agent in the Design phase of the SDLC."""
 

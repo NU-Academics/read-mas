@@ -1,18 +1,17 @@
 """Wrapper agent to create a workflow of the RE agents."""
 
 from typing import Optional
-from agents import (AgentBase, get_model_from)
+from agents import (add_rag_mcp, AgentBase, get_model_from)
 from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
 import time
 
-from google.adk.agents import Agent
+from google.adk.agents import (Agent)
 from google.adk.tools.agent_tool import AgentTool
 from utils.logger import setup_logging
 from prompt_templates import RE_AGENT_SYSTEM_PROMPT
 from requirement import CollectorAgent
 from requirement import AnalyzerAgent
 from requirement import SpecifierAgent
-from rag import retrieve_requirements
 from tools import save_to_file
 
 
@@ -35,7 +34,7 @@ class RequirementsWrapperAgent(AgentBase):
     tools = []
 
     if self._rag:
-      tools.append(retrieve_requirements)
+      add_rag_mcp(tools)
 
     tools.append(AgentTool(agent=self._collector_agent))
     tools.append(AgentTool(agent=self._analyzer_agent))

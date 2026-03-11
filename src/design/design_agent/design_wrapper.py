@@ -11,7 +11,6 @@ from utils.logger import setup_logging
 from prompt_templates import DESIGN_AGENT_SYSTEM_PROMPT
 from design import DesignerAgent
 from design import DocumenterAgent
-from tools import save_to_file
 
 
 class DesignWrapperAgent(AgentBase):
@@ -35,9 +34,6 @@ class DesignWrapperAgent(AgentBase):
     tools.append(designer_agent_tool)
     documenter_agent_tool = AgentTool(agent=self._documenter_agent)
     tools.append(documenter_agent_tool)
-
-    if self._run_mode != AgentRunMode.BENCHMARK:
-      tools.append(save_to_file)
 
     return Agent(
         name="design_agent",
