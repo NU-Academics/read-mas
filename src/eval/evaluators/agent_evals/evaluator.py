@@ -2,7 +2,6 @@
 
 from typing import Optional
 from loguru import logger
-import os
 
 from deepeval import evaluate
 from deepeval.evaluate.types import EvaluationResult
@@ -10,9 +9,7 @@ from deepeval.test_case import LLMTestCase
 from dvclive.live import Live
 
 from orchestrator import run_agent
-from utils.logger import get_run_id
-from utils.logger import setup_logging
-from eval.utils import (get_metrics, get_prompt, get_eval_agent, get_goldens, get_eval_result)
+from eval.utils import (compute_metrics_averages, get_metrics, get_prompt, get_eval_agent, get_goldens, get_eval_result)
 from utils.constants import (
     AgentRunMode,
 )
@@ -72,7 +69,7 @@ class AgentEvaluator:
     results = get_eval_result(eval_results, self._evaluated_agent.name, self._model, self._rag)
 
     if self._experiment:
-      with Live(self._run_path, report="notebook") as live:
+      with Live(self._run_path, report="md") as live:
 
         if not live.summary:
           live.summary = {
@@ -85,6 +82,11 @@ class AgentEvaluator:
         live.summary["metrics"] = [m.__name__ for m in self._metrics]
 
         for result in results:
-          live.log_metric(name=result["metric"], val=result["score"])
+          live.log_metric(name=result["metric"], val=result["score"], timestamp=True)
+          
+        average_scores = compute_metrics_averages(results)
+        for average in average_scores:
+          live.log_metric(name=average["metric"], val=average["score"], timestamp=True)
+
 
     logger.debug(f"{self._run_mode.name.capitalize()} results: {results}")

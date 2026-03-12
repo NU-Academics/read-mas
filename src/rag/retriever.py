@@ -56,10 +56,3 @@ def retrieve_requirements(query: str) -> Optional[List[str]]:
 
   return result
 
-
-if __name__ == "__main__":
-  if len(sys.argv) != 1:
-    sys.exit(1)
-
-  query = sys.argv(1)
-  retrieve_requirements(query)

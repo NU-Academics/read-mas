@@ -2,6 +2,7 @@
 
 import json
 from typing import Optional
+from loguru import logger
 
 from deepeval.dataset import Golden
 from deepeval.evaluate.types import EvaluationResult
@@ -72,7 +73,7 @@ def get_goldens(
 def get_eval_result(
     eval_results: EvaluationResult, agent_name: str, model: str, rag: bool
 ) -> list[dict[str, bool | str | float]]:
-  return [
+  result = [
       {
           'agent': agent_name,
           'model': model,
@@ -88,3 +89,26 @@ def get_eval_result(
       for test in eval_results.test_results
       for m in test.metrics_data
   ]
+  logger.debug(f"Eval results: {str(result)}")
+  return result
+
+def compute_metrics_averages(metric_list):
+    """
+    Compute the average score for each metric in the list.
+    """
+    totals   = {}
+    counters = {}
+
+    for entry in metric_list:
+        m = entry['metric']
+        s = entry['score']
+        totals[m]   = totals.get(m, 0.0) + s
+        counters[m] = counters.get(m, 0)   + 1
+
+    averages = [{'metric': m, 'score': float(f"{totals[m] / counters[m]:.3f}")} for m in totals]
+    return averages
+
+if __name__ == "__main__":
+  metrics = [{'metric': 'accuracy', 'score': 0.8},{'metric': 'accuracy', 'score': 0.7},{'metric': 'faithfulness', 'score': 0.9},{'metric': 'faithfulness', 'score': 0.8}]
+  averages = compute_metrics_averages(metrics)
+  print(f"Metric averages: {str(averages)}")

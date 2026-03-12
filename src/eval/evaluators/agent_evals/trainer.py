@@ -12,7 +12,7 @@ from dvclive.live import Live
 
 from orchestrator import run_agent
 from utils.constants import AgentRunMode
-from eval.utils import (get_metrics, get_prompt, get_eval_agent, get_goldens, get_eval_result)
+from eval.utils import (compute_metrics_averages, get_metrics, get_prompt, get_eval_agent, get_goldens, get_eval_result)
 from eval.utils.constants import PROMPT_OPTIMIZER_MODEL
 
 TRAIN_RUN_PATH = "runs/train_runs"
@@ -80,7 +80,7 @@ class AgentTrainer:
     optimized_metrics = await self._collect_metrics(optimized_prompt)
 
     if self._experiment:
-      with Live(TRAIN_RUN_PATH, report="notebook") as live:
+      with Live(TRAIN_RUN_PATH, report="md") as live:
         if not live.summary:
           live.summary = {
               "agent": self._evaluated_agent.name,
@@ -95,7 +95,12 @@ class AgentTrainer:
         live.summary["metrics"] = [m.__name__ for m in self._metrics]
 
         for result in optimized_metrics:
-          live.log_metric(name=result["metric"], val=result["score"])
+          live.log_metric(name=result["metric"], val=result["score"], timestamp=True)
+        
+        # Log the average score for each metric to add it to the summary (instead of the default behavior which logs the latest value to the metrics summary)
+        average_scores = compute_metrics_averages(optimized_metrics)
+        for average in average_scores:
+          live.log_metric(name=average["metric"], val=average["score"], timestamp=True)
 
     logger.debug(f"Original prompt: {self._prompt_to_optimize.text_template}")
     logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")
