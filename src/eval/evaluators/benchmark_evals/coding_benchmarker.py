@@ -111,7 +111,7 @@ class CodingBenchmarker:
     results = await self._evaluate()
 
     if self._experiment:
-      with Live(self._run_path, report="notebook") as live:
+      with Live(self._run_path, report="md") as live:
 
         if not live.summary:
           live.summary = {
