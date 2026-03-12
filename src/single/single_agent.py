@@ -6,7 +6,7 @@ import time
 from google.adk.agents import Agent
 from google.adk.tools.mcp_tool import MCPToolset, StreamableHTTPConnectionParams
 
-from agents import (AgentBase, get_model_from, add_rag_mcp)
+from agents import (AgentBase, get_model_from, add_rag_mcp, get_agent_config)
 from utils.constants import DEFAULT_MODEL_NAME
 from prompt_templates.single_prompt import SINGLE_AGENT_SYSTEM_PROMPT
 from utils.constants import AgentRunMode
@@ -35,6 +35,7 @@ class SingleAgent(AgentBase):
         description="A single agent that generates a software design for a user's query",
         instruction=self._system_prompt,
         tools=tools,
+        generate_content_config=get_agent_config(),
         output_key="design_output",
         before_agent_callback=before_agent,
         after_agent_callback=after_agent,

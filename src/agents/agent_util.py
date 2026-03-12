@@ -5,6 +5,8 @@ from utils.constants import OLLAMA_API_BASE, OLLAMA_BASE_URL
 
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool import MCPToolset, StreamableHTTPConnectionParams
+from google.genai.types import GenerateContentConfig
+
 from utils.constants import MCP_URL_RAG
 
 def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
@@ -34,3 +36,11 @@ def add_rag_mcp(tools: List[any]):
     )
   )
   tools.append(rag_toolset)
+
+def get_agent_config():
+  """Configures the agent's technical configuration attributes."""
+  return GenerateContentConfig(
+    temperature=0.2,
+    max_output_tokens=8192,
+    top_p=0.95
+  )
