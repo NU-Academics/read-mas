@@ -5,9 +5,7 @@ import os
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCaseParams
 from deepeval.metrics import (HallucinationMetric, FaithfulnessMetric)
-from openai import OpenAI
-from ragas.llms.base import llm_factory
-from ragas.metrics.collections import Faithfulness
+from deepeval.metrics.ragas import (RagasMetric, RAGASFaithfulnessMetric)
 from utils.constants import EVALUATION_MODEL
 
 
@@ -33,12 +31,10 @@ design_accuracy = GEval(
 )
 
 # RAGAS metric to measure the performance of the agents when using the RAG retriever.
-openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-ragas_faithfulness = Faithfulness(llm=llm_factory(EVALUATION_MODEL, client=openai_client))
+ragas_faithfulness = RAGASFaithfulnessMetric(threshold=0.5, model=EVALUATION_MODEL)
 
-# Deepeval RAG metrics
-faithfulness = FaithfulnessMetric(model=EVALUATION_MODEL)
+ragas_metric = RagasMetric(threshold=0.5, model=EVALUATION_MODEL)
 
 # DeepEval content quality and agentic metrics useful to validate multiple agents
 hallucination = HallucinationMetric(model=EVALUATION_MODEL)
