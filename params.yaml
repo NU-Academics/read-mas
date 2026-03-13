@@ -5,7 +5,7 @@ train:
 eval:
   agent_name: single_agent
   model: gemini-2.5-flash
-  rag: false
+  rag: true
 benchmark:
   agent_name: single_agent
   model: gemini-2.5-flash
