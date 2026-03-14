@@ -1,5 +1,6 @@
 """Agent evaluator class to evaluate and benchmark READ-MAS agents using custom LLM-as-a-Judge and RAGAS metrics."""
 
+from dotenv import load_dotenv
 from typing import Optional
 from loguru import logger
 
@@ -9,12 +10,12 @@ from deepeval.test_case import LLMTestCase
 from dvclive.live import Live
 
 from orchestrator import run_agent
-from eval.utils import (compute_metrics_averages, get_metrics, get_prompt, get_eval_agent, get_goldens, get_eval_result)
+from eval.utils import (compute_metrics_averages, get_metrics, get_prompt, get_eval_agent, get_dataset, get_eval_result)
 from utils.constants import (
     AgentRunMode,
 )
 
-
+load_dotenv() 
 class AgentEvaluator:
   """This class utilizes DeepEval's GEval framework to evaluate agents using LLM-as-a-Judge."""
 
@@ -36,17 +37,15 @@ class AgentEvaluator:
         self._agent_type, self._model, self._system_prompt.text_template, self._rag, self._run_mode
     )
     self._metrics = get_metrics(self._agent_type, self._rag)
-    self._goldens = get_goldens(self._agent_type, self._rag, AgentRunMode.EVAL)
+    self._dataset = get_dataset(self._agent_type, self._rag, AgentRunMode.EVAL)
     self._run_path = "runs/" + self._run_mode.value + "_runs"
 
   async def _evaluate(self) -> EvaluationResult:
     """Generate test cases from the goldens and evaluate the agent."""
-    test_cases = []
-
-    for golden in self._goldens:
+    for golden in self._dataset.goldens:
       actual_output = await run_agent(golden.input, self._evaluated_agent)
 
-      test_cases.append(
+      self._dataset.test_cases.append(
           LLMTestCase(
               input=golden.input,
               expected_output=golden.expected_output,
@@ -55,8 +54,8 @@ class AgentEvaluator:
               retrieval_context=golden.retrieval_context,
           )
       )
-
-    return evaluate(test_cases=test_cases, metrics=self._metrics)
+    
+    return evaluate(test_cases=self._dataset.test_cases, metrics=self._metrics)
 
   async def eval_agent(self):
     """Evaluate a READ-MAS agent using LLM-as-a-Judge.

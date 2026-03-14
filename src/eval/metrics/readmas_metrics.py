@@ -1,7 +1,6 @@
 """Metrics for the READ-MAS system."""
 
-import os
-
+from langchain_openai import ChatOpenAI
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCaseParams
 from deepeval.metrics import (HallucinationMetric, FaithfulnessMetric)
@@ -31,10 +30,12 @@ design_accuracy = GEval(
 )
 
 # RAGAS metric to measure the performance of the agents when using the RAG retriever.
+ragas_model = ChatOpenAI(model=EVALUATION_MODEL)
+ragas_faithfulness = RAGASFaithfulnessMetric(threshold=0.5, model=ragas_model)
+ragas_metric = RagasMetric(threshold=0.5, model=ragas_model)
 
-ragas_faithfulness = RAGASFaithfulnessMetric(threshold=0.5, model=EVALUATION_MODEL)
-
-ragas_metric = RagasMetric(threshold=0.5, model=EVALUATION_MODEL)
+# DeepEval RAG metrics
+faithfulness = FaithfulnessMetric(model=EVALUATION_MODEL)
 
 # DeepEval content quality and agentic metrics useful to validate multiple agents
 hallucination = HallucinationMetric(model=EVALUATION_MODEL)

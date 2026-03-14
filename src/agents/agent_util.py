@@ -1,6 +1,6 @@
 """Utility functions common for agents."""
 
-from typing import List, Union
+from typing import List, Optional, Union
 from utils.constants import OLLAMA_API_BASE, OLLAMA_BASE_URL
 
 from google.adk.models.lite_llm import LiteLlm
@@ -29,18 +29,19 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
   else:
     return LiteLlm(llm_model_name)
 
-def add_rag_mcp(tools: List[any]):
-  rag_toolset = MCPToolset(
-    connection_params=StreamableHTTPConnectionParams(
-      url=MCP_URL_RAG
+def add_rag_mcp(tools: List[any], rag: Optional[bool] = False):
+  if rag:
+    rag_toolset = MCPToolset(
+      connection_params=StreamableHTTPConnectionParams(
+        url=MCP_URL_RAG
+      )
     )
-  )
-  tools.append(rag_toolset)
+    tools.append(rag_toolset)
 
 def get_agent_config():
   """Configures the agent's technical configuration attributes."""
   return GenerateContentConfig(
     temperature=0.2,
-    max_output_tokens=8192,
+    #max_output_tokens=8192,
     top_p=0.95
   )

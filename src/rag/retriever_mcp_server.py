@@ -9,8 +9,6 @@ from rag.retriever import retrieve_requirements
 mcp = FastMCP("READ-MAS RAG server", host="0.0.0.0", port=8001)
 
 @mcp.tool(
-  name="Get Requirement Examples",
-  title="Get Requirement Examples",
   description="Returns example functional and non-functional requirements matching the user's query."
 )
 def get_requirement_examples(query: str = Field(description="The user query requesting for an application design.")) -> Optional[List[str]]:

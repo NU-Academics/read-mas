@@ -4,6 +4,7 @@ import json
 from typing import Optional
 from loguru import logger
 
+from deepeval.dataset import EvaluationDataset
 from deepeval.dataset import Golden
 from deepeval.evaluate.types import EvaluationResult
 from deepeval.metrics import BaseMetric
@@ -47,10 +48,10 @@ def get_eval_agent(
   return agent(model, prompt, run_mode, rag).get_agent()
 
 
-def get_goldens(
+def get_dataset(
     agent_type: str, rag: bool, run_mode: Optional[AgentRunMode] = AgentRunMode.EVAL
-) -> list[Golden]:
-  """Retrieves a list of goldens for an agent based on the requested run mode."""
+) -> EvaluationDataset:
+  """Retrieves an evaluation dataset with a list of goldens for an agent based on the requested run mode."""
   golden_filename = run_mode.value + '.json'
   golden_path = AGENT_GOLDENS_MAP[agent_type] / golden_filename
   with open(golden_path, 'r') as jf:
@@ -60,10 +61,11 @@ def get_goldens(
 
   if rag:
     for golden in goldens:
-      retrieval_context = retrieve_requirements(golden.input)
+      retrieval_context = retrieve_requirements(None, golden.input)
       golden.retrieval_context = retrieval_context or None
 
-  return goldens
+  dataset = EvaluationDataset(goldens=goldens)
+  return dataset
 
 
 def get_eval_result(

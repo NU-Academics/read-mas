@@ -12,7 +12,7 @@ from dvclive.live import Live
 
 from orchestrator import run_agent
 from utils.constants import AgentRunMode
-from eval.utils import (compute_metrics_averages, get_metrics, get_prompt, get_eval_agent, get_goldens, get_eval_result)
+from eval.utils import (compute_metrics_averages, get_metrics, get_prompt, get_eval_agent, get_dataset, get_eval_result)
 from eval.utils.constants import PROMPT_OPTIMIZER_MODEL
 
 TRAIN_RUN_PATH = "runs/train_runs"
@@ -34,7 +34,7 @@ class AgentTrainer:
         AgentRunMode.TRAIN,
     )
     self._metrics = get_metrics(self._agent_type, self._rag)
-    self._goldens = get_goldens(self._agent_type, self._rag, AgentRunMode.TRAIN)
+    self._dataset = get_dataset(self._agent_type, self._rag, AgentRunMode.TRAIN)
 
   async def agent_callback(self, prompt: Prompt, golden: Golden) -> str:
     prompt_text = prompt.text_template
@@ -44,12 +44,10 @@ class AgentTrainer:
     return await run_agent(golden.input, eval_agent)
 
   async def _collect_metrics(self, prompt: Prompt):
-    test_cases = []
-
-    for golden in self._goldens:
+    for golden in self._dataset.goldens:
       actual_output = await self.agent_callback(prompt, golden)
 
-      test_cases.append(
+      self._dataset.test_cases.append(
           LLMTestCase(
               input=golden.input,
               expected_output=golden.expected_output,
@@ -59,7 +57,7 @@ class AgentTrainer:
           )
       )
 
-    train_results = evaluate(test_cases=test_cases, metrics=self._metrics)
+    train_results = evaluate(test_cases=self._dataset.test_cases, metrics=self._metrics)
     return get_eval_result(train_results, self._evaluated_agent.name, self._model, self._rag)
 
   async def train_agent(self):
@@ -76,7 +74,7 @@ class AgentTrainer:
         async_config=async_config,
     )
 
-    optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._goldens)
+    optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._dataset.goldens)
     optimized_metrics = await self._collect_metrics(optimized_prompt)
 
     if self._experiment:
