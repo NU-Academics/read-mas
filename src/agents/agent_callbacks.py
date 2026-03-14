@@ -40,6 +40,7 @@ def before_model(
 
   # Append RAG retrieved content if the state contains the retrieved results
   rag_content = callback_context.state.get("requirement_examples")
+  logger.debug(f"Retrieved requirements: {str(rag_content)}")
   if rag_content:
     logger.debug(f"Adding retrieved context to system prompt: {str(rag_content)}")
     llm_request.config.system_instruction += (

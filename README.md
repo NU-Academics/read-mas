@@ -38,6 +38,16 @@ readmas run --query "Design a chat app" -t read_agent -m gemini-2.5-flash --rag 
 
 Outputs are saved to `runs/{run_id}/logs/`.
 
+### RAG Setup
+
+When using `--rag true`, the RAG MCP server must be running first:
+
+```bash
+python -m src.rag.retriever_mcp_server
+```
+
+This starts the retrieval server on `http://127.0.0.1:8001/mcp`, which provides requirement examples via FAISS + Gemini embeddings.
+
 ## Architecture
 
 ### Single Agent (`single_agent`)
