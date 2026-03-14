@@ -13,6 +13,7 @@ from utils.constants import AgentRunMode
 from utils.logger import setup_logging
 from agents import (before_agent, after_agent, before_model, after_model)
 
+
 class SingleAgent(AgentBase):
   """Defines a single agent that both generates requirements and designs the requested software."""
 

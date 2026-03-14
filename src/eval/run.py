@@ -18,7 +18,8 @@ from utils.logger import get_run_id
 from dotenv import load_dotenv
 
 # Load configs from .env file, if available.
-load_dotenv() 
+load_dotenv()
+
 
 def str_to_bool(s: str) -> bool:
   """Converts a string to a boolean value to enable using the --rag argument without being a flag."""

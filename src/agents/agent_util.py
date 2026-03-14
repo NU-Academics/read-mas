@@ -9,6 +9,7 @@ from google.genai.types import GenerateContentConfig
 
 from utils.constants import MCP_URL_RAG
 
+
 def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
   """ "Returns the model name as is for Gemini models and a LiteLlm object for others."""
   if llm_model_name.startswith("gemini"):
@@ -29,19 +30,17 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
   else:
     return LiteLlm(llm_model_name)
 
+
 def add_rag_mcp(tools: List[any], rag: Optional[bool] = False):
   if rag:
-    rag_toolset = MCPToolset(
-      connection_params=StreamableHTTPConnectionParams(
-        url=MCP_URL_RAG
-      )
-    )
+    rag_toolset = MCPToolset(connection_params=StreamableHTTPConnectionParams(url=MCP_URL_RAG))
     tools.append(rag_toolset)
+
 
 def get_agent_config():
   """Configures the agent's technical configuration attributes."""
   return GenerateContentConfig(
-    temperature=0.2,
-    #max_output_tokens=8192,
-    top_p=0.95
+      temperature=0.2,
+      # max_output_tokens=8192,
+      top_p=0.95,
   )

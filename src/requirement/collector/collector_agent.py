@@ -14,6 +14,7 @@ from prompt_templates import COLLECTOR_AGENT_SYSTEM_PROMPT
 from .collector_models import CollectorOutputModel
 from agents import (add_rag_mcp, before_agent, after_agent, before_model, after_model)
 
+
 class CollectorAgent(AgentBase):
   """This class defines the collector agent in the RE phase of the SDLC."""
 

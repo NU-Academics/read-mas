@@ -12,6 +12,7 @@ from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode
 from utils.logger import setup_logging
 from agents import (before_agent, after_agent, before_model, after_model)
 
+
 class DocumenterAgent(AgentBase):
   """This class defines the documenter agent in the Design phase of the SDLC."""
 

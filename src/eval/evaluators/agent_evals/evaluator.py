@@ -10,12 +10,21 @@ from deepeval.test_case import LLMTestCase
 from dvclive.live import Live
 
 from orchestrator import run_agent
-from eval.utils import (compute_metrics_averages, get_metrics, get_prompt, get_eval_agent, get_dataset, get_eval_result)
+from eval.utils import (
+    compute_metrics_averages,
+    get_metrics,
+    get_prompt,
+    get_eval_agent,
+    get_dataset,
+    get_eval_result,
+)
 from utils.constants import (
     AgentRunMode,
 )
 
-load_dotenv() 
+load_dotenv()
+
+
 class AgentEvaluator:
   """This class utilizes DeepEval's GEval framework to evaluate agents using LLM-as-a-Judge."""
 
@@ -54,7 +63,7 @@ class AgentEvaluator:
               retrieval_context=golden.retrieval_context,
           )
       )
-    
+
     return evaluate(test_cases=self._dataset.test_cases, metrics=self._metrics)
 
   async def eval_agent(self):
@@ -82,10 +91,9 @@ class AgentEvaluator:
 
         for result in results:
           live.log_metric(name=result["metric"], val=result["score"], timestamp=True)
-          
+
         average_scores = compute_metrics_averages(results)
         for average in average_scores:
           live.log_metric(name=average["metric"], val=average["score"], timestamp=True)
-
 
     logger.debug(f"{self._run_mode.name.capitalize()} results: {results}")

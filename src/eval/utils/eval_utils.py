@@ -24,7 +24,7 @@ from utils.constants import AgentRunMode
 
 def get_metrics(agent_type: str, rag: bool = False) -> list[BaseMetric]:
   """Gets the list of metrics for an agent."""
-  
+
   if rag:
     return AGENT_RAG_METRICS_MAP[agent_type]
 
@@ -87,26 +87,33 @@ def get_eval_result(
       for test in eval_results.test_results
       for m in test.metrics_data
   ]
-  logger.debug(f"Eval results: {str(result)}")
+  logger.debug(f'Eval results: {str(result)}')
   return result
 
+
 def compute_metrics_averages(metric_list):
-    """
-    Compute the average score for each metric in the list.
-    """
-    totals   = {}
-    counters = {}
+  """
+  Compute the average score for each metric in the list.
+  """
+  totals = {}
+  counters = {}
 
-    for entry in metric_list:
-        m = entry['metric']
-        s = entry['score']
-        totals[m]   = totals.get(m, 0.0) + s
-        counters[m] = counters.get(m, 0)   + 1
+  for entry in metric_list:
+    m = entry['metric']
+    s = entry['score']
+    totals[m] = totals.get(m, 0.0) + s
+    counters[m] = counters.get(m, 0) + 1
 
-    averages = [{'metric': m, 'score': float(f"{totals[m] / counters[m]:.3f}")} for m in totals]
-    return averages
+  averages = [{'metric': m, 'score': float(f'{totals[m] / counters[m]:.3f}')} for m in totals]
+  return averages
 
-if __name__ == "__main__":
-  metrics = [{'metric': 'accuracy', 'score': 0.8},{'metric': 'accuracy', 'score': 0.7},{'metric': 'faithfulness', 'score': 0.9},{'metric': 'faithfulness', 'score': 0.8}]
+
+if __name__ == '__main__':
+  metrics = [
+      {'metric': 'accuracy', 'score': 0.8},
+      {'metric': 'accuracy', 'score': 0.7},
+      {'metric': 'faithfulness', 'score': 0.9},
+      {'metric': 'faithfulness', 'score': 0.8},
+  ]
   averages = compute_metrics_averages(metrics)
-  print(f"Metric averages: {str(averages)}")
+  print(f'Metric averages: {str(averages)}')

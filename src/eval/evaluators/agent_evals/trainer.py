@@ -12,10 +12,18 @@ from dvclive.live import Live
 
 from orchestrator import run_agent
 from utils.constants import AgentRunMode
-from eval.utils import (compute_metrics_averages, get_metrics, get_prompt, get_eval_agent, get_dataset, get_eval_result)
+from eval.utils import (
+    compute_metrics_averages,
+    get_metrics,
+    get_prompt,
+    get_eval_agent,
+    get_dataset,
+    get_eval_result,
+)
 from eval.utils.constants import PROMPT_OPTIMIZER_MODEL
 
 TRAIN_RUN_PATH = "runs/train_runs"
+
 
 class AgentTrainer:
   """This class utilizes DeepEval's prompt optimizer to optimize system prompts of agents."""
@@ -74,7 +82,9 @@ class AgentTrainer:
         async_config=async_config,
     )
 
-    optimized_prompt = optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._dataset.goldens)
+    optimized_prompt = optimizer.optimize(
+        prompt=self._prompt_to_optimize, goldens=self._dataset.goldens
+    )
     optimized_metrics = await self._collect_metrics(optimized_prompt)
 
     if self._experiment:
@@ -94,7 +104,7 @@ class AgentTrainer:
 
         for result in optimized_metrics:
           live.log_metric(name=result["metric"], val=result["score"], timestamp=True)
-        
+
         # Log the average score for each metric to add it to the summary (instead of the default behavior which logs the latest value to the metrics summary)
         average_scores = compute_metrics_averages(optimized_metrics)
         for average in average_scores:

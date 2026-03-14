@@ -36,7 +36,7 @@ def retrieve_requirements(tool_context: ToolContext, query: str) -> Optional[Lis
 
   Args:
     tool_context: The tool context
-    query: The prompt passed to the agent   
+    query: The prompt passed to the agent
 
   Returns:
     A string list containing the top K requirement chunks semantically matching the provided query.
@@ -54,9 +54,8 @@ def retrieve_requirements(tool_context: ToolContext, query: str) -> Optional[Lis
 
   result = [requirement_chunks[i]["chunk"] for i in indices[0]]
   logger.debug(f"RAG retrieval for query: {query} is: {str(result)}")
-  
+
   if tool_context:
     tool_context.state["requirement_examples"] = result
 
   return result
-

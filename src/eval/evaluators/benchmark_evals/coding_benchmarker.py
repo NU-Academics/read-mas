@@ -19,14 +19,16 @@ from utils.constants import (
 
 # Monkey‑patch setrlimit on macOS to enable running evalplus.evaluate and log the results to DVC.
 if sys.platform == "darwin":
-    def _noop_setrlimit(soft, hard):
-        """Do nothing – pretend we succeeded."""
-        return (soft, hard)
 
-    resource.setrlimit = _noop_setrlimit
+  def _noop_setrlimit(soft, hard):
+    """Do nothing – pretend we succeeded."""
+    return (soft, hard)
+
+  resource.setrlimit = _noop_setrlimit
 
 from evalplus.evaluate import evaluate
 from evalplus.eval import estimate_pass_at_k
+
 
 class CodingBenchmarker:
   """This class utilizes the EvalPlus library to benchmark READ-MAS agents using the HumanEval and MBPP metrics."""
@@ -93,7 +95,7 @@ class CodingBenchmarker:
 
     return results
 
-  async def _evaluate(self):      
+  async def _evaluate(self):
     evaluate(self._dataset, self._samples_file)
 
     eval_results_file = self._samples_file.replace(".jsonl", "_eval_results.json")
