@@ -4,8 +4,9 @@ from typing import List, Optional, Union
 from utils.constants import OLLAMA_API_BASE, OLLAMA_BASE_URL
 
 from google.adk.models.lite_llm import LiteLlm
-from google.adk.tools.mcp_tool import MCPToolset, StreamableHTTPConnectionParams
+from google.adk.tools.mcp_tool import McpToolset, StreamableHTTPConnectionParams
 from google.genai.types import GenerateContentConfig
+from loguru import logger
 
 from utils.constants import MCP_URL_RAG
 
@@ -33,7 +34,11 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
 
 def add_rag_mcp(tools: List[any], rag: Optional[bool] = False):
   if rag:
-    rag_toolset = MCPToolset(connection_params=StreamableHTTPConnectionParams(url=MCP_URL_RAG))
+    logger.info("Adding the RAG toolset to the agent's tools list.")
+    rag_toolset = McpToolset(
+      connection_params=StreamableHTTPConnectionParams(url=MCP_URL_RAG),
+      tool_filter=["get_requirement_examples"]
+      )
     tools.append(rag_toolset)
 
 

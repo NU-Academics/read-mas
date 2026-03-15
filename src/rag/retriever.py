@@ -7,7 +7,6 @@ from pathlib import Path
 import sys
 from typing import Optional, List
 
-from google.adk.tools import ToolContext
 import faiss
 import numpy as np
 from google import genai
@@ -31,15 +30,14 @@ def _get_embedding(query: str):
   return np.array(res.embeddings[0].values)
 
 
-def retrieve_requirements(tool_context: ToolContext, query: str) -> Optional[List[str]]:
-  """Retrieves the top K chunks for the provided query and stores it in the agent state.
+def retrieve_requirements(query: str) -> Optional[List[str]]:
+  """Retrieves the top K functional and non-functional requirements samples for the provided query.
 
   Args:
-    tool_context: The tool context
     query: The prompt passed to the agent
 
   Returns:
-    A string list containing the top K requirement chunks semantically matching the provided query.
+    A string list containing the top K requirements semantically matching the provided query.
   """
 
   # Reload the FAISS index  and the requirements metadata from disk
@@ -53,9 +51,6 @@ def retrieve_requirements(tool_context: ToolContext, query: str) -> Optional[Lis
   distances, indices = index.search(np.array([query_vector]), RAG_TOP_K)
 
   result = [requirement_chunks[i]["chunk"] for i in indices[0]]
-  logger.debug(f"RAG retrieval for query: {query} is: {str(result)}")
-
-  if tool_context:
-    tool_context.state["requirement_examples"] = result
+  logger.debug(f"RAG retrieved content is: {str(result)}")
 
   return result

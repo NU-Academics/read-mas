@@ -61,7 +61,7 @@ def get_dataset(
 
   if rag:
     for golden in goldens:
-      retrieval_context = retrieve_requirements(None, golden.input)
+      retrieval_context = retrieve_requirements(golden.input)
       golden.retrieval_context = retrieval_context or None
 
   dataset = EvaluationDataset(goldens=goldens)
@@ -87,7 +87,6 @@ def get_eval_result(
       for test in eval_results.test_results
       for m in test.metrics_data
   ]
-  logger.debug(f'Eval results: {str(result)}')
   return result
 
 

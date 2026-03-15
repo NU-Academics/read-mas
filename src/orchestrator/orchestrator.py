@@ -1,9 +1,11 @@
 """A routing agent that orchestrates the multiple RE and design agents and outputs the design."""
 
+import asyncio
 from typing import Optional
 
 import litellm
 import json
+from aiohttp import ClientPayloadError, ServerDisconnectedError
 from google.adk.agents import BaseAgent
 from google.adk.runners import Runner
 from google.adk.apps import App
@@ -14,10 +16,10 @@ from loguru import logger
 from .read_wrapper import ReadWrapperAgent
 from orchestrator.constants import APP_NAME, MAX_RETRIES, RETRY_DELAY
 from orchestrator.session_manager import SessionManager
+from orchestrator.plugins import ConnectionRetryPlugin, ReadMasRetryPlugin
 from single import SingleAgent
 from utils.constants import AgentRunMode
 from utils.logger import get_log_path
-from orchestrator.plugins import ReadMasRetryPlugin
 
 # Enable this to debug litellm
 # litellm._turn_on_debug()
@@ -93,6 +95,7 @@ async def run_agent(
         name=app_name,
         root_agent=entry_agent,
         plugins=[
+            ConnectionRetryPlugin(name="connection_retry"),
             ReadMasRetryPlugin(max_retries=MAX_RETRIES),
             DebugLoggingPlugin(output_path=debug_output),
         ],
@@ -111,19 +114,34 @@ async def run_agent(
   response = _NO_RESPONSE
   escalated_response: Optional[str] = None
 
-  running = current_runner.run_async(
-      user_id=current_user_id, session_id=current_session_id, new_message=content
-  )
-  try:
-    async for event in running:
-      if event.actions and event.actions.escalate:
-        escalated_response = f"Agent escalated: {event.error_message or 'No specific message.'}"
-      if event.is_final_response():
-        if event.content and event.content.parts:
-          response = event.content.parts[0].text
-        else:
-          continue
-  finally:
-    await running.aclose()
+  retryable_errors = (ClientPayloadError, ConnectionResetError, ServerDisconnectedError)
+
+  for attempt in range(1, MAX_RETRIES + 1):
+    try:
+      running = current_runner.run_async(
+          user_id=current_user_id, session_id=current_session_id, new_message=content
+      )
+      try:
+        async for event in running:
+          if event.actions and event.actions.escalate:
+            escalated_response = (
+                f"Agent escalated: {event.error_message or 'No specific message.'}"
+            )
+          if event.is_final_response():
+            if event.content and event.content.parts:
+              response = event.content.parts[0].text
+            else:
+              continue
+      finally:
+        await running.aclose()
+      break  # Success — exit retry loop.
+    except retryable_errors as e:
+      if attempt == MAX_RETRIES:
+        raise
+      logger.warning(
+          f"Transient connection error (attempt {attempt}/{MAX_RETRIES}): {e}. "
+          f"Retrying in {RETRY_DELAY}s..."
+      )
+      await asyncio.sleep(RETRY_DELAY)
 
   return response or escalated_response

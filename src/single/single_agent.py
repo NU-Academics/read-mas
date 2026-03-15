@@ -4,7 +4,6 @@ from typing import Optional
 import time
 
 from google.adk.agents import Agent
-from google.adk.tools.mcp_tool import MCPToolset, StreamableHTTPConnectionParams
 
 from agents import (AgentBase, get_model_from, add_rag_mcp, get_agent_config)
 from utils.constants import DEFAULT_MODEL_NAME

@@ -38,16 +38,6 @@ def before_model(
     if llm_request.contents[-1].parts:
       last_user_message = llm_request.contents[-1].parts[0].text
 
-  # Append RAG retrieved content if the state contains the retrieved results
-  rag_content = callback_context.state.get("requirement_examples")
-  logger.debug(f"Retrieved requirements: {str(rag_content)}")
-  if rag_content:
-    logger.debug(f"Adding retrieved context to system prompt: {str(rag_content)}")
-    llm_request.config.system_instruction += (
-        "n\nUse these functional and non-functional requirements as examples for the system:"
-        f" \n{rag_content}"
-    )
-
   system_prompt = llm_request.config.system_instruction or types.Content(role="system", parts=[])
   logger.debug(
       f"Invoking LLM for agent {agent_name} with system prompt {system_prompt} and user prompt"
