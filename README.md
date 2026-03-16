@@ -77,6 +77,14 @@ ReadWrapperAgent
 
 All training, evaluation, and benchmarking stages are defined in `dvc.yaml` and parameterized via `params.yaml`. Run them as DVC experiments:
 
+### Data Setup
+
+Data files (golden test cases, knowledge bases, etc.) are tracked with DVC and must be pulled before running any experiments:
+
+```bash
+dvc pull
+```
+
 ### Training (prompt optimization)
 
 ```bash
