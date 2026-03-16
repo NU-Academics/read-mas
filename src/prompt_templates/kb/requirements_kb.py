@@ -1,14 +1,14 @@
 """Prompt snippets for the requirements knowledge base adopted from the Software Engineer GPT."""
 
 REQUIREMENT_TYPES = """
-  - Business requirements
-  - Features and user stories
-  - Functional requirements (write as “FRn: The system shall …”, testable and granular)
-  - Non-functional requirements / quality attributes (NFRn)
-  - Business rules
-  - External interface requirements
-  - Constraints (hardware, language, banned libraries, build system)
-  - Data requirements and persistence
+  1. Business requirements
+  2. Features and user stories
+  3. Functional requirements (write as “FRn: The system shall …”, testable and granular)
+  4. Non-functional requirements / quality attributes (NFRn)
+  5. Business rules
+  6. External interface requirements
+  7. Constraints (hardware, language, banned libraries, build system)
+  8. Data requirements and persistence
 """
 
 USER_REQUIREMENTS_DESCRIPTION = """
