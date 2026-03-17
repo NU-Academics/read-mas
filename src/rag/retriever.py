@@ -23,11 +23,33 @@ from .constants import (
 
 load_dotenv(dotenv_path=Path(__file__).parent.parent.parent / ".env", override=False)
 
+# Module-level cache for FAISS index, requirement chunks, and GenAI client.
+_cached_index = None
+_cached_chunks = None
+_cached_client = None
+
+
+def _get_client() -> genai.Client:
+  global _cached_client
+  if _cached_client is None:
+    _cached_client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+  return _cached_client
+
 
 def _get_embedding(query: str):
-  client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+  client = _get_client()
   res = client.models.embed_content(model=GEMINI_EMBEDDING_MODEL, contents=query)
   return np.array(res.embeddings[0].values)
+
+
+def _get_index_and_chunks():
+  global _cached_index, _cached_chunks
+  if _cached_index is None:
+    _cached_index = faiss.read_index(str(BASE_REQUIREMENTS_PATH / FAISS_INDEX_NAME))
+  if _cached_chunks is None:
+    with open(str(BASE_REQUIREMENTS_PATH / REQUIREMENT_CHUNKS_NAME), "r") as f:
+      _cached_chunks = json.load(f)
+  return _cached_index, _cached_chunks
 
 
 def retrieve_requirements(query: str) -> Optional[List[str]]:
@@ -39,12 +61,7 @@ def retrieve_requirements(query: str) -> Optional[List[str]]:
   Returns:
     A string list containing the top K requirements semantically matching the provided query.
   """
-
-  # Reload the FAISS index  and the requirements metadata from disk
-  index = faiss.read_index(str(BASE_REQUIREMENTS_PATH / FAISS_INDEX_NAME))
-
-  with open(str(BASE_REQUIREMENTS_PATH / REQUIREMENT_CHUNKS_NAME), "r") as f:
-    requirement_chunks = json.load(f)
+  index, requirement_chunks = _get_index_and_chunks()
 
   # Embed the query using the same embedding model and search the index
   query_vector = _get_embedding(query)

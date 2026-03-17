@@ -14,7 +14,7 @@ from google.genai import types
 from loguru import logger
 
 from .read_wrapper import ReadWrapperAgent
-from orchestrator.constants import APP_NAME, MAX_RETRIES, RETRY_DELAY
+from orchestrator.constants import APP_NAME, MAX_RETRIES, RETRY_DELAY_BASE
 from orchestrator.session_manager import SessionManager
 from orchestrator.plugins import ConnectionRetryPlugin, ReadMasRetryPlugin
 from single import SingleAgent
@@ -74,6 +74,7 @@ async def run_agent(
     runner: Optional[Runner] = None,
     *,
     app_name: Optional[str] = APP_NAME,
+    run_mode: Optional[AgentRunMode] = None,
 ) -> str:
   """
   Execute a single query against the supplied entry agent **inside an already‑created
@@ -89,16 +90,18 @@ async def run_agent(
   if (
       current_session_id is None or current_user_id is None or current_runner is None
   ) and entry_agent is not None:
-    log_path = get_log_path()
-    debug_output = str(log_path / "adk_events.yaml") if log_path else "adk_events.yaml"
+    plugins = [
+        ConnectionRetryPlugin(name="connection_retry"),
+        ReadMasRetryPlugin(max_retries=MAX_RETRIES),
+    ]
+    if run_mode not in (AgentRunMode.EVAL, AgentRunMode.BENCHMARK):
+      log_path = get_log_path()
+      debug_output = str(log_path / "adk_events.yaml") if log_path else "adk_events.yaml"
+      plugins.append(DebugLoggingPlugin(output_path=debug_output))
     app = App(
         name=app_name,
         root_agent=entry_agent,
-        plugins=[
-            ConnectionRetryPlugin(name="connection_retry"),
-            ReadMasRetryPlugin(max_retries=MAX_RETRIES),
-            DebugLoggingPlugin(output_path=debug_output),
-        ],
+        plugins=plugins,
     )
 
     session_manager = SessionManager()
@@ -138,10 +141,11 @@ async def run_agent(
     except retryable_errors as e:
       if attempt == MAX_RETRIES:
         raise
+      delay = RETRY_DELAY_BASE ** attempt  # Exponential backoff: 2s, 4s, 8s
       logger.warning(
           f"Transient connection error (attempt {attempt}/{MAX_RETRIES}): {e}. "
-          f"Retrying in {RETRY_DELAY}s..."
+          f"Retrying in {delay}s..."
       )
-      await asyncio.sleep(RETRY_DELAY)
+      await asyncio.sleep(delay)
 
   return response or escalated_response
