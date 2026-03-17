@@ -1,6 +1,19 @@
 """This module contains metrics that measure the performance of READ-MAS's agents."""
 
-from .readmas_metrics import analysis_accuracy, design_accuracy, designer_accuracy, design_document_accuracy, faithfulness, hallucination, ragas_faithfulness, ragas_metric, requirements_accuracy, specification_accuracy
+from .readmas_metrics import (
+    analysis_accuracy,
+    design_accuracy,
+    designer_accuracy,
+    design_document_accuracy,
+    faithfulness,
+    hallucination,
+    requirements_accuracy,
+    specification_accuracy,
+    RAGAS_FAITHFULNESS,
+    RAGAS_COMBINED,
+    RAGAS_ALL_METRICS,
+    RAGAS_FAITHFULNESS_ONLY,
+)
 
 __all__ = [
     "analysis_accuracy",
@@ -9,8 +22,10 @@ __all__ = [
     "design_document_accuracy",
     "faithfulness",
     "hallucination",
-    "ragas_faithfulness",
-    "ragas_metric",
     "requirements_accuracy",
     "specification_accuracy",
+    "RAGAS_FAITHFULNESS",
+    "RAGAS_COMBINED",
+    "RAGAS_ALL_METRICS",
+    "RAGAS_FAITHFULNESS_ONLY",
 ]

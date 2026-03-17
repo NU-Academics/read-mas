@@ -13,10 +13,12 @@ from orchestrator import run_agent
 from eval.utils import (
     compute_metrics_averages,
     get_metrics,
+    get_ragas_metric_names,
     get_prompt,
     get_eval_agent,
     get_dataset,
     get_eval_result,
+    run_ragas_and_merge,
 )
 from utils.constants import (
     AgentRunMode,
@@ -46,11 +48,14 @@ class AgentEvaluator:
         self._agent_type, self._model, self._system_prompt.text_template, self._rag, self._run_mode
     )
     self._metrics = get_metrics(self._agent_type, self._rag)
+    self._ragas_metric_names = get_ragas_metric_names(self._agent_type, self._rag)
     self._dataset = get_dataset(self._agent_type, self._rag, AgentRunMode.EVAL)
     self._run_path = "runs/" + self._run_mode.value + "_runs"
 
-  async def _evaluate(self) -> EvaluationResult:
+  async def _evaluate(self) -> tuple[EvaluationResult, list[dict]]:
     """Generate test cases from the goldens and evaluate the agent."""
+    ragas_test_cases = []
+
     for golden in self._dataset.goldens:
       actual_output = await run_agent(golden.input, self._evaluated_agent)
 
@@ -64,7 +69,16 @@ class AgentEvaluator:
           )
       )
 
-    return evaluate(test_cases=self._dataset.test_cases, metrics=self._metrics)
+      if self._ragas_metric_names:
+        ragas_test_cases.append({
+            "input": golden.input,
+            "actual_output": actual_output,
+            "expected_output": golden.expected_output,
+            "retrieval_context": golden.retrieval_context,
+        })
+
+    deepeval_result = evaluate(test_cases=self._dataset.test_cases, metrics=self._metrics)
+    return deepeval_result, ragas_test_cases
 
   async def eval_agent(self):
     """Evaluate a READ-MAS agent using LLM-as-a-Judge.
@@ -72,9 +86,20 @@ class AgentEvaluator:
     """
     logger.info(f"Evaluating {self._evaluated_agent.name} agent.")
 
-    eval_results = await self._evaluate()
+    eval_results, ragas_test_cases = await self._evaluate()
 
     results = get_eval_result(eval_results, self._evaluated_agent.name, self._model, self._rag)
+
+    # Run RAGAS metrics directly via the ragas library and merge results.
+    if self._ragas_metric_names:
+      ragas_results = run_ragas_and_merge(
+          ragas_test_cases,
+          self._ragas_metric_names,
+          self._evaluated_agent.name,
+          self._model,
+          self._rag,
+      )
+      results.extend(ragas_results)
 
     if self._experiment:
       with Live(self._run_path, report="md") as live:
@@ -87,7 +112,8 @@ class AgentEvaluator:
               "metrics": [],
           }
 
-        live.summary["metrics"] = [m.__name__ for m in self._metrics]
+        metric_names = [m.__name__ for m in self._metrics] + self._ragas_metric_names
+        live.summary["metrics"] = metric_names
 
         for result in results:
           live.log_metric(name=result["metric"], val=result["score"], timestamp=True)

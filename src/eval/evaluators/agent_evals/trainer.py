@@ -15,10 +15,12 @@ from utils.constants import AgentRunMode
 from eval.utils import (
     compute_metrics_averages,
     get_metrics,
+    get_ragas_metric_names,
     get_prompt,
     get_eval_agent,
     get_dataset,
     get_eval_result,
+    run_ragas_and_merge,
 )
 from eval.utils.constants import PROMPT_OPTIMIZER_MODEL
 
@@ -42,6 +44,7 @@ class AgentTrainer:
         AgentRunMode.TRAIN,
     )
     self._metrics = get_metrics(self._agent_type, self._rag)
+    self._ragas_metric_names = get_ragas_metric_names(self._agent_type, self._rag)
     self._dataset = get_dataset(self._agent_type, self._rag, AgentRunMode.TRAIN)
 
   async def agent_callback(self, prompt: Prompt, golden: Golden) -> str:
@@ -52,6 +55,8 @@ class AgentTrainer:
     return await run_agent(golden.input, eval_agent)
 
   async def _collect_metrics(self, prompt: Prompt):
+    ragas_test_cases = []
+
     for golden in self._dataset.goldens:
       actual_output = await self.agent_callback(prompt, golden)
 
@@ -65,8 +70,29 @@ class AgentTrainer:
           )
       )
 
+      if self._ragas_metric_names:
+        ragas_test_cases.append({
+            "input": golden.input,
+            "actual_output": actual_output,
+            "expected_output": golden.expected_output,
+            "retrieval_context": golden.retrieval_context,
+        })
+
     train_results = evaluate(test_cases=self._dataset.test_cases, metrics=self._metrics)
-    return get_eval_result(train_results, self._evaluated_agent.name, self._model, self._rag)
+    results = get_eval_result(train_results, self._evaluated_agent.name, self._model, self._rag)
+
+    # Run RAGAS metrics directly via the ragas library and merge results.
+    if self._ragas_metric_names:
+      ragas_results = run_ragas_and_merge(
+          ragas_test_cases,
+          self._ragas_metric_names,
+          self._evaluated_agent.name,
+          self._model,
+          self._rag,
+      )
+      results.extend(ragas_results)
+
+    return results
 
   async def train_agent(self):
     """Train/optimize a READ-MAS agent using prompt optimization algorithms.
@@ -100,7 +126,8 @@ class AgentTrainer:
 
         live.summary["prompts"]["original"] = self._prompt_to_optimize.text_template
         live.summary["prompts"]["optimized"] = optimized_prompt.text_template
-        live.summary["metrics"] = [m.__name__ for m in self._metrics]
+        metric_names = [m.__name__ for m in self._metrics] + self._ragas_metric_names
+        live.summary["metrics"] = metric_names
 
         for result in optimized_metrics:
           live.log_metric(name=result["metric"], val=result["score"], timestamp=True)

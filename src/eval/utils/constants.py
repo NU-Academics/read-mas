@@ -24,10 +24,10 @@ from eval.metrics import (
     design_document_accuracy,
     faithfulness,
     hallucination,
-    ragas_faithfulness,
-    ragas_metric,
     requirements_accuracy,
     specification_accuracy,
+    RAGAS_FAITHFULNESS,
+    RAGAS_COMBINED,
 )
 
 PROMPT_OPTIMIZER_MODEL = "gpt-5-mini"
@@ -44,6 +44,7 @@ AGENT_GOLDENS_MAP = {
     "specifier_agent": GOLDENS_BASE_PATH / "specifier_agent",
 }
 
+# DeepEval metrics (run via deepeval.evaluate)
 AGENT_METRICS_MAP = {
     "analyzer_agent": [analysis_accuracy, hallucination],
     "collector_agent": [requirements_accuracy, hallucination],
@@ -59,9 +60,14 @@ AGENT_RAG_METRICS_MAP = {
     "collector_agent": [requirements_accuracy, hallucination, faithfulness],
     "designer_agent": [designer_accuracy, hallucination],
     "documenter_agent": [design_document_accuracy, hallucination],
-    "read_agent": [design_accuracy, ragas_faithfulness, ragas_metric],
-    "single_agent": [design_accuracy, faithfulness],
+    "read_agent": [design_accuracy],
+    "single_agent": [design_accuracy],
     "specifier_agent": [specification_accuracy, hallucination],
+}
+
+AGENT_RAGAS_METRICS_MAP = {
+    "read_agent": [RAGAS_FAITHFULNESS, RAGAS_COMBINED],
+    "single_agent": [RAGAS_FAITHFULNESS],
 }
 
 AGENT_PROMPTS = {

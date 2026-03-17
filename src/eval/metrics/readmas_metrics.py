@@ -1,14 +1,34 @@
 """Metrics for the READ-MAS system."""
 
-from langchain_openai import ChatOpenAI
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCaseParams
-from deepeval.metrics import (HallucinationMetric, FaithfulnessMetric)
-from deepeval.metrics.ragas import (RagasMetric, RAGASFaithfulnessMetric)
+from deepeval.metrics import HallucinationMetric, FaithfulnessMetric
+from ragas.metrics import (
+    faithfulness as ragas_faithfulness_metric,
+    context_precision,
+    context_recall,
+    ContextEntityRecall,
+    ResponseRelevancy,
+)
+
 from utils.constants import EVALUATION_MODEL
 
+# RAGAS metric names used in the metrics maps to identify which RAGAS metrics to run.
+RAGAS_FAITHFULNESS = "RAGASFaithfulness"
+RAGAS_COMBINED = "RAGAS"
 
-# A custom metric to measure the performance of the end-to-end READ-MAS system (for single and read_wrapper agents. The metric's criteria include both RE and design objectives.
+# The individual RAGAS metrics that make up the combined RAGAS score.
+RAGAS_ALL_METRICS = [
+    context_precision,
+    context_recall,
+    ContextEntityRecall(),
+    ResponseRelevancy(),
+    ragas_faithfulness_metric,
+]
+
+RAGAS_FAITHFULNESS_ONLY = [ragas_faithfulness_metric]
+
+# End-to-end metric for single and read_wrapper agents.
 design_accuracy = GEval(
     name="DesignAccuracy",
     criteria=(
@@ -28,11 +48,6 @@ design_accuracy = GEval(
         LLMTestCaseParams.CONTEXT,
     ],
 )
-
-# RAGAS metric to measure the performance of the agents when using the RAG retriever.
-ragas_model = ChatOpenAI(model=EVALUATION_MODEL)
-ragas_faithfulness = RAGASFaithfulnessMetric(threshold=0.5, model=ragas_model)
-ragas_metric = RagasMetric(threshold=0.5, model=ragas_model)
 
 # DeepEval RAG metrics
 faithfulness = FaithfulnessMetric(model=EVALUATION_MODEL)
