@@ -5,6 +5,7 @@ from typing import Optional
 from loguru import logger
 
 from deepeval import evaluate
+from deepeval.evaluate.configs import AsyncConfig
 from deepeval.evaluate.types import EvaluationResult
 from deepeval.test_case import LLMTestCase
 from dvclive.live import Live
@@ -52,32 +53,45 @@ class AgentEvaluator:
     self._dataset = get_dataset(self._agent_type, self._rag, AgentRunMode.EVAL)
     self._run_path = "runs/" + self._run_mode.value + "_runs"
 
+  async def _run_single_golden(self, golden):
+    """Run the agent on a single golden and return test case + ragas data."""
+    actual_output = await run_agent(
+        golden.input, self._evaluated_agent, run_mode=self._run_mode
+    )
+
+    test_case = LLMTestCase(
+        input=golden.input,
+        expected_output=golden.expected_output,
+        actual_output=actual_output,
+        context=golden.context,
+        retrieval_context=golden.retrieval_context,
+    )
+
+    ragas_data = None
+    if self._ragas_metric_names:
+      ragas_data = {
+          "input": golden.input,
+          "actual_output": actual_output,
+          "expected_output": golden.expected_output,
+          "retrieval_context": golden.retrieval_context,
+      }
+
+    return test_case, ragas_data
+
   async def _evaluate(self) -> tuple[EvaluationResult, list[dict]]:
     """Generate test cases from the goldens and evaluate the agent."""
     ragas_test_cases = []
-
     for golden in self._dataset.goldens:
-      actual_output = await run_agent(golden.input, self._evaluated_agent)
+      test_case, ragas_data = await self._run_single_golden(golden)
+      self._dataset.test_cases.append(test_case)
+      if ragas_data is not None:
+        ragas_test_cases.append(ragas_data)
 
-      self._dataset.test_cases.append(
-          LLMTestCase(
-              input=golden.input,
-              expected_output=golden.expected_output,
-              actual_output=actual_output,
-              context=golden.context,
-              retrieval_context=golden.retrieval_context,
-          )
-      )
-
-      if self._ragas_metric_names:
-        ragas_test_cases.append({
-            "input": golden.input,
-            "actual_output": actual_output,
-            "expected_output": golden.expected_output,
-            "retrieval_context": golden.retrieval_context,
-        })
-
-    deepeval_result = evaluate(test_cases=self._dataset.test_cases, metrics=self._metrics)
+    deepeval_result = evaluate(
+        test_cases=self._dataset.test_cases,
+        metrics=self._metrics,
+        async_config=AsyncConfig(run_async=False),
+    )
     return deepeval_result, ragas_test_cases
 
   async def eval_agent(self):
@@ -116,6 +130,8 @@ class AgentEvaluator:
         live.summary["metrics"] = metric_names
 
         for result in results:
+          if result["metric"].endswith("(ragas)"):
+            continue
           live.log_metric(name=result["metric"], val=result["score"], timestamp=True)
 
         average_scores = compute_metrics_averages(results)

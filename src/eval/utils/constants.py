@@ -66,8 +66,8 @@ AGENT_RAG_METRICS_MAP = {
 }
 
 AGENT_RAGAS_METRICS_MAP = {
-    "read_agent": [RAGAS_FAITHFULNESS, RAGAS_COMBINED],
-    "single_agent": [RAGAS_FAITHFULNESS],
+    "read_agent": [RAGAS_COMBINED],
+    "single_agent": [RAGAS_COMBINED],
 }
 
 AGENT_PROMPTS = {

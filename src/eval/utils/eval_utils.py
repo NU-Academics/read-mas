@@ -3,6 +3,8 @@
 import json
 import math
 from typing import Optional
+
+import pandas as pd
 from loguru import logger
 
 from deepeval.dataset import EvaluationDataset
@@ -111,16 +113,37 @@ def get_eval_result(
   return result
 
 def _sanitize_score(score):
-  """Convert NaN scores to 0. Ragas returns NaN when it cannot extract
-  statements from the answer (0/0), which poisons downstream aggregation."""
-  if score is None or (isinstance(score, float) and math.isnan(score)):
+  """Convert NaN scores to 0 and numpy types to Python floats. Ragas returns
+  NaN when it cannot extract statements from the answer (0/0), which poisons
+  downstream aggregation. Pandas also returns numpy.float64 which should be
+  cast to plain float for clean serialization."""
+  if score is None:
+    logger.debug("RAGAS score is None, defaulting to 0.0")
+    return 0.0
+  score = float(score)
+  if math.isnan(score):
+    logger.debug("RAGAS score is NaN, defaulting to 0.0")
     return 0.0
   return score
+
+def _evaluate_samples_individually(samples, metrics, llm):
+  """Evaluate RAGAS samples one at a time, isolating failures."""
+  rows = []
+  for i, sample in enumerate(samples):
+    try:
+      dataset = RagasEvaluationDataset(samples=[sample])
+      result = ragas_evaluate(dataset, metrics=metrics, llm=llm)
+      row = result.to_pandas().iloc[0].to_dict()
+    except Exception as e:
+      logger.warning(f"RAGAS evaluation failed for sample {i} ({type(e).__name__}: {e})")
+      row = {m.name: float('nan') for m in metrics}
+    rows.append(row)
+  return pd.DataFrame(rows)
+
 
 def _run_ragas_evaluation(
     test_cases: list[dict],
     ragas_metric_names: list[str],
-    model: Optional[str] = None,
     threshold: float = 0.5,
 ) -> list[dict]:
   """Run RAGAS metrics directly via the ragas library.
@@ -129,7 +152,6 @@ def _run_ragas_evaluation(
     test_cases: List of dicts with keys: input, actual_output, expected_output,
                 retrieval_context (list[str]).
     ragas_metric_names: Which RAGAS metric sets to run (RAGAS_FAITHFULNESS, RAGAS_COMBINED).
-    model: The LLM model name for evaluation.
     threshold: Score threshold for success.
 
   Returns:
@@ -139,7 +161,7 @@ def _run_ragas_evaluation(
   if not ragas_metric_names:
     return []
 
-  llm = ChatOpenAI(model=model or EVALUATION_MODEL)
+  llm = ChatOpenAI(model=EVALUATION_MODEL)
 
   # Determine which ragas metrics to run.
   metrics_to_run = []
@@ -150,19 +172,31 @@ def _run_ragas_evaluation(
 
   # Build ragas SingleTurnSamples from test cases.
   samples = []
-  for tc in test_cases:
+  for i, tc in enumerate(test_cases):
+    contexts = tc.get("retrieval_context")
+    if not contexts:
+      logger.warning(f"RAGAS sample {i} has no retrieved_contexts — faithfulness will be NaN/0.0")
+    else:
+      logger.debug(f"RAGAS sample {i} has {len(contexts)} retrieved context(s)")
     samples.append(
         SingleTurnSample(
             user_input=tc["input"],
             response=tc["actual_output"],
             reference=tc.get("expected_output"),
-            retrieved_contexts=tc.get("retrieval_context"),
+            retrieved_contexts=contexts,
         )
     )
 
-  dataset = RagasEvaluationDataset(samples=samples)
-  eval_result = ragas_evaluate(dataset, metrics=metrics_to_run, llm=llm)
-  scores_df = eval_result.to_pandas()
+  try:
+    dataset = RagasEvaluationDataset(samples=samples)
+    eval_result = ragas_evaluate(dataset, metrics=metrics_to_run, llm=llm)
+    scores_df = eval_result.to_pandas()
+  except Exception as e:
+    logger.warning(
+        f"Batch RAGAS evaluation failed ({type(e).__name__}: {e}). "
+        "Falling back to per-sample evaluation."
+    )
+    scores_df = _evaluate_samples_individually(samples, metrics_to_run, llm)
 
   results = []
   for idx, tc in enumerate(test_cases):
@@ -235,7 +269,7 @@ def run_ragas_and_merge(
   if not ragas_metric_names:
     return []
 
-  ragas_results = _run_ragas_evaluation(test_cases, ragas_metric_names, model=model)
+  ragas_results = _run_ragas_evaluation(test_cases, ragas_metric_names)
 
   formatted = []
   for r in ragas_results:

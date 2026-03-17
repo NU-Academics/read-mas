@@ -130,6 +130,8 @@ class AgentTrainer:
         live.summary["metrics"] = metric_names
 
         for result in optimized_metrics:
+          if result["metric"].endswith("(ragas)"):
+            continue
           live.log_metric(name=result["metric"], val=result["score"], timestamp=True)
 
         # Log the average score for each metric to add it to the summary (instead of the default behavior which logs the latest value to the metrics summary)

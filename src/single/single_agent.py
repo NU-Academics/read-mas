@@ -35,7 +35,6 @@ class SingleAgent(AgentBase):
         description="A single agent that generates a software design for a user's query",
         instruction=self._system_prompt,
         tools=tools,
-        generate_content_config=get_agent_config(),
         output_key="design_output",
         before_agent_callback=before_agent,
         after_agent_callback=after_agent,
