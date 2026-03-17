@@ -29,7 +29,7 @@ class SpecifierAgent(AgentBase):
   def get_agent(self) -> Agent:
     tools = []
     if self._rag:
-      add_rag_mcp(tools)
+      add_rag_mcp(tools, self._rag)
 
     return Agent(
         name="specifier_agent",

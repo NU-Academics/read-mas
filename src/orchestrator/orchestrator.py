@@ -40,9 +40,9 @@ def get_agent(llm_model_name: str, agent_type: str, run_mode: AgentRunMode, rag:
       The entry agent
   """
   if agent_type == "single_agent":
-    agent = SingleAgent(llm_model_name, run_mode, rag).get_agent()
+    agent = SingleAgent(llm_model_name, run_mode=run_mode, rag=rag).get_agent()
   elif agent_type == "read_agent":
-    agent = ReadWrapperAgent(llm_model_name, run_mode, rag).get_agent()
+    agent = ReadWrapperAgent(llm_model_name, run_mode=run_mode, rag=rag).get_agent()
   else:
     raise ValueError(f"Invalid agent type: {agent_type}")
 

@@ -1,11 +1,24 @@
 """Callback functions before and after LLM and agent calls for logging."""
 
-from typing import Optional
+from typing import Any, Optional
 
 from google.adk.agents.callback_context import CallbackContext
 from google.adk.models import LlmRequest, LlmResponse
+from google.adk.tools import BaseTool
+from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 from loguru import logger
+
+
+def after_rag_tool(
+    tool: BaseTool, args: dict[str, Any], tool_context: ToolContext, tool_response: dict
+) -> Optional[dict]:
+  """Captures RAG tool output into session state for prompt injection."""
+  logger.debug(f"after_rag_tool called for tool '{tool.name}' with response type {type(tool_response).__name__}.")
+  if tool.name == "get_requirement_examples":
+    tool_context.state["rag_examples"] = tool_response
+    logger.debug("Captured RAG tool output into session state for few-shot injection.")
+  return None
 
 
 def before_agent(callback_context: CallbackContext) -> Optional[types.Content]:
@@ -34,9 +47,12 @@ def before_model(
   """Callback to log input before LLM invocation."""
   agent_name = callback_context.agent_name
   last_user_message = ""
-  if llm_request.contents and llm_request.contents[-1].role == "user":
-    if llm_request.contents[-1].parts:
-      last_user_message = llm_request.contents[-1].parts[0].text
+  for content in reversed(llm_request.contents or []):
+    if content.role == "user" and content.parts:
+      text = content.parts[0].text
+      if text:
+        last_user_message = text
+        break
 
   system_prompt = llm_request.config.system_instruction or types.Content(role="system", parts=[])
   logger.debug(

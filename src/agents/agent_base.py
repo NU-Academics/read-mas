@@ -6,7 +6,7 @@ from typing import Optional
 from google.adk.agents import Agent
 
 from utils.constants import AgentRunMode
-
+from .agent_util import format_rag_few_shot
 
 class AgentBase(ABC):
   """All agents use this base class."""
@@ -36,3 +36,16 @@ class AgentBase(ABC):
   @abstractmethod
   def get_agent() -> Agent:
     pass
+
+  def get_instruction(self, context) -> str:
+    rag_examples = context.state.get("rag_examples")
+    if rag_examples:
+      return self._system_prompt + "\n" + format_rag_few_shot(rag_examples)
+    if self._rag:
+      return (
+          self._system_prompt
+          + "\n\nBefore generating the design, you MUST first call the"
+          " `get_requirement_examples` tool with the user's query to retrieve example"
+          " requirements. Use the returned examples to inform your requirements analysis."
+      )
+    return self._system_prompt

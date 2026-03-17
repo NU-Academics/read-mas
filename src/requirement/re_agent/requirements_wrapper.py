@@ -34,7 +34,7 @@ class RequirementsWrapperAgent(AgentBase):
     tools = []
 
     if self._rag:
-      add_rag_mcp(tools)
+      add_rag_mcp(tools, self._rag)
 
     tools.append(AgentTool(agent=self._collector_agent))
     tools.append(AgentTool(agent=self._analyzer_agent))

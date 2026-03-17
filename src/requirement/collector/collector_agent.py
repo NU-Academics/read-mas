@@ -29,7 +29,7 @@ class CollectorAgent(AgentBase):
 
   def get_agent(self) -> Agent:
     tools = []
-    add_rag_mcp(tools)
+    add_rag_mcp(tools, self._rag)
 
     # Create a ThinkingConfig and planner
     thinking_config = ThinkingConfig(include_thoughts=True, thinking_budget=256)

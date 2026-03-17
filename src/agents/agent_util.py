@@ -32,7 +32,7 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
     return LiteLlm(llm_model_name)
 
 
-def add_rag_mcp(tools: List[any], rag: Optional[bool] = False):
+def add_rag_mcp(tools: List[any], rag: bool):
   if rag:
     logger.info("Adding the RAG toolset to the agent's tools list.")
     rag_toolset = McpToolset(
@@ -40,6 +40,44 @@ def add_rag_mcp(tools: List[any], rag: Optional[bool] = False):
       tool_filter=["get_requirement_examples"]
       )
     tools.append(rag_toolset)
+
+
+def format_rag_few_shot(requirements) -> str:
+  """Formats RAG results as few-shot examples for injection into system prompts."""
+  items = _extract_rag_items(requirements)
+  if not items:
+    return ""
+  formatted = "\n".join(f"- {item}" for item in items)
+  return (
+      "\nUse these functional and non-functional requirements as examples for the system's requirements:\n"
+      f"{formatted}\n"
+  )
+
+
+def _extract_rag_items(response) -> list[str]:
+  """Extracts plain text requirements from MCP tool response formats."""
+  if isinstance(response, list):
+    return [_extract_text(item) for item in response]
+  if isinstance(response, dict):
+    # MCP content blocks: {"content": [{"type": "text", "text": "..."}], ...}
+    if "content" in response:
+      return [
+          block["text"] for block in response["content"]
+          if isinstance(block, dict) and block.get("type") == "text"
+      ]
+    # Direct result: {"result": ["...", ...]}
+    if "result" in response:
+      result = response["result"]
+      if isinstance(result, list):
+        return [_extract_text(item) for item in result]
+  return [str(response)]
+
+
+def _extract_text(item) -> str:
+  """Extracts text from a string or MCP content block dict."""
+  if isinstance(item, dict) and "text" in item:
+    return item["text"]
+  return str(item)
 
 
 def get_agent_config():
