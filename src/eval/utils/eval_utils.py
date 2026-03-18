@@ -12,6 +12,7 @@ from deepeval.dataset import Golden
 from deepeval.evaluate.types import EvaluationResult
 from deepeval.metrics import BaseMetric
 from deepeval.prompt import Prompt
+from dvclive.live import Live
 from google.adk.agents import BaseAgent
 from langchain_openai import ChatOpenAI
 from ragas import evaluate as ragas_evaluate
@@ -314,3 +315,19 @@ if __name__ == '__main__':
   ]
   averages = compute_metrics_averages(metrics)
   print(f'Metric averages: {str(averages)}')
+
+def log_metrics_to_dvc(experiment_results: list[dict[str, bool|str|float]], live: Live):
+  """A utility to log selected metrics to DVC."""
+  recorded_results = []
+  for result in experiment_results:
+    if result["metric"].endswith("(ragas)"):
+      continue
+    recorded_results.append(result)
+  
+  for result in recorded_results:
+    live.log_metric(name=result["metric"], val=result["score"], timestamp=True)
+
+  # Log the average score for each metric to add it to the summary (instead of the default behavior which logs the latest value to the metrics summary)
+  average_scores = compute_metrics_averages(recorded_results)
+  for average in average_scores:
+    live.log_metric(name=average["metric"], val=average["score"], timestamp=True)

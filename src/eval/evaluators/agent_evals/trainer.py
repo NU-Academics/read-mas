@@ -20,6 +20,7 @@ from eval.utils import (
     get_eval_agent,
     get_dataset,
     get_eval_result,
+    log_metrics_to_dvc,
     run_ragas_and_merge,
 )
 from eval.utils.constants import PROMPT_OPTIMIZER_MODEL
@@ -129,15 +130,7 @@ class AgentTrainer:
         metric_names = [m.__name__ for m in self._metrics] + self._ragas_metric_names
         live.summary["metrics"] = metric_names
 
-        for result in optimized_metrics:
-          if result["metric"].endswith("(ragas)"):
-            continue
-          live.log_metric(name=result["metric"], val=result["score"], timestamp=True)
-
-        # Log the average score for each metric to add it to the summary (instead of the default behavior which logs the latest value to the metrics summary)
-        average_scores = compute_metrics_averages(optimized_metrics)
-        for average in average_scores:
-          live.log_metric(name=average["metric"], val=average["score"], timestamp=True)
+        log_metrics_to_dvc(optimized_metrics, live)
 
     logger.debug(f"Original prompt: {self._prompt_to_optimize.text_template}")
     logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")

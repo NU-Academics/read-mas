@@ -19,6 +19,7 @@ from eval.utils import (
     get_eval_agent,
     get_dataset,
     get_eval_result,
+    log_metrics_to_dvc,
     run_ragas_and_merge,
 )
 from utils.constants import (
@@ -129,13 +130,6 @@ class AgentEvaluator:
         metric_names = [m.__name__ for m in self._metrics] + self._ragas_metric_names
         live.summary["metrics"] = metric_names
 
-        for result in results:
-          if result["metric"].endswith("(ragas)"):
-            continue
-          live.log_metric(name=result["metric"], val=result["score"], timestamp=True)
-
-        average_scores = compute_metrics_averages(results)
-        for average in average_scores:
-          live.log_metric(name=average["metric"], val=average["score"], timestamp=True)
+        log_metrics_to_dvc(results, live)
 
     logger.debug(f"{self._run_mode.name.capitalize()} results: {results}")

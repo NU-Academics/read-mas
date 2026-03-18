@@ -8,6 +8,7 @@ from .eval_utils import (
     get_eval_agent,
     get_dataset,
     get_eval_result,
+    log_metrics_to_dvc,
     run_ragas_and_merge,
 )
 
@@ -19,5 +20,6 @@ __all__ = [
     "get_eval_agent",
     "get_dataset",
     "get_eval_result",
+    "log_metrics_to_dvc",
     "run_ragas_and_merge",
 ]
