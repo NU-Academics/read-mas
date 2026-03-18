@@ -36,7 +36,10 @@ def add_rag_mcp(tools: List[any], rag: bool):
   if rag:
     logger.info("Adding the RAG toolset to the agent's tools list.")
     rag_toolset = McpToolset(
-      connection_params=StreamableHTTPConnectionParams(url=MCP_URL_RAG),
+      connection_params=StreamableHTTPConnectionParams(
+        url=MCP_URL_RAG,
+        timeout=30,  # Default is 5s, too short under concurrent training load
+      ),
       tool_filter=["get_requirement_examples"]
       )
     tools.append(rag_toolset)
