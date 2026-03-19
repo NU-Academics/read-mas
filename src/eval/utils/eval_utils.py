@@ -331,6 +331,4 @@ def log_metrics_to_dvc(experiment_results: list[dict[str, bool|str|float]], live
   average_scores = compute_metrics_averages(recorded_results)
   for average in average_scores:
     live.log_metric(name=average["metric"], val=average["score"], timestamp=True)
-    # Also log the average scores in the summary.
-    live.summary["metrics"][average["metric"]] = average["score"]
   
