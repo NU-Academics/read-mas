@@ -75,6 +75,12 @@ def generate_samples(
         "-r",
         help="Whether to use the RAG tool",
     ),
+    concurrency: int = typer.Option(
+        5,
+        "--concurrency",
+        "-c",
+        help="Maximum number of concurrent agent calls",
+    ),
 ):
   """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder."""
   setup_logging(str(ctx.params["run_id"]), f"{benchmark_name}")
@@ -90,6 +96,7 @@ def generate_samples(
         app_name="coding_benchmarker",
         samples_file_path=samples_file,
         num_samples=num_samples,
+        concurrency=concurrency,
     )
 
   try:

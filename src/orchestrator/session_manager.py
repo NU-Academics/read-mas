@@ -28,6 +28,21 @@ class SessionManager:
   def get_runner(self, app: App) -> Runner:
     return Runner(app=app, session_service=self._session_service)
 
+  async def create_new_session(self, app_name: str) -> tuple[str, str]:
+    """Create a new session on the existing service without recreating the Runner.
+
+    Args:
+        app_name: The app name to create the session for
+
+    Returns:
+        A tuple of (session_id, user_id)
+    """
+    session_id = self.get_session_id()
+    await self._session_service.create_session(
+        app_name=app_name, user_id=self._user_id, session_id=session_id
+    )
+    return session_id, self._user_id
+
   async def initialize_session(self, app: App = None) -> tuple:
     if app is None:
       raise ValueError("App is required")

@@ -1,3 +1,4 @@
+import asyncio
 import json
 import time
 from pathlib import Path
@@ -10,7 +11,11 @@ from google.adk.runners import Runner
 from loguru import logger
 
 from orchestrator.constants import APP_NAME
-from orchestrator.orchestrator import run_agent
+from orchestrator.orchestrator import (
+    create_app_context,
+    run_agent,
+    run_agent_with_context,
+)
 from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
 
 
@@ -23,6 +28,7 @@ async def generate_benchmark_samples(
     app_name: Optional[str] = APP_NAME,
     samples_file_path: Optional[str] = None,
     num_samples: int = NUMBER_OF_TRIES,
+    concurrency: int = 5,
 ):
   """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder.
 
@@ -99,32 +105,58 @@ async def generate_benchmark_samples(
       f" {benchmark_name} (out of {len(queries)} total tasks, {num_samples} samples per task)"
   )
 
+  # Build reusable App/Runner context once
+  _app, ctx_runner, ctx_session_manager = await create_app_context(
+      entry_agent, app_name=app_name, run_mode=AgentRunMode.CODE_BENCHMARK
+  )
+
+  # Flatten task×sample into a list of work items
+  work_items = []
+  for task_idx, ((task_id, _dataset_entry), query, num_needed) in enumerate(
+      zip(remaining_entries, remaining_queries, remaining_sample_counts), 1
+  ):
+    for sample_idx in range(num_needed):
+      work_items.append((task_id, query, task_idx, sample_idx, num_needed))
+
+  semaphore = asyncio.Semaphore(concurrency)
+  write_lock = asyncio.Lock()
+  completed = 0
+
   mode = "a" if jsonl_path.exists() else "w"
-  sample_counter = 0
   with open(jsonl_path, mode) as f:
-    for task_idx, ((task_id, dataset_entry), query, num_needed) in enumerate(
-        zip(remaining_entries, remaining_queries, remaining_sample_counts), 1
-    ):
-      for sample_idx in range(num_needed):
-        sample_counter += 1
+
+    async def _process_sample(item_num, task_id, query, task_idx, sample_idx, num_needed):
+      nonlocal completed
+      async with semaphore:
         try:
           logger.info(
-              f"Processing sample {sample_counter}/{total_samples_needed} (task"
+              f"Processing sample {item_num}/{total_samples_needed} (task"
               f" {task_idx}/{len(remaining_entries)}: {task_id}, sample"
               f" {sample_idx + 1}/{num_needed})"
           )
-          sample = await run_agent(query, entry_agent=entry_agent, app_name=app_name)
+          sample = await run_agent_with_context(
+              query, ctx_runner, ctx_session_manager, app_name=app_name
+          )
 
           formatted_entry = {
               "task_id": str(task_id),
               "solution": str(sample),
           }
-          f.write(json.dumps(formatted_entry) + "\n")
-          f.flush()
-          logger.info(f"Saved sample {sample_idx + 1}/{num_needed} for {task_id} to {jsonl_path}")
+          async with write_lock:
+            f.write(json.dumps(formatted_entry) + "\n")
+            f.flush()
+
+          completed += 1
+          logger.info(
+              f"Saved sample {sample_idx + 1}/{num_needed} for {task_id}"
+              f" ({completed}/{total_samples_needed} done)"
+          )
         except Exception as e:
           logger.error(f"Error generating sample {sample_idx + 1}/{num_needed} for {task_id}: {e}")
-          continue
+
+    async with asyncio.TaskGroup() as tg:
+      for item_num, (task_id, query, task_idx, sample_idx, num_needed) in enumerate(work_items, 1):
+        tg.create_task(_process_sample(item_num, task_id, query, task_idx, sample_idx, num_needed))
 
   logger.info(f"Completed generation. Samples saved to {jsonl_path}")
   return jsonl_path

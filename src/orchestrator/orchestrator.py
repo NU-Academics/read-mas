@@ -66,6 +66,88 @@ async def get_agent_response(
   return await run_agent(query, entry_agent)
 
 
+async def create_app_context(
+    entry_agent: BaseAgent,
+    app_name: str = APP_NAME,
+    run_mode: Optional[AgentRunMode] = None,
+) -> tuple[App, Runner, SessionManager]:
+  """Create a reusable App/Runner/SessionManager context for repeated agent calls.
+
+  Args:
+      entry_agent: The root agent for the app
+      app_name: The app name
+      run_mode: The agent run mode (controls debug logging)
+
+  Returns:
+      A tuple of (app, runner, session_manager)
+  """
+  plugins = [
+      ConnectionRetryPlugin(name="connection_retry"),
+      ReadMasRetryPlugin(max_retries=MAX_RETRIES),
+  ]
+  if run_mode not in (AgentRunMode.EVAL, AgentRunMode.BENCHMARK, AgentRunMode.CODE_BENCHMARK):
+    log_path = get_log_path()
+    debug_output = str(log_path / "adk_events.yaml") if log_path else "adk_events.yaml"
+    plugins.append(DebugLoggingPlugin(output_path=debug_output))
+
+  app = App(name=app_name, root_agent=entry_agent, plugins=plugins)
+  session_manager = SessionManager()
+  runner = session_manager.get_runner(app)
+  return app, runner, session_manager
+
+
+async def run_agent_with_context(
+    query: str,
+    runner: Runner,
+    session_manager: SessionManager,
+    app_name: str = APP_NAME,
+) -> str:
+  """Execute a query on a pre-built Runner, creating only a new session per call.
+
+  Args:
+      query: The user query
+      runner: A pre-built Runner instance
+      session_manager: The session manager that owns the runner's session service
+      app_name: The app name for session creation
+
+  Returns:
+      The agent response string
+  """
+  session_id, user_id = await session_manager.create_new_session(app_name)
+
+  content = types.Content(role="user", parts=[types.Part(text=query)])
+  response = _NO_RESPONSE
+  escalated_response: Optional[str] = None
+  retryable_errors = (ClientPayloadError, ConnectionResetError, ServerDisconnectedError)
+
+  for attempt in range(1, MAX_RETRIES + 1):
+    try:
+      running = runner.run_async(user_id=user_id, session_id=session_id, new_message=content)
+      try:
+        async for event in running:
+          if event.actions and event.actions.escalate:
+            escalated_response = f"Agent escalated: {event.error_message or 'No specific message.'}"
+          if event.is_final_response():
+            if event.content and event.content.parts:
+              response = event.content.parts[0].text
+            else:
+              continue
+      finally:
+        await running.aclose()
+      break
+    except retryable_errors as e:
+      if attempt == MAX_RETRIES:
+        raise
+      delay = RETRY_DELAY_BASE**attempt
+      logger.warning(
+          f"Transient connection error (attempt {attempt}/{MAX_RETRIES}): {e}. "
+          f"Retrying in {delay}s..."
+      )
+      await asyncio.sleep(delay)
+
+  return response or escalated_response
+
+
 async def run_agent(
     query: str,
     entry_agent: Optional[BaseAgent] = None,
@@ -127,9 +209,7 @@ async def run_agent(
       try:
         async for event in running:
           if event.actions and event.actions.escalate:
-            escalated_response = (
-                f"Agent escalated: {event.error_message or 'No specific message.'}"
-            )
+            escalated_response = f"Agent escalated: {event.error_message or 'No specific message.'}"
           if event.is_final_response():
             if event.content and event.content.parts:
               response = event.content.parts[0].text
@@ -141,7 +221,7 @@ async def run_agent(
     except retryable_errors as e:
       if attempt == MAX_RETRIES:
         raise
-      delay = RETRY_DELAY_BASE ** attempt  # Exponential backoff: 2s, 4s, 8s
+      delay = RETRY_DELAY_BASE**attempt  # Exponential backoff: 2s, 4s, 8s
       logger.warning(
           f"Transient connection error (attempt {attempt}/{MAX_RETRIES}): {e}. "
           f"Retrying in {delay}s..."

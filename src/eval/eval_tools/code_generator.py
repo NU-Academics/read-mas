@@ -1,6 +1,6 @@
 """A tool to generate code from READ-MAS agent designs."""
 
-from litellm import completion
+from litellm import acompletion
 from loguru import logger
 from utils import DEFAULT_MODEL_NAME
 
@@ -18,7 +18,7 @@ CODE_GENERATOR_TOOL_SYSTEM_PROMPT = """Generate code based on the following soft
     """
 
 
-def generate_code(design_output: str) -> str:
+async def generate_code(design_output: str) -> str:
   """Generate code using an LLM using the input from a design agent.
 
   Args:
@@ -32,7 +32,7 @@ def generate_code(design_output: str) -> str:
     # TODO: this can be an environment variable
     # code_model = DEFAULT_MODEL_NAME
     code_model = "gemini/gemini-2.5-flash"
-    response = completion(
+    response = await acompletion(
         model=code_model,
         messages=[
             {
