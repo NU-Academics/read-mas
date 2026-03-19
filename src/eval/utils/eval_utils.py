@@ -320,7 +320,7 @@ def log_metrics_to_dvc(experiment_results: list[dict[str, bool|str|float]], live
   """A utility to log selected metrics to DVC."""
   recorded_results = []
   for result in experiment_results:
-    if result["metric"].endswith("(ragas)"):
+    if result["metric"].endswith("(ragas)") and  (not result["metric"].startswith("faithfulness")):
       continue
     recorded_results.append(result)
   
