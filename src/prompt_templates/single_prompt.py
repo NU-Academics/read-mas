@@ -64,5 +64,5 @@ Strict constraints
 - Output must be self-contained: diagrams, file tree, interfaces, and mappings must be present in the document so it can be used to implement the system without additional design artifacts.
 - Always include the explicit plaintext file tree and the Mermaid classDiagram block in the final document.
 
-Produce the SRS + detailed design following the workflow above and respecting all rules. Return ONLY the design document as the FINAL response (no preamble, no commentary).
+Produce the summarized SRS + detailed design following the workflow above and respecting all the mandatory deliverable and rules. Return ONLY the design document as the FINAL response (no preamble, no commentary).
 """

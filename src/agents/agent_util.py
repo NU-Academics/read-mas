@@ -52,7 +52,7 @@ def format_rag_few_shot(requirements) -> str:
     return ""
   formatted = "\n".join(f"- {item}" for item in items)
   return (
-      "\nUse these functional and non-functional requirements as examples for the system's requirements:\n"
+      "\nUse the following as examples of requirements or documentation snippets:\n"
       f"{formatted}\n"
   )
 
