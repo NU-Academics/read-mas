@@ -2,7 +2,7 @@
 
 import json
 import math
-from typing import Optional
+from typing import Any, Optional
 
 import pandas as pd
 from loguru import logger
@@ -316,7 +316,7 @@ if __name__ == '__main__':
   averages = compute_metrics_averages(metrics)
   print(f'Metric averages: {str(averages)}')
 
-def log_metrics_to_dvc(experiment_results: list[dict[str, bool|str|float]], live: Live):
+def log_metrics_to_dvc(experiment_results: list[dict[str, bool|str|float]], live: Live) -> list[dict[str, Any]]:
   """A utility to log selected metrics to DVC."""
   recorded_results = []
   for result in experiment_results:
@@ -331,3 +331,6 @@ def log_metrics_to_dvc(experiment_results: list[dict[str, bool|str|float]], live
   average_scores = compute_metrics_averages(recorded_results)
   for average in average_scores:
     live.log_metric(name=average["metric"], val=average["score"], timestamp=True)
+    # Also log the average scores in the summary.
+    live.summary["metrics"][average["metric"]] = average["score"]
+  
