@@ -28,7 +28,7 @@ FAISS_INDEX_NAME = "requirements_index.faiss"
 REQUIREMENT_CHUNKS_NAME = "requirement_chunks.json"
 
 # Retrieval config
-RAG_TOP_K = 3
+RAG_TOP_K = 5
 
 # PURE docs partition: filenames held out for goldens (not indexed)
 # These are real-world SRS docs reserved as reference for specifier/wrapper/single goldens.
