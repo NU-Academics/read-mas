@@ -1,7 +1,7 @@
 train:
   agent_name: single_agent
   model: gemini-2.5-flash
-  rag: true
+  rag: false
 eval:
   agent_name: single_agent
   model: gemini-2.5-flash
