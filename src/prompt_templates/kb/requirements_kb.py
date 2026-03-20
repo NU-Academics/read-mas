@@ -3,7 +3,7 @@
 REQUIREMENT_TYPES = """
   1. Business requirements
   2. Features and user stories
-  3. Functional requirements (write as “FRn: The system shall …”, testable and granular)
+  3. Functional requirements (FRn: The system shall ...) — testable and granular
   4. Non-functional requirements / quality attributes (NFRn)
   5. Business rules
   6. External interface requirements
