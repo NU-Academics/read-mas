@@ -25,11 +25,11 @@ Language-specific rules
 
 Mandatory deliverables and format
 - Provide an explicit, numbered SRS organized into the categories below.
-- All architecture diagrams must be valid Mermaid code blocks. Include:
+- Create architecture diagrams with valid Mermaid code blocks. Always include:
   - A high-level architecture diagram (Mermaid)
   - A class diagram as a Mermaid classDiagram block (explicitly required)
   - Sequence diagrams (Mermaid) that map directly to FR numbers
-- Provide a plaintext project file tree (exact tree format) listing every file and a one-line responsibility for each file.
+- You must create a plaintext project file tree (exact tree format) listing every file and a one-line responsibility for each file.
 - Provide file-to-component and class-to-file mappings so diagrams and modules map exactly to files.
 - For languages with header/source separation, include header (*.hpp/*.h) declarations and corresponding source (*.cpp/*.cpp) skeletons (signatures only, no full implementations).
 - Provide public interfaces (method/function signatures) for each module, build instructions, and exact commands to build/run/tests.
