@@ -88,7 +88,7 @@ dvc pull
 ### Training (prompt optimization)
 
 ```bash
-dvc exp run -S train.agent_name=single_agent -S train.model=gemini-2.5-flash -S train.rag=true --name my-train-exp train
+dvc exp run -S train.agent_name=single_agent -S train.model=gemini-2.5-flash -S train.rag=true -S train.no_opt=true --name my-train-exp train
 ```
 
 ### Evaluation
@@ -140,6 +140,7 @@ train:
   agent_name: single_agent
   model: gemini-2.5-flash
   rag: true
+  no_opt: false
 eval:
   agent_name: single_agent
   model: gemini-2.5-flash
@@ -162,7 +163,7 @@ The eval CLI (`readmas-eval` or `python -m src.eval.run`) provides direct access
 
 ```bash
 # Training
-readmas-eval train -t single_agent -m gemini-2.5-flash -r true -e
+readmas-eval train -t single_agent -m gemini-2.5-flash -r true -n -e
 
 # Evaluation
 readmas-eval eval -t single_agent -m gemini-2.5-flash -r true -e
@@ -177,7 +178,7 @@ readmas-eval code-benchmark -t single_agent -m gemini-2.5-flash -d humaneval -s 
 readmas-eval generate-samples humaneval -m gemini-2.5-flash --num-samples 2
 ```
 
-**Common flags:** `-t` agent type, `-m` model, `-r` RAG toggle, `-e` DVC experiment mode, `-i` run ID.
+**Common flags:** `-t` agent type, `-m` model, `-r` RAG toggle, `-n` skip prompt optimization (manual training), `-e` DVC experiment mode, `-i` run ID.
 
 ## Project Structure
 
