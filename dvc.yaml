@@ -1,7 +1,7 @@
 stages:
   train:
     cmd: python -m src.eval.run train -t ${train.agent_name} -m ${train.model} 
-      -r ${train.rag} -e
+      -r ${train.rag} -n ${train.no_opt} -e
     deps:
     - src/eval/run.py
     - src/eval/evaluators/agent_evals/trainer.py
@@ -11,6 +11,7 @@ stages:
     - train.agent_name
     - train.model
     - train.rag
+    - train.no_opt
     outs:
     - runs/train_runs
   eval:

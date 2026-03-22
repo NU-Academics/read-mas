@@ -31,10 +31,11 @@ TRAIN_RUN_PATH = "runs/train_runs"
 class AgentTrainer:
   """This class utilizes DeepEval's prompt optimizer to optimize system prompts of agents."""
 
-  def __init__(self, agent_type: str, model: str, rag: bool, experiment: bool):
+  def __init__(self, agent_type: str, model: str, rag: bool, no_opt: bool, experiment: bool):
     self._agent_type = agent_type
     self._model = model
     self._rag = rag
+    self._no_opt = no_opt
     self._experiment = experiment
     self._prompt_to_optimize = get_prompt(self._agent_type)
     self._evaluated_agent = get_eval_agent(
@@ -109,10 +110,11 @@ class AgentTrainer:
         async_config=async_config,
     )
 
+
     optimized_prompt = optimizer.optimize(
         prompt=self._prompt_to_optimize, goldens=self._dataset.goldens
-    )
-    optimized_metrics = await self._collect_metrics(optimized_prompt)
+    ) if not self._no_opt else self._prompt_to_optimize
+    training_metrics = await self._collect_metrics(optimized_prompt)
 
     if self._experiment:
       with Live(TRAIN_RUN_PATH, report="md") as live:
@@ -121,6 +123,7 @@ class AgentTrainer:
               "agent": self._evaluated_agent.name,
               "model": self._model,
               "rag": self._rag,
+              "no_opt": self._no_opt,
               "prompts": {},
               "metrics": [],
           }
@@ -130,8 +133,8 @@ class AgentTrainer:
         metric_names = [m.__name__ for m in self._metrics] + self._ragas_metric_names
         live.summary["metrics"] = metric_names
 
-        log_metrics_to_dvc(optimized_metrics, live)
+        log_metrics_to_dvc(training_metrics, live)
 
     logger.debug(f"Original prompt: {self._prompt_to_optimize.text_template}")
     logger.debug(f"Optimized prompt: {optimized_prompt.text_template}")
-    logger.debug(f"{AgentRunMode.TRAIN.capitalize()} results: {optimized_metrics}")
+    logger.debug(f"{AgentRunMode.TRAIN.capitalize()} results: {training_metrics}")

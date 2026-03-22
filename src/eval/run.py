@@ -184,6 +184,13 @@ def train_agent(
         callback=str_to_bool,
         help="Whether to use the RAG tool",
     ),
+    no_opt: str = typer.Option(
+        "False",
+        "--no-opt",
+        "-n",
+        callback=str_to_bool,
+        help="Whether to apply prompt optimization",
+    ),
     experiment: bool = typer.Option(
         False,
         "--experiment",
@@ -193,7 +200,7 @@ def train_agent(
 ):
   setup_logging(str(ctx.params["run_id"]), "train")
 
-  trainer = AgentTrainer(agent_type, model, rag, experiment)
+  trainer = AgentTrainer(agent_type, model, rag, no_opt, experiment)
   asyncio.run(trainer.train_agent())
 
 

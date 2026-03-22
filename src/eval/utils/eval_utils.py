@@ -306,16 +306,6 @@ def compute_metrics_averages(metric_list):
   return averages
 
 
-if __name__ == '__main__':
-  metrics = [
-      {'metric': 'accuracy', 'score': 0.8},
-      {'metric': 'accuracy', 'score': 0.7},
-      {'metric': 'faithfulness', 'score': 0.9},
-      {'metric': 'faithfulness', 'score': 0.8},
-  ]
-  averages = compute_metrics_averages(metrics)
-  print(f'Metric averages: {str(averages)}')
-
 def log_metrics_to_dvc(experiment_results: list[dict[str, bool|str|float]], live: Live) -> list[dict[str, Any]]:
   """A utility to log selected metrics to DVC."""
   recorded_results = []
