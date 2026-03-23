@@ -32,7 +32,7 @@ RAGAS_FAITHFULNESS_ONLY = [ragas_faithfulness_metric]
 design_accuracy = GEval(
     name="DesignAccuracy",
     criteria=(
-        "- Completeness: The design addresses all the requirements in the SRS.   - Modularity: The"
+        "- Completeness: The design addresses the system's requirements.   - Modularity: The"
         " system architecture reflects a separation of concerns between its components and is"
         " feasible for implementation.   - Best Practices: The architecture and design adhere to"
         " industry best practices.   - Project Definition: The file structure aligns with the"
