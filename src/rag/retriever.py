@@ -17,6 +17,8 @@ from .constants import (
     BASE_REQUIREMENTS_PATH,
     FAISS_INDEX_NAME,
     GEMINI_EMBEDDING_MODEL,
+    RAG_DISTANCE_THRESHOLD,
+    RAG_RETRIEVAL_K,
     RAG_TOP_K,
     REQUIREMENT_CHUNKS_NAME,
 )
@@ -65,9 +67,22 @@ def retrieve_requirements(query: str) -> Optional[List[str]]:
 
   # Embed the query using the same embedding model and search the index
   query_vector = _get_embedding(query)
-  distances, indices = index.search(np.array([query_vector]), RAG_TOP_K)
+  distances, indices = index.search(np.array([query_vector]), RAG_RETRIEVAL_K)
 
-  result = [requirement_chunks[i]["chunk"] for i in indices[0]]
-  logger.debug(f"RAG retrieved content is: {str(result)}")
+  # Filter by distance threshold and keep up to RAG_TOP_K results
+  result = []
+  for dist, idx in zip(distances[0], indices[0]):
+    if dist <= RAG_DISTANCE_THRESHOLD:
+      result.append(requirement_chunks[idx]["chunk"])
+      if len(result) >= RAG_TOP_K:
+        break
+
+  if not result:
+    logger.debug(
+        f"RAG: all {RAG_RETRIEVAL_K} candidates exceeded distance threshold"
+        f" {RAG_DISTANCE_THRESHOLD} (best: {distances[0][0]:.4f}). Returning empty."
+    )
+  else:
+    logger.debug(f"RAG retrieved {len(result)} context(s) within threshold {RAG_DISTANCE_THRESHOLD}.")
 
   return result

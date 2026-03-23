@@ -29,6 +29,8 @@ REQUIREMENT_CHUNKS_NAME = "requirement_chunks.json"
 
 # Retrieval config
 RAG_TOP_K = 5
+RAG_RETRIEVAL_K = 10  # Candidates to fetch before distance filtering
+RAG_DISTANCE_THRESHOLD = 0.68  # Max L2 distance; chunks above this are filtered out
 
 # PURE docs partition: filenames held out for goldens (not indexed)
 # These are real-world SRS docs reserved as reference for specifier/wrapper/single goldens.

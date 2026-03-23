@@ -2,7 +2,7 @@
 
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCaseParams
-from deepeval.metrics import HallucinationMetric, FaithfulnessMetric
+from deepeval.metrics import HallucinationMetric
 from ragas.metrics import (
     faithfulness as ragas_faithfulness_metric,
     context_precision,
@@ -48,9 +48,6 @@ design_accuracy = GEval(
         LLMTestCaseParams.CONTEXT,
     ],
 )
-
-# DeepEval RAG metrics
-faithfulness = FaithfulnessMetric(model=EVALUATION_MODEL)
 
 # DeepEval content quality and agentic metrics useful to validate multiple agents
 hallucination = HallucinationMetric(model=EVALUATION_MODEL)

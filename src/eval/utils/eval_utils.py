@@ -27,7 +27,6 @@ from eval.metrics import (
 from eval.utils.constants import (
     AGENT_GOLDENS_MAP,
     AGENT_METRICS_MAP,
-    AGENT_RAG_METRICS_MAP,
     AGENT_RAGAS_METRICS_MAP,
     AGENT_PROMPTS,
     AGENT_REGISTRY,
@@ -39,12 +38,8 @@ from utils.constants import (
 )
 
 
-def get_metrics(agent_type: str, rag: bool = False) -> list[BaseMetric]:
+def get_metrics(agent_type: str) -> list[BaseMetric]:
   """Gets the list of DeepEval metrics for an agent."""
-
-  if rag:
-    return AGENT_RAG_METRICS_MAP[agent_type]
-
   return AGENT_METRICS_MAP[agent_type]
 
 
@@ -85,7 +80,11 @@ def get_dataset(
 
   if rag:
     for golden in goldens:
-      retrieval_context = retrieve_requirements(golden.input)
+      retrieval_context = retrieve_requirements(golden.input) or []
+      # Include golden context (the requirements doc the agent sees in the input)
+      # so RAGAS evaluates faithfulness against content the agent actually had access to.
+      if golden.context:
+        retrieval_context = list(golden.context) + retrieval_context
       golden.retrieval_context = retrieval_context or None
 
   dataset = EvaluationDataset(goldens=goldens)
@@ -171,43 +170,79 @@ def _run_ragas_evaluation(
   elif RAGAS_FAITHFULNESS in ragas_metric_names:
     metrics_to_run = RAGAS_FAITHFULNESS_ONLY
 
-  # Build ragas SingleTurnSamples from test cases.
-  samples = []
+  # Context-dependent metrics that require retrieved_contexts to be meaningful.
+  _CONTEXT_DEPENDENT_METRICS = {"context_precision", "context_recall", "context_entity_recall", "faithfulness"}
+
+  # Split samples: those with contexts get full eval, those without get only context-independent metrics.
+  samples_with_ctx = []
+  samples_without_ctx = []
   for i, tc in enumerate(test_cases):
     contexts = tc.get("retrieval_context")
-    if not contexts:
-      logger.warning(f"RAGAS sample {i} has no retrieved_contexts — faithfulness will be NaN/0.0")
-    else:
+    sample = SingleTurnSample(
+        user_input=tc["input"],
+        response=tc["actual_output"],
+        reference=tc.get("expected_output"),
+        retrieved_contexts=contexts if contexts else None,
+    )
+    if contexts:
       logger.debug(f"RAGAS sample {i} has {len(contexts)} retrieved context(s)")
-    samples.append(
-        SingleTurnSample(
-            user_input=tc["input"],
-            response=tc["actual_output"],
-            reference=tc.get("expected_output"),
-            retrieved_contexts=contexts,
-        )
-    )
+      samples_with_ctx.append((i, sample))
+    else:
+      logger.warning(
+          f"RAGAS sample {i} has no retrieved_contexts — skipping context-dependent metrics."
+      )
+      samples_without_ctx.append((i, sample))
 
-  try:
-    dataset = RagasEvaluationDataset(samples=samples)
-    eval_result = ragas_evaluate(dataset, metrics=metrics_to_run, llm=llm)
-    scores_df = eval_result.to_pandas()
-  except Exception as e:
-    logger.warning(
-        f"Batch RAGAS evaluation failed ({type(e).__name__}: {e}). "
-        "Falling back to per-sample evaluation."
-    )
-    scores_df = _evaluate_samples_individually(samples, metrics_to_run, llm)
+  # Determine context-independent metrics to run on samples without context.
+  context_independent_metrics = [m for m in metrics_to_run if m.name not in _CONTEXT_DEPENDENT_METRICS]
+
+  # Evaluate samples WITH context using all metrics.
+  scores_with_ctx = {}
+  if samples_with_ctx:
+    ctx_samples = [s for _, s in samples_with_ctx]
+    try:
+      dataset = RagasEvaluationDataset(samples=ctx_samples)
+      eval_result = ragas_evaluate(dataset, metrics=metrics_to_run, llm=llm)
+      df = eval_result.to_pandas()
+    except Exception as e:
+      logger.warning(
+          f"Batch RAGAS evaluation failed ({type(e).__name__}: {e}). "
+          "Falling back to per-sample evaluation."
+      )
+      df = _evaluate_samples_individually(ctx_samples, metrics_to_run, llm)
+    for row_idx, (orig_idx, _) in enumerate(samples_with_ctx):
+      scores_with_ctx[orig_idx] = df.iloc[row_idx].to_dict()
+
+  # Evaluate samples WITHOUT context using only context-independent metrics.
+  scores_without_ctx = {}
+  if samples_without_ctx and context_independent_metrics:
+    no_ctx_samples = [s for _, s in samples_without_ctx]
+    try:
+      dataset = RagasEvaluationDataset(samples=no_ctx_samples)
+      eval_result = ragas_evaluate(dataset, metrics=context_independent_metrics, llm=llm)
+      df = eval_result.to_pandas()
+    except Exception as e:
+      logger.warning(
+          f"Batch RAGAS (no-context) evaluation failed ({type(e).__name__}: {e}). "
+          "Falling back to per-sample evaluation."
+      )
+      df = _evaluate_samples_individually(no_ctx_samples, context_independent_metrics, llm)
+    for row_idx, (orig_idx, _) in enumerate(samples_without_ctx):
+      scores_without_ctx[orig_idx] = df.iloc[row_idx].to_dict()
 
   results = []
   for idx, tc in enumerate(test_cases):
-    row = scores_df.iloc[idx]
+    row = scores_with_ctx.get(idx) or scores_without_ctx.get(idx, {})
+    has_context = idx in scores_with_ctx
 
     if RAGAS_COMBINED in ragas_metric_names:
       # Report each individual metric and an aggregate.
       score_breakdown = {}
       for metric in metrics_to_run:
         metric_name = metric.name
+        # Skip context-dependent metrics for samples without context.
+        if not has_context and metric_name in _CONTEXT_DEPENDENT_METRICS:
+          continue
         raw_score = _sanitize_score(row.get(metric_name))
         score_breakdown[metric_name] = raw_score
         results.append({
@@ -235,16 +270,17 @@ def _run_ragas_evaluation(
       })
 
     if RAGAS_FAITHFULNESS in ragas_metric_names and RAGAS_COMBINED not in ragas_metric_names:
-      faith_score = _sanitize_score(row.get("faithfulness"))
-      results.append({
-          "test_index": idx,
-          "metric": RAGAS_FAITHFULNESS,
-          "score": faith_score,
-          "threshold": threshold,
-          "success": faith_score >= threshold,
-          "reason": None,
-          "cost": None,
-      })
+      if has_context:
+        faith_score = _sanitize_score(row.get("faithfulness"))
+        results.append({
+            "test_index": idx,
+            "metric": RAGAS_FAITHFULNESS,
+            "score": faith_score,
+            "threshold": threshold,
+            "success": faith_score >= threshold,
+            "reason": None,
+            "cost": None,
+        })
 
   return results
 

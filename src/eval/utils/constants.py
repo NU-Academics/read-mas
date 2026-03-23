@@ -22,7 +22,6 @@ from eval.metrics import (
     design_accuracy,
     designer_accuracy,
     design_document_accuracy,
-    faithfulness,
     hallucination,
     requirements_accuracy,
     specification_accuracy,
@@ -55,17 +54,8 @@ AGENT_METRICS_MAP = {
     "specifier_agent": [specification_accuracy, hallucination],
 }
 
-AGENT_RAG_METRICS_MAP = {
-    "analyzer_agent": [analysis_accuracy, hallucination],
-    "collector_agent": [requirements_accuracy, hallucination, faithfulness],
-    "designer_agent": [designer_accuracy, hallucination],
-    "documenter_agent": [design_document_accuracy, hallucination],
-    "read_agent": [design_accuracy],
-    "single_agent": [design_accuracy],
-    "specifier_agent": [specification_accuracy, hallucination],
-}
-
 AGENT_RAGAS_METRICS_MAP = {
+    "collector_agent": [RAGAS_COMBINED],
     "read_agent": [RAGAS_COMBINED],
     "single_agent": [RAGAS_COMBINED],
 }

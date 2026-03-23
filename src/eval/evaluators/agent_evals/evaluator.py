@@ -12,7 +12,6 @@ from dvclive.live import Live
 
 from orchestrator import run_agent
 from eval.utils import (
-    compute_metrics_averages,
     get_metrics,
     get_ragas_metric_names,
     get_prompt,
@@ -49,7 +48,7 @@ class AgentEvaluator:
     self._evaluated_agent = get_eval_agent(
         self._agent_type, self._model, self._system_prompt.text_template, self._rag, self._run_mode
     )
-    self._metrics = get_metrics(self._agent_type, self._rag)
+    self._metrics = get_metrics(self._agent_type)
     self._ragas_metric_names = get_ragas_metric_names(self._agent_type, self._rag)
     self._dataset = get_dataset(self._agent_type, self._rag, AgentRunMode.EVAL)
     self._run_path = "runs/" + self._run_mode.value + "_runs"
