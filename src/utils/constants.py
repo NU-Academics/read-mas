@@ -18,7 +18,7 @@ class AgentRunMode(StrEnum):
   MAIN = "main"
 
 
-NUMBER_OF_TRIES = 2
+NUMBER_OF_TRIES = 10
 
 EVALUATION_MODEL = "gpt-4.1"
 

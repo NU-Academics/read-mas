@@ -8,21 +8,26 @@ CODE_GENERATOR_TOOL_SYSTEM_PROMPT = """Generate code based on the following soft
 
     {design_output}
 
-    Provide complete, executable code that implements the design. 
-        
-    ## CRITICAL TEST REQUIREMENTS:
+    Original problem statement:
+    {original_prompt}
+
+    Provide complete, executable code that implements the design.
+
+    ## CRITICAL REQUIREMENTS:
     - **FORBIDDEN**: DO NOT write unit tests - only generate the function implementation code
-    - Generate ONLY the function implementation that solves the problem
+    - Use the EXACT function name and parameter names from the original problem statement above.
+    - Return ONLY the bare function — no class wrapper, no if __name__ == "__main__" guard.
     - Return only the code without explanations or markdown formatting unless the code itself requires markdown.
     - **CRITICAL**: LIMIT doc strings and code comments to at most 2 sentences.
     """
 
 
-async def generate_code(design_output: str) -> str:
+async def generate_code(design_output: str, original_prompt: str = "") -> str:
   """Generate code using an LLM using the input from a design agent.
 
   Args:
       design_output: The software design document obtained from the single agent tool in a string format
+      original_prompt: The original coding problem statement used to pin the exact function signature
 
   Returns:
       The generated code with no extra text
@@ -37,7 +42,10 @@ async def generate_code(design_output: str) -> str:
         messages=[
             {
                 "role": "user",
-                "content": CODE_GENERATOR_TOOL_SYSTEM_PROMPT.format(design_output=design_output),
+                "content": CODE_GENERATOR_TOOL_SYSTEM_PROMPT.format(
+                    design_output=design_output,
+                    original_prompt=original_prompt,
+                ),
             },
         ],
     )
