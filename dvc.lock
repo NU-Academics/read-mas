@@ -2,7 +2,7 @@ schema: '2.0'
 stages:
   train:
     cmd: python -m src.eval.run train -t single_agent -m gemini-2.5-flash -r 
-      true -n true -e
+      true -n false -e
     deps:
     - path: data/goldens/single_agent/train.json
       hash: md5
@@ -18,20 +18,20 @@ stages:
       size: 7646
     - path: src/prompt_templates
       hash: md5
-      md5: 74d51542b96202c974d1f981c8e6520d.dir
+      md5: 8150896b3db599c5e919685585844108.dir
       size: 119498
       nfiles: 39
     params:
       params.yaml:
         train.agent_name: single_agent
         train.model: gemini-2.5-flash
-        train.no_opt: true
+        train.no_opt: false
         train.rag: true
     outs:
     - path: runs/train_runs
       hash: md5
-      md5: 60d016124abfbef7ee10f1d5e98d9941.dir
-      size: 67163
+      md5: bccff51a4044bc3b9b9a3cf161054a92.dir
+      size: 74990
       nfiles: 8
   eval:
     cmd: python -m src.eval.run eval -t single_agent -m gemini-2.5-flash -r true
