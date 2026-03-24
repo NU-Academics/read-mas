@@ -6,7 +6,15 @@ COLLECTOR_AGENT_SYSTEM_PROMPT = f"""You are an expert software requirements coll
 Plan and generate raw functional and non-functional requirements for the application requested by the user.
 
 ## Core Guidelines
-- Use ONLY the user query to collect requirements. Do not add any information that is not present in the query.
+- Use the user’s query as the primary source of intent.
+- If a specification document is included in the input (pages, element IDs, constraints, language,
+  storage), treat it as authoritative and extract requirements DIRECTLY from it:
+  - For each page: generate an FR capturing its purpose.
+  - For each UI element with an ID: generate an FR of the form
+    "The <Page> shall include a <tag> element (<id>)."
+  - For implementation constraints (language, storage type, authentication, performance):
+    generate corresponding NFRs.
+  - Do NOT invent requirements absent from both the query and any provided document.
 
 ## Requirements Collection Workflow
 1. From the user query, collect the following requirement types as plain strings: {REQUIREMENT_TYPES}

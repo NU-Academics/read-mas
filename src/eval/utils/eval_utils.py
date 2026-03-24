@@ -81,8 +81,8 @@ def get_dataset(
   if rag:
     for golden in goldens:
       retrieval_context = retrieve_requirements(golden.input) or []
-      # Include golden context (the requirements doc the agent sees in the input)
-      # so RAGAS evaluates faithfulness against content the agent actually had access to.
+      # Include the specification document from the golden as retrieval context so RAGAS
+      # evaluates faithfulness against the same document included in the agent's input.
       if golden.context:
         retrieval_context = list(golden.context) + retrieval_context
       golden.retrieval_context = retrieval_context or None

@@ -12,7 +12,7 @@ from google.genai.types import ThinkingConfig
 from utils.logger import setup_logging
 from prompt_templates import COLLECTOR_AGENT_SYSTEM_PROMPT
 from .collector_models import CollectorOutputModel
-from agents import (add_rag_mcp, before_agent, after_agent, before_model, after_model)
+from agents import (add_rag_mcp, before_agent, after_agent, before_model, after_model, after_rag_tool, get_agent_config)
 
 
 class CollectorAgent(AgentBase):
@@ -44,8 +44,10 @@ class CollectorAgent(AgentBase):
         instruction=self._system_prompt,
         planner=planner,
         tools=tools,
+        generate_content_config=get_agent_config(),
         output_schema=CollectorOutputModel,
         output_key="collector_output",
+        after_tool_callback=after_rag_tool if self._rag else None,
         before_agent_callback=before_agent,
         after_agent_callback=after_agent,
         before_model_callback=before_model,
