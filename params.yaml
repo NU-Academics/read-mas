@@ -10,11 +10,11 @@ eval:
 benchmark:
   agent_name: single_agent
   model: gemini-2.5-flash
-  rag: false
+  rag: true
 code:
   agent_name: single_agent
   model: gemini-2.5-flash
-  rag: false
+  rag: true
   dataset: humaneval
   samples: 
     data/samples/humaneval/humaneval_samples_1773079768596-sanitized.jsonl
