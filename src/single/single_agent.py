@@ -5,7 +5,7 @@ import time
 
 from google.adk.agents import Agent
 
-from agents import (AgentBase, get_model_from, add_rag_mcp)
+from agents import (AgentBase, get_model_from, add_rag_mcp, get_agent_config)
 from agents import (before_agent, after_agent, before_model, after_model, after_rag_tool)
 from utils.constants import DEFAULT_MODEL_NAME
 from prompt_templates.single_prompt import SINGLE_AGENT_SYSTEM_PROMPT
@@ -35,6 +35,7 @@ class SingleAgent(AgentBase):
         description="A single agent that generates a software design for a user's query",
         instruction=self.get_instruction,
         tools=tools,
+        generate_content_config=get_agent_config(),
         output_key="design_output",
         after_tool_callback=after_rag_tool if self._rag else None,
         before_agent_callback=before_agent,

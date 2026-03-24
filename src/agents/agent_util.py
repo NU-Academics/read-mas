@@ -87,6 +87,6 @@ def get_agent_config():
   """Configures the agent's technical configuration attributes."""
   return GenerateContentConfig(
       temperature=0.2,
-      # max_output_tokens=8192,
+      max_output_tokens=65536,
       top_p=0.95,
   )
