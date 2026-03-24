@@ -10,7 +10,7 @@ from utils.logger import setup_logging
 from prompt_templates import ANALYZER_AGENT_SYSTEM_PROMPT
 from requirement.collector import CollectorOutputModel
 from .analyzer_models import AnalyzerOutputModel
-from agents import (add_rag_mcp, before_agent, after_agent, before_model, after_model)
+from agents import (before_agent, after_agent, before_model, after_model, get_agent_config)
 
 
 class AnalyzerAgent(AgentBase):
@@ -26,10 +26,6 @@ class AnalyzerAgent(AgentBase):
     super().__init__(llm_model_name, system_prompt, run_mode, rag)
 
   def get_agent(self) -> Agent:
-    tools = []
-    if self._rag:
-      add_rag_mcp(tools, self._rag)
-
     return Agent(
         name="analyzer_agent",
         model=get_model_from(self._llm_model_name),
@@ -38,9 +34,9 @@ class AnalyzerAgent(AgentBase):
             " agent."
         ),
         instruction=self._system_prompt,
-        tools=tools,
         input_schema=CollectorOutputModel,
         output_schema=AnalyzerOutputModel,
+        generate_content_config=get_agent_config(),
         output_key="analyzer_output",
         before_agent_callback=before_agent,
         after_agent_callback=after_agent,
