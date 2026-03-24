@@ -1,0 +1,8 @@
+Experiment,rev,typ,Created,parent,no_opt,runs/eval_runs/metrics.json:agent,runs/eval_runs/metrics.json:model,runs/eval_runs/metrics.json:rag,runs/eval_runs/metrics.json:DesignAccuracy [GEval],runs/eval_runs/metrics.json:faithfulness (ragas),runs/eval_runs/metrics.json:RAGAS,eval.agent_name,eval.model,eval.rag
+,single-agent-eval-complete,baseline,2026-03-23T22:47:09,,True,single_agent,gemini-2.5-flash,True,0.953,0.828,0.636,single_agent,gemini-2.5-flash,True
+iliac-crib,221d325,branch_base,2026-03-23T23:04:14,,True,single_agent,gemini-2.5-flash,True,0.953,0.828,0.636,single_agent,gemini-2.5-flash,True
+,2eb6c11,baseline,2026-03-23T22:40:26,,True,single_agent,gemini-2.5-flash,True,0.918,0.948,0.654,single_agent,gemini-2.5-flash,True
+compo-esne,547d245,branch_base,2026-03-23T22:46:27,,True,single_agent,gemini-2.5-flash,True,0.953,0.828,0.636,single_agent,gemini-2.5-flash,True
+,single-agent-eval-begin,baseline,2026-03-23T22:33:33,,True,single_agent,gemini-2.5-flash,True,0.943,0.752,0.601,single_agent,gemini-2.5-flash,True
+naive-prof,8b89dd2,branch_commit,2026-03-23T22:39:09,,True,single_agent,gemini-2.5-flash,True,0.918,0.948,0.654,single_agent,gemini-2.5-flash,True
+dormy-vent,bca1df8,branch_base,2026-03-23T22:33:43,,True,single_agent,gemini-2.5-flash,True,0.943,0.752,0.601,single_agent,gemini-2.5-flash,True

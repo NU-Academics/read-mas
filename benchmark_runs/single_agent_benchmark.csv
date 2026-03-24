@@ -1,0 +1,21 @@
+Experiment,rev,typ,Created,parent,runs/benchmark_runs/metrics.json:agent,runs/benchmark_runs/metrics.json:model,runs/benchmark_runs/metrics.json:rag,runs/benchmark_runs/metrics.json:DesignAccuracy [GEval],runs/benchmark_runs/metrics.json:faithfulness (ragas),runs/benchmark_runs/metrics.json:RAGAS,no_opt,benchmark.agent_name,benchmark.model,benchmark.rag
+,single-agent-benchmark-complete,baseline,2026-03-24T10:49:27,,single_agent,gemini-2.5-flash,True,0.974,0.894,0.641,True,single_agent,gemini-2.5-flash,True
+,ceb4a54,baseline,2026-03-24T10:42:05,,single_agent,gemini-2.5-flash,True,0.977,0.975,0.667,True,single_agent,gemini-2.5-flash,True
+benchmark-single_agent-gemini-2.5-flash-1774363325,2ac2fec,branch_base,2026-03-24T10:49:27,,single_agent,gemini-2.5-flash,True,0.974,0.894,0.641,True,single_agent,gemini-2.5-flash,True
+,c0b49ae,baseline,2026-03-24T10:34:54,,single_agent,gemini-2.5-flash,True,0.862,0.772,0.611,True,single_agent,gemini-2.5-flash,True
+benchmark-single_agent-gemini-2.5-flash-1774362894,e2ec101,branch_base,2026-03-24T10:42:04,,single_agent,gemini-2.5-flash,True,0.977,0.975,0.667,True,single_agent,gemini-2.5-flash,True
+,3887474,baseline,2026-03-24T10:28:41,,single_agent,gemini-2.5-flash,True,0.93,0.811,0.655,True,single_agent,gemini-2.5-flash,True
+benchmark-single_agent-gemini-2.5-flash-1774362521,ace03b7,branch_base,2026-03-24T10:34:54,,single_agent,gemini-2.5-flash,True,0.862,0.772,0.611,True,single_agent,gemini-2.5-flash,True
+,f676edb,baseline,2026-03-24T10:21:34,,single_agent,gemini-2.5-flash,True,0.955,0.961,0.667,True,single_agent,gemini-2.5-flash,True
+benchmark-single_agent-gemini-2.5-flash-1774362094,8946531,branch_base,2026-03-24T10:28:40,,single_agent,gemini-2.5-flash,True,0.93,0.811,0.655,True,single_agent,gemini-2.5-flash,True
+,8631e80,baseline,2026-03-24T10:14:26,,single_agent,gemini-2.5-flash,True,0.98,0.387,0.532,True,single_agent,gemini-2.5-flash,True
+benchmark-single_agent-gemini-2.5-flash-1774361666,e9ca827,branch_base,2026-03-24T10:21:34,,single_agent,gemini-2.5-flash,True,0.955,0.961,0.667,True,single_agent,gemini-2.5-flash,True
+,a5166ca,baseline,2026-03-24T10:06:51,,single_agent,gemini-2.5-flash,True,0.928,0.972,0.649,True,single_agent,gemini-2.5-flash,True
+benchmark-single_agent-gemini-2.5-flash-1774361211,1fe2c14,branch_base,2026-03-24T10:14:25,,single_agent,gemini-2.5-flash,True,0.98,0.387,0.532,True,single_agent,gemini-2.5-flash,True
+,45368e3,baseline,2026-03-23T23:16:26,,single_agent,gemini-2.5-flash,True,0.893,0.858,0.645,True,single_agent,gemini-2.5-flash,True
+benchmark-single_agent-gemini-2.5-flash-1774360792,16c3101,branch_commit,2026-03-24T10:06:51,,single_agent,gemini-2.5-flash,True,0.928,0.972,0.649,True,single_agent,gemini-2.5-flash,True
+benchmark-single_agent-gemini-2.5-flash-1774342612,c78e728,branch_base,2026-03-24T04:56:55,,single_agent,gemini-2.5-flash,True,0.893,0.858,0.645,True,single_agent,gemini-2.5-flash,True
+,f61b0cd,baseline,2026-03-23T23:10:26,,single_agent,gemini-2.5-flash,True,0.866,0.744,0.609,True,single_agent,gemini-2.5-flash,True
+peaky-banc,f99027c,branch_base,2026-03-23T23:16:25,,single_agent,gemini-2.5-flash,True,0.893,0.858,0.645,True,single_agent,gemini-2.5-flash,True
+,single-agent-benchmark-begin,baseline,2026-03-23T23:04:14,,single_agent,gemini-2.5-flash,True,0.985,0.831,0.637,True,single_agent,gemini-2.5-flash,True
+elite-harl,5ccd1d9,branch_base,2026-03-23T23:10:25,,single_agent,gemini-2.5-flash,True,0.866,0.744,0.609,True,single_agent,gemini-2.5-flash,True
