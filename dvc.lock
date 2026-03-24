@@ -87,3 +87,36 @@ stages:
       md5: e062c8e5c0fba5e619958e4629467d09.dir
       size: 44413
       nfiles: 8
+  code_benchmark:
+    cmd: python -m src.eval.run code-benchmark -t single_agent -m 
+      gemini-2.5-flash -d humaneval -s 
+      data/samples/humaneval/humaneval_samples_1774364415865-sanitized.jsonl -r 
+      true -e
+    deps:
+    - path: data/samples/humaneval
+      hash: md5
+      md5: ba4ccd657acf87b07f792e02c28bd53a.dir
+      size: 10211651
+      nfiles: 54
+    - path: src/eval/evaluators/benchmark_evals/coding_benchmarker.py
+      hash: md5
+      md5: 844c8c76280743f68c4d8e812e889e7f
+      size: 3914
+    - path: src/eval/run.py
+      hash: md5
+      md5: a9949a37006381bf00a768b1ae7f37a2
+      size: 7676
+    params:
+      params.yaml:
+        code.agent_name: single_agent
+        code.dataset: humaneval
+        code.model: gemini-2.5-flash
+        code.rag: true
+        code.samples: 
+          data/samples/humaneval/humaneval_samples_1774364415865-sanitized.jsonl
+    outs:
+    - path: runs/code_benchmark_runs
+      hash: md5
+      md5: aaffd4014deae9f12b832f5e07a09ae7.dir
+      size: 28708
+      nfiles: 6
