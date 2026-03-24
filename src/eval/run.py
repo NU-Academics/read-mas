@@ -1,5 +1,9 @@
 import asyncio
+import warnings
 from typing import Optional
+
+warnings.filterwarnings("ignore", category=FutureWarning, module="dvclive")
+warnings.filterwarnings("ignore", category=FutureWarning, module="instructor")
 
 from eval.eval_agents import EvalCodeGeneratorAgent
 from eval.evaluators import (
@@ -73,6 +77,7 @@ def generate_samples(
         False,
         "--rag",
         "-r",
+        callback=str_to_bool,
         help="Whether to use the RAG tool",
     ),
     concurrency: int = typer.Option(
