@@ -84,6 +84,6 @@ stages:
     outs:
     - path: runs/benchmark_runs
       hash: md5
-      md5: 92f6843b63cf61e990ed7ea7b7ae1232.dir
-      size: 44283
+      md5: 5b2c8426f60496e706e13691550c1bad.dir
+      size: 46880
       nfiles: 8
