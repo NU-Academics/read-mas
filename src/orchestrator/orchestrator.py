@@ -129,7 +129,10 @@ async def run_agent_with_context(
             escalated_response = f"Agent escalated: {event.error_message or 'No specific message.'}"
           if event.is_final_response():
             if event.content and event.content.parts:
-              response = event.content.parts[0].text
+              response = "".join(
+                  part.text for part in event.content.parts
+                  if hasattr(part, "text") and part.text
+              )
             else:
               continue
       finally:
@@ -212,7 +215,10 @@ async def run_agent(
             escalated_response = f"Agent escalated: {event.error_message or 'No specific message.'}"
           if event.is_final_response():
             if event.content and event.content.parts:
-              response = event.content.parts[0].text
+              response = "".join(
+                  part.text for part in event.content.parts
+                  if hasattr(part, "text") and part.text
+              )
             else:
               continue
       finally:
