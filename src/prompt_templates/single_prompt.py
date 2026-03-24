@@ -72,10 +72,10 @@ Example start:
 ```mermaid
 classDiagram
 ClassA <|-- ClassB
-class ClassA {
+class ClassA {{
   +id: int
   +get_id() int
-}
+}}
 ```
 
 ## 5. Component and Sequence Diagrams (behavior)
