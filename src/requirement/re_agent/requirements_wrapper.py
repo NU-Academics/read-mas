@@ -1,7 +1,7 @@
 """Wrapper agent to create a workflow of the RE agents."""
 
 from typing import Optional
-from agents import (add_rag_mcp, AgentBase, get_model_from)
+from agents import (add_rag_mcp, AgentBase, get_model_from, get_agent_config)
 from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
 import time
 
@@ -49,6 +49,7 @@ class RequirementsWrapperAgent(AgentBase):
         description="A requirements wrapper agent that uses RE agent tools to generate the SRS.",
         instruction=self._system_prompt,
         tools=tools,
+        generate_content_config=get_agent_config(),
         output_key="requirements_output",
     )
 

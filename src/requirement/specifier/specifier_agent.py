@@ -5,13 +5,13 @@ from typing import Optional
 
 from google.adk.agents import Agent
 
-from agents import (add_rag_mcp, AgentBase, get_model_from)
+from agents import (AgentBase, get_model_from)
 from prompt_templates import SPECIFIER_AGENT_SYSTEM_PROMPT
 from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode
 from utils.logger import setup_logging
 
 from .specifier_models import SpecifierInputModel
-from agents import (before_agent, after_agent, before_model, after_model)
+from agents import (before_agent, after_agent, before_model, after_model, get_agent_config)
 
 
 class SpecifierAgent(AgentBase):
@@ -27,10 +27,6 @@ class SpecifierAgent(AgentBase):
     super().__init__(llm_model_name, system_prompt, run_mode, rag)
 
   def get_agent(self) -> Agent:
-    tools = []
-    if self._rag:
-      add_rag_mcp(tools, self._rag)
-
     return Agent(
         name="specifier_agent",
         model=get_model_from(self._llm_model_name),
@@ -38,8 +34,8 @@ class SpecifierAgent(AgentBase):
             "A requirements specifier agent that documents requirements using the SRS template."
         ),
         instruction=self._system_prompt,
-        tools=tools,
         input_schema=SpecifierInputModel,
+        generate_content_config=get_agent_config(),
         output_key="specifier_output",
         before_agent_callback=before_agent,
         after_agent_callback=after_agent,

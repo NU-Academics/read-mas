@@ -1,7 +1,7 @@
 """Wrapper agent to create a workflow of the Design agents."""
 
 from typing import Optional
-from agents import (AgentBase, get_model_from)
+from agents import (AgentBase, get_model_from, get_agent_config)
 from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
 import time
 
@@ -43,6 +43,7 @@ class DesignWrapperAgent(AgentBase):
         ),
         instruction=self._system_prompt,
         tools=tools,
+        generate_content_config=get_agent_config(),
         output_key="design_output",
     )
 

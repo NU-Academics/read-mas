@@ -17,8 +17,7 @@ Create a Software Requirement Specification (SRS) from the collector and analyze
    - Include the data model diagram from analyzer_output.dataModel in Appendix B
    - Include use cases from analyzer_output.useCases in the appropriate sections
    - Include business rules from analyzer_output.businessRules
-3. If the save_to_file tool is available, save the complete SRS document to disk by calling the save_to_file tool with output_type="srs".
-4. Return the complete SRS document as your final response (the same content you saved).
+3. Return the complete SRS document as your final response (the same content you saved).
 
 ## SRS Template Structure
 {IEEE_830_SRS_TEMPLATE}
@@ -27,6 +26,4 @@ Create a Software Requirement Specification (SRS) from the collector and analyze
 - Fill in ALL sections of the template with actual content - do not leave placeholders
 - Extract domainClasses, dataModel, useCases, and businessRules from the analyzer_output
 - Extract FRs and NFRs from the collector_output
-- Create a complete, finished document before calling save_to_file
-- Do NOT return the save_to_file success message as your final response.
 """

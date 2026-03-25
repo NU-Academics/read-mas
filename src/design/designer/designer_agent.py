@@ -1,7 +1,7 @@
 """This is the first agent in the Design agent pipeline and generates the system and component design for the given requirements."""
 
 from typing import Optional
-from agents import (AgentBase, get_model_from)
+from agents import (AgentBase, get_model_from, get_agent_config)
 from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
 import time
 
@@ -33,6 +33,7 @@ class DesignerAgent(AgentBase):
             " requirements."
         ),
         instruction=self._system_prompt,
+        generate_content_config=get_agent_config(),
         output_schema=DesignerOutputModel,
         output_key="designer_output",
         before_agent_callback=before_agent,
