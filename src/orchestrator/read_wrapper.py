@@ -4,7 +4,6 @@ from typing import Optional
 from agents import (AgentBase, get_model_from)
 from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
 import time
-import litellm
 
 from google.adk.agents import Agent, SequentialAgent
 from utils.logger import setup_logging
@@ -35,7 +34,6 @@ class ReadWrapperAgent(AgentBase):
 
 
 # For testing in adk web ui
-litellm._turn_on_debug()
 run_id = str(int(time.time() * 1000))
 setup_logging(run_id, "adk")
 agent = ReadWrapperAgent(DEFAULT_MODEL_NAME)
