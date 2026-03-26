@@ -5,6 +5,7 @@ from pydantic import Field
 from typing import Optional, List
 
 from rag.retriever import retrieve_requirements
+from utils.logger import (get_run_id, setup_logging)
 
 mcp = FastMCP("READ-MAS RAG server", host="0.0.0.0", port=8001)
 
@@ -25,6 +26,7 @@ def get_requirement_examples(
   Returns:
     An optional list of requirements
   """
+  setup_logging(get_run_id(), "mcp")
   return retrieve_requirements(query)
 
 

@@ -78,11 +78,11 @@ def retrieve_requirements(query: str) -> Optional[List[str]]:
         break
 
   if not result:
-    logger.debug(
-        f"RAG: all {RAG_RETRIEVAL_K} candidates exceeded distance threshold"
-        f" {RAG_DISTANCE_THRESHOLD} (best: {distances[0][0]:.4f}). Returning empty."
-    )
+    message = f"RAG: all {RAG_RETRIEVAL_K} candidates exceeded distance threshold {RAG_DISTANCE_THRESHOLD} (best: {distances[0][0]:.4f}). Returning empty."
+
+    logger.debug(message)
   else:
-    logger.debug(f"RAG retrieved {len(result)} context(s) within threshold {RAG_DISTANCE_THRESHOLD}.")
+    message = f"RAG retrieved {len(result)} context(s) within threshold {RAG_DISTANCE_THRESHOLD}."
+    logger.debug(message)
 
   return result
