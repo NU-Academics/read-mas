@@ -8,10 +8,13 @@ warnings.filterwarnings("ignore", category=FutureWarning, module="instructor")
 from eval.eval_agents import EvalCodeGeneratorAgent
 from eval.evaluators import (
     generate_benchmark_samples,
+    generate_llm_samples,
     AgentTrainer,
     AgentEvaluator,
     CodingBenchmarker,
+    LlmCodingBenchmarker,
 )
+from eval.eval_tools import generate_code
 from loguru import logger
 from utils import DEFAULT_MODEL_NAME
 import typer
@@ -81,7 +84,7 @@ def generate_samples(
         help="Whether to use the RAG tool",
     ),
     concurrency: int = typer.Option(
-        16,
+        8,
         "--concurrency",
         "-c",
         help="Maximum number of concurrent agent calls",
@@ -161,6 +164,87 @@ def code_benchmark_agent(
   benchmarker = CodingBenchmarker(
       run_id, agent_type, dataset, samples_file, model, rag, AgentRunMode.CODE_BENCHMARK, experiment
   )
+  asyncio.run(benchmarker.benchmark())
+
+@app.command("llm-generate-samples")
+def llm_generate_samples(
+    benchmark_name: str,
+    ctx: typer.Context,
+    run_id: str = typer.Option(
+        lambda: get_run_id(),
+        "--run-id",
+        "-i",
+        help="Unique run identifier",
+    ),
+    model: Optional[str] = typer.Option(
+        DEFAULT_MODEL_NAME, "--model", "-m", help="The LLM model name (litellm format)"
+    ),
+    samples_file: Optional[str] = typer.Option(
+        None,
+        "--samples-file",
+        "-s",
+        help="Path to an existing samples file to resume from.",
+    ),
+    num_samples: int = typer.Option(
+        NUMBER_OF_TRIES,
+        "--num-samples",
+        "-n",
+        help="Number of samples to generate per task",
+    ),
+    concurrency: int = typer.Option(
+        5,
+        "--concurrency",
+        "-c",
+        help="Maximum number of concurrent LLM calls",
+    ),
+):
+  """Generate benchmark samples by calling the LLM directly (no agents)."""
+  setup_logging(str(ctx.params["run_id"]), f"{benchmark_name}_llm")
+  logger.info(f"Starting LLM sample generation with run ID: {run_id}")
+
+  try:
+    asyncio.run(generate_llm_samples(model, benchmark_name, samples_file, num_samples, concurrency))
+  except Exception as e:
+    logger.error(f"Error during execution: {str(e)}")
+    print(f"[red]Error: {str(e)}[/red]")
+    raise typer.Exit(1)
+
+
+@app.command("llm-benchmark")
+def benchmark_coding_llm(
+    ctx: typer.Context,
+    run_id: str = typer.Option(
+        lambda: get_run_id(),
+        "--run-id",
+        "-i",
+        help="Unique run identifier",
+    ),
+    model: Optional[str] = typer.Option(
+        DEFAULT_MODEL_NAME, "--model", "-m", help="The LLM model name (litellm format)"
+    ),
+    dataset: Optional[str] = typer.Option(
+        "humaneval",
+        "--dataset",
+        "-d",
+        help="The coding benchmarking dataset: humaneval or mbpp.",
+    ),
+    samples_file: Optional[str] = typer.Option(
+        None,
+        "--samples-file",
+        "-s",
+        help="The sanitized samples file for the dataset.",
+    ),
+    experiment: bool = typer.Option(
+        False,
+        "--experiment",
+        "-e",
+        help="Whether to run a DVC experiment",
+    ),
+):
+  """Evaluate a raw LLM on HumanEval/MBPP without agent orchestration."""
+  setup_logging(str(ctx.params["run_id"]), "llm_benchmark")
+
+  benchmarker = LlmCodingBenchmarker(run_id, model, dataset, samples_file, experiment)
   asyncio.run(benchmarker.benchmark())
 
 

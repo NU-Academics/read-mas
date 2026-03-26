@@ -2,12 +2,13 @@ import asyncio
 import json
 import time
 from pathlib import Path
-from typing import Optional
+from typing import Awaitable, Callable, Optional
 
 from evalplus.data.humaneval import get_human_eval
 from evalplus.data.mbpp import get_mbpp_plus
 from google.adk.agents import Agent
 from google.adk.runners import Runner
+from litellm import acompletion
 from loguru import logger
 
 from orchestrator.constants import APP_NAME
@@ -17,6 +18,136 @@ from orchestrator.orchestrator import (
     run_agent_with_context,
 )
 from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
+
+LLM_SAMPLER_SYSTEM_PROMPT = (
+  "You are an expert Python programmer. Complete the given Python function. "
+  "Return ONLY the code continuation — no markdown fences, no explanations, no tests."
+)
+
+
+async def _generate_samples_with_fn(
+    benchmark_name: str,
+    sample_fn: Callable[[str, dict], Awaitable[str]],
+    samples_file_path: Optional[str] = None,
+    num_samples: int = NUMBER_OF_TRIES,
+    concurrency: int = 16,
+) -> Path:
+  """Shared scaffold for generating benchmark samples.
+
+  Args:
+    benchmark_name: Name of the benchmark (e.g., "humaneval", "mbpp")
+    sample_fn: Async callable (task_id, entry) -> solution string
+    samples_file_path: Optional path to existing samples file for resuming
+    num_samples: Total number of samples to generate per benchmark task
+    concurrency: Maximum number of concurrent calls
+
+  Returns:
+    Path to the samples jsonl file
+  """
+  benchmark_dataset = get_mbpp_plus() if benchmark_name == "mbpp" else get_human_eval()
+  dataset_entries = [(task_id, entry) for task_id, entry in benchmark_dataset.items()]
+
+  existing_samples_count = {}
+  if samples_file_path:
+    jsonl_path = Path(samples_file_path)
+    if not jsonl_path.exists():
+      logger.warning(f"Samples file {jsonl_path} does not exist. Creating new file.")
+      jsonl_path.parent.mkdir(parents=True, exist_ok=True)
+    else:
+      try:
+        with open(jsonl_path, "r") as f:
+          for line in f:
+            if line.strip():
+              entry = json.loads(line)
+              task_id_str = str(entry["task_id"])
+              existing_samples_count[task_id_str] = existing_samples_count.get(task_id_str, 0) + 1
+        total_existing = sum(existing_samples_count.values())
+        logger.info(
+            f"Found {total_existing} existing samples across {len(existing_samples_count)} tasks"
+            f" in {jsonl_path}"
+        )
+      except Exception as e:
+        logger.error(f"Error reading existing samples file: {e}. Starting fresh.")
+        existing_samples_count = {}
+  else:
+    file_suffix = str(int(time.time() * 1000))
+    data_dir = Path("data")
+    data_dir.mkdir(exist_ok=True)
+    samples_dir = data_dir / "samples" / benchmark_name
+    samples_dir.mkdir(parents=True, exist_ok=True)
+    jsonl_path = samples_dir / f"{benchmark_name}_samples_{file_suffix}.jsonl"
+
+  remaining_entries = []
+  remaining_sample_counts = []
+  for task_id, entry in dataset_entries:
+    task_id_str = str(task_id)
+    existing_count = existing_samples_count.get(task_id_str, 0)
+    needed = num_samples - existing_count
+    if needed > 0:
+      remaining_entries.append((task_id, entry))
+      remaining_sample_counts.append(needed)
+
+  if not remaining_entries:
+    logger.info(f"All samples already exist in {jsonl_path}. No generation needed.")
+    return jsonl_path
+
+  total_samples_needed = sum(remaining_sample_counts)
+  logger.info(
+      f"Generating {total_samples_needed} samples for {len(remaining_entries)} tasks in benchmark"
+      f" {benchmark_name} (out of {len(dataset_entries)} total tasks, {num_samples} samples"
+      " per task)"
+  )
+
+  work_items = []
+  for task_idx, ((task_id, entry), num_needed) in enumerate(
+      zip(remaining_entries, remaining_sample_counts), 1
+  ):
+    for sample_idx in range(num_needed):
+      work_items.append((task_id, entry, task_idx, sample_idx, num_needed))
+
+  semaphore = asyncio.Semaphore(concurrency)
+  write_lock = asyncio.Lock()
+  completed = 0
+
+  mode = "a" if jsonl_path.exists() else "w"
+  with open(jsonl_path, mode) as f:
+
+    async def _process_sample(item_num, task_id, entry, task_idx, sample_idx, num_needed):
+      nonlocal completed
+      async with semaphore:
+        try:
+          logger.info(
+              f"Processing sample {item_num}/{total_samples_needed} (task"
+              f" {task_idx}/{len(remaining_entries)}: {task_id}, sample"
+              f" {sample_idx + 1}/{num_needed})"
+          )
+          solution = await sample_fn(task_id, entry)
+
+          formatted_entry = {"task_id": str(task_id), "solution": str(solution)}
+          async with write_lock:
+            f.write(json.dumps(formatted_entry) + "\n")
+            f.flush()
+
+          completed += 1
+          logger.info(
+              f"Saved sample {sample_idx + 1}/{num_needed} for {task_id}"
+              f" ({completed}/{total_samples_needed} done)"
+          )
+        except Exception as e:
+          logger.error(
+              f"Error generating sample {sample_idx + 1}/{num_needed} for {task_id}: {e}"
+          )
+
+    async with asyncio.TaskGroup() as tg:
+      for item_num, (task_id, entry, task_idx, sample_idx, num_needed) in enumerate(
+          work_items, 1
+      ):
+        tg.create_task(
+            _process_sample(item_num, task_id, entry, task_idx, sample_idx, num_needed)
+        )
+
+  logger.info(f"Completed generation. Samples saved to {jsonl_path}")
+  return jsonl_path
 
 
 async def generate_benchmark_samples(
@@ -30,7 +161,7 @@ async def generate_benchmark_samples(
     num_samples: int = NUMBER_OF_TRIES,
     concurrency: int = 5,
 ):
-  """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder.
+  """Generate samples for a benchmark using the evaluation coding agent.
 
   Args:
     entry_agent: The agent to use for generating samples
@@ -39,124 +170,61 @@ async def generate_benchmark_samples(
     user_id: Optional user ID for the agent run
     runner: Optional runner for the agent run
     app_name: Optional app name for the agent run
-    samples_file_path: Optional path to an existing samples file. If provided, will resume
-      generation from where it stopped, writing missing samples to complete the file.
+    samples_file_path: Optional path to an existing samples file for resuming
     num_samples: Total number of samples to generate per benchmark task
+    concurrency: Maximum number of concurrent agent calls
+
   Returns:
     Path to the samples jsonl file
   """
-
-  benchmark_dataset = get_mbpp_plus() if benchmark_name == "mbpp" else get_human_eval()
-  dataset_entries = [(task_id, entry) for task_id, entry in benchmark_dataset.items()]
-  queries = [entry["prompt"] for _, entry in dataset_entries]
-
-  # Determine output file path
-  existing_samples_count = {}  # Dict mapping task_id -> count
-  if samples_file_path:
-    jsonl_path = Path(samples_file_path)
-    if not jsonl_path.exists():
-      logger.warning(f"Samples file {jsonl_path} does not exist. Creating new file.")
-      jsonl_path.parent.mkdir(parents=True, exist_ok=True)
-    else:
-      # Read existing samples and count per task
-      try:
-        with open(jsonl_path, "r") as f:
-          for line in f:
-            if line.strip():
-              entry = json.loads(line)
-              task_id_str = str(entry["task_id"])
-              existing_samples_count[task_id_str] = existing_samples_count.get(task_id_str, 0) + 1
-        total_existing = sum(existing_samples_count.values())
-        logger.info(
-            f"Found {total_existing} existing samples across {len(existing_samples_count)} tasks in"
-            f" {jsonl_path}"
-        )
-      except Exception as e:
-        logger.error(f"Error reading existing samples file: {e}. Starting fresh.")
-        existing_samples_count = {}
-  else:
-    file_suffix = session_id if session_id else f"{str(int(time.time() * 1000))}"
-    data_dir = Path("data")
-    data_dir.mkdir(exist_ok=True)
-    samples_dir = data_dir / "samples" / benchmark_name
-    samples_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = samples_dir / f"{benchmark_name}_samples_{file_suffix}.jsonl"
-
-    # Filter tasks that need more samples
-  remaining_entries = []
-  remaining_queries = []
-  remaining_sample_counts = []  # Track how many samples each task still needs
-  for (task_id, entry), query in zip(dataset_entries, queries):
-    task_id_str = str(task_id)
-    existing_count = existing_samples_count.get(task_id_str, 0)
-    needed = num_samples - existing_count
-    if needed > 0:
-      remaining_entries.append((task_id, entry))
-      remaining_queries.append(query)
-      remaining_sample_counts.append(needed)
-
-  if not remaining_queries:
-    logger.info(f"All samples already exist in {jsonl_path}. No generation needed.")
-    return jsonl_path
-
-  total_samples_needed = sum(remaining_sample_counts)
-  logger.info(
-      f"Generating {total_samples_needed} samples for {len(remaining_queries)} tasks in benchmark"
-      f" {benchmark_name} (out of {len(queries)} total tasks, {num_samples} samples per task)"
-  )
-
-  # Build reusable App/Runner context once
   _app, ctx_runner, ctx_session_manager = await create_app_context(
       entry_agent, app_name=app_name, run_mode=AgentRunMode.CODE_BENCHMARK
   )
 
-  # Flatten task×sample into a list of work items
-  work_items = []
-  for task_idx, ((task_id, _dataset_entry), query, num_needed) in enumerate(
-      zip(remaining_entries, remaining_queries, remaining_sample_counts), 1
-  ):
-    for sample_idx in range(num_needed):
-      work_items.append((task_id, query, task_idx, sample_idx, num_needed))
+  async def sample_fn(task_id, entry):
+    return await run_agent_with_context(
+        entry["prompt"], ctx_runner, ctx_session_manager, app_name=app_name
+    )
 
-  semaphore = asyncio.Semaphore(concurrency)
-  write_lock = asyncio.Lock()
-  completed = 0
+  return await _generate_samples_with_fn(
+      benchmark_name, sample_fn, samples_file_path, num_samples, concurrency
+  )
 
-  mode = "a" if jsonl_path.exists() else "w"
-  with open(jsonl_path, mode) as f:
 
-    async def _process_sample(item_num, task_id, query, task_idx, sample_idx, num_needed):
-      nonlocal completed
-      async with semaphore:
-        try:
-          logger.info(
-              f"Processing sample {item_num}/{total_samples_needed} (task"
-              f" {task_idx}/{len(remaining_entries)}: {task_id}, sample"
-              f" {sample_idx + 1}/{num_needed})"
-          )
-          sample = await run_agent_with_context(
-              query, ctx_runner, ctx_session_manager, app_name=app_name
-          )
+async def generate_llm_samples(
+    model: str,
+    benchmark_name: str,
+    samples_file_path: Optional[str] = None,
+    num_samples: int = NUMBER_OF_TRIES,
+    concurrency: int = 16,
+) -> Path:
+  """Generate benchmark samples by calling an LLM directly (no agent orchestration).
 
-          formatted_entry = {
-              "task_id": str(task_id),
-              "solution": str(sample),
-          }
-          async with write_lock:
-            f.write(json.dumps(formatted_entry) + "\n")
-            f.flush()
+  Args:
+    model: LiteLLM-format model string (e.g., "anthropic/claude-sonnet-4-5")
+    benchmark_name: Name of the benchmark (e.g., "humaneval", "mbpp")
+    samples_file_path: Optional path to an existing samples file for resuming
+    num_samples: Total number of samples to generate per benchmark task
+    concurrency: Maximum number of concurrent LLM calls
 
-          completed += 1
-          logger.info(
-              f"Saved sample {sample_idx + 1}/{num_needed} for {task_id}"
-              f" ({completed}/{total_samples_needed} done)"
-          )
-        except Exception as e:
-          logger.error(f"Error generating sample {sample_idx + 1}/{num_needed} for {task_id}: {e}")
+  Returns:
+    Path to the samples jsonl file
+  """
 
-    async with asyncio.TaskGroup() as tg:
-      for item_num, (task_id, query, task_idx, sample_idx, num_needed) in enumerate(work_items, 1):
-        tg.create_task(_process_sample(item_num, task_id, query, task_idx, sample_idx, num_needed))
+  async def sample_fn(task_id, entry):
+    resp = await acompletion(
+        model=model,
+        messages=[
+            {"role": "system", "content": LLM_SAMPLER_SYSTEM_PROMPT},
+            {
+                "role": "user",
+                "content": f"Complete this Python function:\n\n{entry['prompt']}",
+            },
+        ],
+    )
+    body = resp.choices[0].message.content
+    return entry["prompt"] + body
 
-  logger.info(f"Completed generation. Samples saved to {jsonl_path}")
-  return jsonl_path
+  return await _generate_samples_with_fn(
+      benchmark_name, sample_fn, samples_file_path, num_samples, concurrency
+  )

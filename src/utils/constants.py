@@ -15,6 +15,7 @@ class AgentRunMode(StrEnum):
   EVAL = "eval"
   BENCHMARK = "benchmark"
   CODE_BENCHMARK = "code_benchmark"
+  LLM_BENCHMARK = "llm_benchmark"
   MAIN = "main"
 
 
