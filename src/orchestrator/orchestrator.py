@@ -5,7 +5,12 @@ from typing import Optional
 
 import litellm
 import json
-from aiohttp import ClientPayloadError, ServerDisconnectedError
+from aiohttp import (
+  ClientPayloadError,
+  ServerConnectionError,
+  ServerDisconnectedError,
+  ServerTimeoutError,
+  )
 from google.adk.agents import BaseAgent
 from google.adk.runners import Runner
 from google.adk.apps import App
@@ -118,7 +123,7 @@ async def run_agent_with_context(
   content = types.Content(role="user", parts=[types.Part(text=query)])
   response = _NO_RESPONSE
   escalated_response: Optional[str] = None
-  retryable_errors = (ClientPayloadError, ConnectionResetError, ServerDisconnectedError)
+  retryable_errors = (ClientPayloadError, ConnectionResetError, ServerConnectionError, ServerDisconnectedError, ServerTimeoutError)
 
   for attempt in range(1, MAX_RETRIES + 1):
     try:
@@ -202,7 +207,7 @@ async def run_agent(
   response = _NO_RESPONSE
   escalated_response: Optional[str] = None
 
-  retryable_errors = (ClientPayloadError, ConnectionResetError, ServerDisconnectedError)
+  retryable_errors = (ClientPayloadError, ConnectionResetError, ServerConnectionError,  ServerDisconnectedError, ServerTimeoutError)
 
   for attempt in range(1, MAX_RETRIES + 1):
     try:
