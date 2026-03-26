@@ -70,7 +70,7 @@ ReadWrapperAgent
 
 - **AgentBase** (`src/agents/agent_base.py`): All agents extend this base class, which provides LLM model init, system prompt, run mode, and RAG config. Each subclass implements `get_agent()` returning a Google ADK `Agent`.
 - **LLM routing** (`src/agents/agent_util.py`): Gemini models use native ADK support; Ollama and others are wrapped via LiteLLM.
-- **RAG** (`src/rag/retriever.py`): FAISS index over requirement chunks, embedded with Ollama `nomic-embed-text:latest`, returns top-3 results. Registered as a tool on agents when `--rag` is enabled.
+- **RAG** (`src/rag/retriever.py`): FAISS index over requirement chunks, embedded with the Gemini embedding model, returns top-5 results filtered by distance. Registered as a tool on agents when `--rag` is enabled.
 - **Structured output**: Collector, Analyzer, and Designer agents produce Pydantic models; downstream agents consume these.
 
 ## DVC Experiments
@@ -103,25 +103,31 @@ dvc exp run -S eval.agent_name=single_agent -S eval.model=gemini-2.5-flash -S ev
 dvc exp run -S benchmark.agent_name=single_agent -S benchmark.model=gemini-2.5-flash -S benchmark.rag=false --name my-bench-exp benchmark
 ```
 
-### Code Benchmark
-
-Code benchmarking is a multi-step process:
+### Code Benchmark (agent-based)
 
 ```bash
-# Step 1: Generate code samples
-python -m src.eval.run generate-samples humaneval -m gemini-2.5-flash --num-samples 2
-
-# Step 2: Sanitize samples with evalplus
-evalplus.sanitize --samples data/samples/humaneval/<generated_samples>.jsonl
-
-# Step 3: Run code benchmark with the sanitized file
-dvc exp run \
-  -S code.agent_name=single_agent \
-  -S code.model=gemini-2.5-flash \
-  -S code.dataset=humaneval \
-  -S code.samples=data/samples/humaneval/<generated_samples>-sanitized.jsonl \
+# 1. Generate samples, 2. sanitize, 3. run experiment
+readmas-eval generate-samples humaneval -m gemini-2.5-flash -t single_agent
+python -m evalplus.sanitize --samples data/samples/humaneval/<samples>.jsonl
+dvc exp run -S code.agent_name=single_agent -S code.model=gemini-2.5-flash \
+  -S code.dataset=humaneval -S code.samples=data/samples/humaneval/<samples>-sanitized.jsonl \
   --name my-code-exp code_benchmark
 ```
+
+### LLM Benchmark (direct, no agents)
+
+Benchmarks a raw LLM on HumanEval/MBPP without agent orchestration, using litellm-format model strings.
+
+```bash
+# 1. Generate samples directly from LLM, 2. sanitize, 3. run experiment
+readmas-eval llm-generate-samples humaneval -m anthropic/claude-sonnet-4-5
+python -m evalplus.sanitize --samples data/samples/humaneval/<samples>.jsonl
+dvc exp run -S llm.model=anthropic/claude-sonnet-4-5 -S llm.dataset=humaneval \
+  -S llm.samples=data/samples/humaneval/<samples>-sanitized.jsonl \
+  --name my-llm-exp llm_code_benchmark
+```
+
+Metrics (`pass@1`, `pass@1plus`) are written to `runs/llm_benchmark_runs/metrics.json`.
 
 ### Viewing Results
 
@@ -155,6 +161,10 @@ code:
   rag: false
   dataset: humaneval
   samples: data/samples/humaneval/<samples_file>-sanitized.jsonl
+llm:
+  model: anthropic/claude-sonnet-4-5
+  dataset: humaneval
+  samples: data/samples/humaneval/<samples_file>-sanitized.jsonl
 ```
 
 ## Eval CLI
@@ -171,14 +181,20 @@ readmas-eval eval -t single_agent -m gemini-2.5-flash -r true -e
 # Benchmark
 readmas-eval benchmark -t single_agent -m gemini-2.5-flash -r false -e
 
-# Code benchmark
+# Code benchmark (agent-based)
 readmas-eval code-benchmark -t single_agent -m gemini-2.5-flash -d humaneval -s <samples_file> -e
 
-# Generate samples
-readmas-eval generate-samples humaneval -m gemini-2.5-flash --num-samples 2
+# Generate agent samples
+readmas-eval generate-samples humaneval -m gemini-2.5-flash
+
+# LLM benchmark (no agents)
+readmas-eval llm-benchmark -m anthropic/claude-sonnet-4-5 -d humaneval -s <samples_file> -e
+
+# Generate LLM samples directly
+readmas-eval llm-generate-samples humaneval -m anthropic/claude-sonnet-4-5
 ```
 
-**Common flags:** `-t` agent type, `-m` model, `-r` RAG toggle, `-n` skip prompt optimization (manual training), `-e` DVC experiment mode, `-i` run ID.
+**Common flags:** `-t` agent type, `-m` model, `-r` RAG toggle, `-n` skip prompt optimization (train only), `-e` DVC experiment mode, `-i` run ID.
 
 ## Project Structure
 
