@@ -8,7 +8,7 @@ from orchestrator.orchestrator import (
     run_agent_with_context,
 )
 from orchestrator.session_manager import SessionManager
-from .read_wrapper import root_agent
+from .read_wrapper import (ReadWrapperAgent, root_agent)
 
 __all__ = [
     "get_agent",
@@ -18,5 +18,6 @@ __all__ = [
     "run_agent_with_context",
     "APP_NAME",
     "SessionManager",
+    "ReadWrapperAgent",
     "root_agent",
 ]

@@ -7,6 +7,7 @@ from deepeval.prompt import Prompt
 from single import SingleAgent
 from requirement import (CollectorAgent, AnalyzerAgent, SpecifierAgent, RequirementsWrapperAgent)
 from design import (DesignerAgent, DocumenterAgent, DesignWrapperAgent)
+from orchestrator import ReadWrapperAgent
 from prompt_templates import (
     SINGLE_AGENT_SYSTEM_PROMPT,
     COLLECTOR_AGENT_SYSTEM_PROMPT,
@@ -69,6 +70,7 @@ AGENT_PROMPTS = {
     "designer_agent": Prompt(text_template=DESIGNER_AGENT_SYSTEM_PROMPT),
     "documenter_agent": Prompt(text_template=DOCUMENTER_AGENT_SYSTEM_PROMPT),
     "design_agent": Prompt(text_template=DESIGN_AGENT_SYSTEM_PROMPT),
+    "read_agent": Prompt(text_template=None)
 }
 
 AGENT_REGISTRY = {
@@ -80,4 +82,5 @@ AGENT_REGISTRY = {
     "designer_agent": DesignerAgent,
     "documenter_agent": DocumenterAgent,
     "design_agent": DesignWrapperAgent,
+    "read_agent": ReadWrapperAgent,
 }
