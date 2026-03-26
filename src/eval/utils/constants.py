@@ -30,6 +30,8 @@ from eval.metrics import (
     RAGAS_COMBINED,
 )
 
+CODING_MODEL = "gemini/gemini-2.5-flash"
+
 PROMPT_OPTIMIZER_MODEL = "gpt-5-mini"
 
 GOLDENS_BASE_PATH = Path("data/goldens")
