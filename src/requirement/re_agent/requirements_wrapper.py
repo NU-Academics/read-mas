@@ -12,8 +12,6 @@ from prompt_templates import RE_AGENT_SYSTEM_PROMPT
 from requirement import CollectorAgent
 from requirement import AnalyzerAgent
 from requirement import SpecifierAgent
-from tools import save_to_file
-
 
 class RequirementsWrapperAgent(AgentBase):
   """This class defines the wrapper agent for the RE phase of the SDLC."""
@@ -39,9 +37,6 @@ class RequirementsWrapperAgent(AgentBase):
     tools.append(AgentTool(agent=self._collector_agent))
     tools.append(AgentTool(agent=self._analyzer_agent))
     tools.append(AgentTool(agent=self._specifier_agent))
-
-    if self._run_mode != AgentRunMode.BENCHMARK:
-      tools.append(save_to_file)
 
     return Agent(
         name="re_agent",

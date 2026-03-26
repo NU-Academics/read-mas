@@ -81,7 +81,7 @@ def generate_samples(
         help="Whether to use the RAG tool",
     ),
     concurrency: int = typer.Option(
-        5,
+        16,
         "--concurrency",
         "-c",
         help="Maximum number of concurrent agent calls",
