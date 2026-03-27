@@ -34,7 +34,6 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
 
 def add_rag_mcp(tools: List[any], rag: bool):
   if rag:
-    logger.debug("Adding the RAG toolset to the agent's tools list.")
     rag_toolset = McpToolset(
       connection_params=StreamableHTTPConnectionParams(
         url=MCP_URL_RAG,
