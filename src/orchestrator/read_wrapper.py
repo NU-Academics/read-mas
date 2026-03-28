@@ -1,14 +1,71 @@
 """A wrapper agent for the RE and design agents in READ-MAS."""
 
 from typing import Optional
-from agents import (AgentBase, get_model_from)
-from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
+from agents import (
+    AgentBase,
+)
+from dotenv import load_dotenv
+import os
 import time
 
 from google.adk.agents import Agent, SequentialAgent
-from utils.logger import setup_logging
+from google.adk.agents.remote_a2a_agent import AGENT_CARD_WELL_KNOWN_PATH
+from google.adk.agents.remote_a2a_agent import RemoteA2aAgent
+from google.adk.a2a.utils.agent_to_a2a import to_a2a
+from utils.logger import (get_run_id, setup_logging)
 from design import DesignWrapperAgent
+from design.design_agent import design_agent_card
 from requirement import RequirementsWrapperAgent
+from requirement.re_agent import re_agent_card
+from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
+
+# Load configs from .env file, if available.
+load_dotenv()
+
+
+def _agent_env_config() -> tuple[str, AgentRunMode, bool]:
+  """Read A2A agent config from environment variables."""
+  model = os.getenv("READMAS_MODEL", DEFAULT_MODEL_NAME)
+  run_mode = AgentRunMode[os.getenv("READMAS_RUN_MODE", "MAIN")]
+  rag = os.getenv("READMAS_RAG", "false").lower() == "true"
+  return model, run_mode, rag
+
+
+def _build_re_a2a_app():
+  """The requirements A2A agent."""
+  model, run_mode, rag = _agent_env_config()
+  setup_logging(get_run_id(), run_mode.value)
+  agent = RequirementsWrapperAgent(model, run_mode=run_mode, rag=rag).get_agent()
+  return to_a2a(agent, port=8002, agent_card=re_agent_card)
+
+
+def _build_design_a2a_app():
+  """The design A2A agent."""
+  model, run_mode, rag = _agent_env_config()
+  setup_logging(get_run_id(), run_mode.value)
+  agent = DesignWrapperAgent(model, run_mode=run_mode, rag=rag).get_agent()
+  return to_a2a(agent, port=8003, agent_card=design_agent_card)
+
+
+# Lazy load the A2A apps and root_agent (for testing with ADK Web) to avoid their creation during the import of ReadWrapperAgent.
+_agent_cache: dict = {}
+
+
+def __getattr__(name: str):
+  if name == "re_a2a_app":
+    if name not in _agent_cache:
+      _agent_cache[name] = _build_re_a2a_app()
+    return _agent_cache[name]
+  if name == "design_a2a_app":
+    if name not in _agent_cache:
+      _agent_cache[name] = _build_design_a2a_app()
+    return _agent_cache[name]
+  if name == "root_agent":
+    if name not in _agent_cache:
+      setup_logging(get_run_id(), "adk")
+      _agent_cache[name] = ReadWrapperAgent(DEFAULT_MODEL_NAME).get_agent()
+    return _agent_cache[name]
+  raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 class ReadWrapperAgent(AgentBase):
@@ -22,19 +79,17 @@ class ReadWrapperAgent(AgentBase):
       rag: Optional[bool] = False,
   ):
     super().__init__(llm_model_name, system_prompt=system_prompt, run_mode=run_mode, rag=rag)
-    self._requirement_agent = RequirementsWrapperAgent(
-        llm_model_name, run_mode=run_mode, rag=rag
-    ).get_agent()
-    self._design_agent = DesignWrapperAgent(llm_model_name, run_mode=run_mode, rag=rag).get_agent()
 
   def get_agent(self) -> Agent:
-    return SequentialAgent(
-        name="read_agent", sub_agents=[self._requirement_agent, self._design_agent]
+    re_remote = RemoteA2aAgent(
+        name="re_agent",
+        agent_card=re_agent_card,
     )
-
-
-# For testing in adk web ui
-run_id = str(int(time.time() * 1000))
-setup_logging(run_id, "adk")
-agent = ReadWrapperAgent(DEFAULT_MODEL_NAME)
-root_agent = agent.get_agent()
+    design_remote = RemoteA2aAgent(
+        name="design_agent",
+        agent_card=design_agent_card,
+    )
+    return SequentialAgent(
+        name="read_agent",
+        sub_agents=[re_remote, design_remote],
+    )

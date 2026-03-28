@@ -8,6 +8,7 @@ from google.adk.agents import Agent
 from utils.constants import AgentRunMode
 from .agent_util import format_rag_few_shot
 
+
 class AgentBase(ABC):
   """All agents use this base class."""
 

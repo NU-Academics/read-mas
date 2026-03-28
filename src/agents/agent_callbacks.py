@@ -14,7 +14,10 @@ def after_rag_tool(
     tool: BaseTool, args: dict[str, Any], tool_context: ToolContext, tool_response: dict
 ) -> Optional[dict]:
   """Captures RAG tool output into session state for prompt injection."""
-  logger.debug(f"after_rag_tool called for tool '{tool.name}' with response type {type(tool_response).__name__}.")
+  logger.debug(
+      f"after_rag_tool called for tool '{tool.name}' with response type"
+      f" {type(tool_response).__name__}."
+  )
   if tool.name == "get_requirement_examples":
     tool_context.state["rag_examples"] = tool_response
     logger.debug("Captured RAG tool output into session state for few-shot injection.")

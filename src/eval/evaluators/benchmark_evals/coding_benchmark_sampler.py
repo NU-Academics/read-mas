@@ -20,8 +20,8 @@ from orchestrator.orchestrator import (
 from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
 
 LLM_SAMPLER_SYSTEM_PROMPT = (
-  "You are an expert Python programmer. Complete the given Python function. "
-  "Return ONLY the code continuation — no markdown fences, no explanations, no tests."
+    "You are an expert Python programmer. Complete the given Python function. "
+    "Return ONLY the code continuation — no markdown fences, no explanations, no tests."
 )
 
 
@@ -134,17 +134,11 @@ async def _generate_samples_with_fn(
               f" ({completed}/{total_samples_needed} done)"
           )
         except Exception as e:
-          logger.error(
-              f"Error generating sample {sample_idx + 1}/{num_needed} for {task_id}: {e}"
-          )
+          logger.error(f"Error generating sample {sample_idx + 1}/{num_needed} for {task_id}: {e}")
 
     async with asyncio.TaskGroup() as tg:
-      for item_num, (task_id, entry, task_idx, sample_idx, num_needed) in enumerate(
-          work_items, 1
-      ):
-        tg.create_task(
-            _process_sample(item_num, task_id, entry, task_idx, sample_idx, num_needed)
-        )
+      for item_num, (task_id, entry, task_idx, sample_idx, num_needed) in enumerate(work_items, 1):
+        tg.create_task(_process_sample(item_num, task_id, entry, task_idx, sample_idx, num_needed))
 
   logger.info(f"Completed generation. Samples saved to {jsonl_path}")
   return jsonl_path

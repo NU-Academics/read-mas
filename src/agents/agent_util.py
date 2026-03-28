@@ -35,12 +35,12 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
 def add_rag_mcp(tools: List[any], rag: bool):
   if rag:
     rag_toolset = McpToolset(
-      connection_params=StreamableHTTPConnectionParams(
-        url=MCP_URL_RAG,
-        timeout=30,  # Default is 5s, too short under concurrent training load
-      ),
-      tool_filter=["get_requirement_examples"]
-      )
+        connection_params=StreamableHTTPConnectionParams(
+            url=MCP_URL_RAG,
+            timeout=30,  # Default is 5s, too short under concurrent training load
+        ),
+        tool_filter=["get_requirement_examples"],
+    )
     tools.append(rag_toolset)
 
 
@@ -51,8 +51,7 @@ def format_rag_few_shot(requirements) -> str:
     return ""
   formatted = "\n".join(f"- {item}" for item in items)
   return (
-      "\nUse the following as examples of requirements or documentation snippets:\n"
-      f"{formatted}\n"
+      f"\nUse the following as examples of requirements or documentation snippets:\n{formatted}\n"
   )
 
 
@@ -64,7 +63,8 @@ def _extract_rag_items(response) -> list[str]:
     # MCP content blocks: {"content": [{"type": "text", "text": "..."}], ...}
     if "content" in response:
       return [
-          block["text"] for block in response["content"]
+          block["text"]
+          for block in response["content"]
           if isinstance(block, dict) and block.get("type") == "text"
       ]
     # Direct result: {"result": ["...", ...]}

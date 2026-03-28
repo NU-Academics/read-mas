@@ -9,10 +9,18 @@ from google.adk.agents import Agent
 from google.adk.planners import BuiltInPlanner
 from google.genai.types import ThinkingConfig
 
-from utils.logger import setup_logging
+from utils.logger import (get_run_id, setup_logging)
 from prompt_templates import COLLECTOR_AGENT_SYSTEM_PROMPT
 from .collector_models import CollectorOutputModel
-from agents import (add_rag_mcp, before_agent, after_agent, before_model, after_model, after_rag_tool, get_agent_config)
+from agents import (
+    add_rag_mcp,
+    before_agent,
+    after_agent,
+    before_model,
+    after_model,
+    after_rag_tool,
+    get_agent_config,
+)
 
 
 class CollectorAgent(AgentBase):
@@ -56,7 +64,8 @@ class CollectorAgent(AgentBase):
 
 
 # For testing in adk web ui
-run_id = str(int(time.time() * 1000))
-setup_logging(run_id, "adk")
-agent = CollectorAgent(DEFAULT_MODEL_NAME)
-root_agent = agent.get_agent()
+def __getattr__(name: str):
+  if name == "root_agent":
+    setup_logging(get_run_id(), "adk")
+    return CollectorAgent(DEFAULT_MODEL_NAME).get_agent()
+  raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -55,9 +55,7 @@ class AgentEvaluator:
 
   async def _run_single_golden(self, golden):
     """Run the agent on a single golden and return test case + ragas data."""
-    actual_output = await run_agent(
-        golden.input, self._evaluated_agent, run_mode=self._run_mode
-    )
+    actual_output = await run_agent(golden.input, self._evaluated_agent, run_mode=self._run_mode)
 
     test_case = LLMTestCase(
         input=golden.input,

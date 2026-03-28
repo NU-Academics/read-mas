@@ -19,10 +19,10 @@ from ragas import evaluate as ragas_evaluate
 from ragas import EvaluationDataset as RagasEvaluationDataset, SingleTurnSample
 
 from eval.metrics import (
-  RAGAS_COMBINED,
-  RAGAS_FAITHFULNESS,
-  RAGAS_ALL_METRICS,
-  RAGAS_FAITHFULNESS_ONLY,
+    RAGAS_COMBINED,
+    RAGAS_FAITHFULNESS,
+    RAGAS_ALL_METRICS,
+    RAGAS_FAITHFULNESS_ONLY,
 )
 from eval.utils.constants import (
     AGENT_GOLDENS_MAP,
@@ -33,8 +33,8 @@ from eval.utils.constants import (
 )
 from rag import retrieve_requirements
 from utils.constants import (
-  AgentRunMode,
-  EVALUATION_MODEL,
+    AgentRunMode,
+    EVALUATION_MODEL,
 )
 
 
@@ -71,9 +71,9 @@ def get_dataset(
     agent_type: str, rag: bool, run_mode: Optional[AgentRunMode] = AgentRunMode.EVAL
 ) -> EvaluationDataset:
   """Retrieves an evaluation dataset with a list of goldens for an agent based on the requested run mode."""
-  golden_filename = run_mode.value + '.json'
+  golden_filename = run_mode.value + ".json"
   golden_path = AGENT_GOLDENS_MAP[agent_type] / golden_filename
-  with open(golden_path, 'r') as jf:
+  with open(golden_path, "r") as jf:
     goldens_list = json.load(jf)
 
   goldens = [Golden.model_validate(g) for g in goldens_list]
@@ -96,21 +96,22 @@ def get_eval_result(
 ) -> list[dict[str, bool | str | float]]:
   result = [
       {
-          'agent': agent_name,
-          'model': model,
-          'rag': rag,
-          'test_name': test.name,
-          'metric': m.name,
-          'score': m.score,
-          'cost': m.evaluation_cost,
-          'threshold': m.threshold,
-          'success': m.success if m.success is not None else False,
-          'reason': m.reason,
+          "agent": agent_name,
+          "model": model,
+          "rag": rag,
+          "test_name": test.name,
+          "metric": m.name,
+          "score": m.score,
+          "cost": m.evaluation_cost,
+          "threshold": m.threshold,
+          "success": m.success if m.success is not None else False,
+          "reason": m.reason,
       }
       for test in eval_results.test_results
       for m in test.metrics_data
   ]
   return result
+
 
 def _sanitize_score(score):
   """Convert NaN scores to 0 and numpy types to Python floats. Ragas returns
@@ -126,6 +127,7 @@ def _sanitize_score(score):
     return 0.0
   return score
 
+
 def _evaluate_samples_individually(samples, metrics, llm):
   """Evaluate RAGAS samples one at a time, isolating failures."""
   rows = []
@@ -136,7 +138,7 @@ def _evaluate_samples_individually(samples, metrics, llm):
       row = result.to_pandas().iloc[0].to_dict()
     except Exception as e:
       logger.warning(f"RAGAS evaluation failed for sample {i} ({type(e).__name__}: {e})")
-      row = {m.name: float('nan') for m in metrics}
+      row = {m.name: float("nan") for m in metrics}
     rows.append(row)
   return pd.DataFrame(rows)
 
@@ -171,7 +173,12 @@ def _run_ragas_evaluation(
     metrics_to_run = RAGAS_FAITHFULNESS_ONLY
 
   # Context-dependent metrics that require retrieved_contexts to be meaningful.
-  _CONTEXT_DEPENDENT_METRICS = {"context_precision", "context_recall", "context_entity_recall", "faithfulness"}
+  _CONTEXT_DEPENDENT_METRICS = {
+      "context_precision",
+      "context_recall",
+      "context_entity_recall",
+      "faithfulness",
+  }
 
   # Split samples: those with contexts get full eval, those without get only context-independent metrics.
   samples_with_ctx = []
@@ -194,7 +201,9 @@ def _run_ragas_evaluation(
       samples_without_ctx.append((i, sample))
 
   # Determine context-independent metrics to run on samples without context.
-  context_independent_metrics = [m for m in metrics_to_run if m.name not in _CONTEXT_DEPENDENT_METRICS]
+  context_independent_metrics = [
+      m for m in metrics_to_run if m.name not in _CONTEXT_DEPENDENT_METRICS
+  ]
 
   # Evaluate samples WITH context using all metrics.
   scores_with_ctx = {}
@@ -284,6 +293,7 @@ def _run_ragas_evaluation(
 
   return results
 
+
 def run_ragas_and_merge(
     test_cases: list[dict],
     ragas_metric_names: list[str],
@@ -311,16 +321,16 @@ def run_ragas_and_merge(
   formatted = []
   for r in ragas_results:
     formatted.append({
-        'agent': agent_name,
-        'model': model,
-        'rag': rag,
-        'test_name': f"test_{r['test_index']:03d}",
-        'metric': r['metric'],
-        'score': r['score'],
-        'cost': r['cost'],
-        'threshold': r['threshold'],
-        'success': r['success'],
-        'reason': r['reason'],
+        "agent": agent_name,
+        "model": model,
+        "rag": rag,
+        "test_name": f"test_{r['test_index']:03d}",
+        "metric": r["metric"],
+        "score": r["score"],
+        "cost": r["cost"],
+        "threshold": r["threshold"],
+        "success": r["success"],
+        "reason": r["reason"],
     })
   return formatted
 
@@ -333,23 +343,25 @@ def compute_metrics_averages(metric_list):
   counters = {}
 
   for entry in metric_list:
-    m = entry['metric']
-    s = entry['score']
+    m = entry["metric"]
+    s = entry["score"]
     totals[m] = totals.get(m, 0.0) + s
     counters[m] = counters.get(m, 0) + 1
 
-  averages = [{'metric': m, 'score': float(f'{totals[m] / counters[m]:.3f}')} for m in totals]
+  averages = [{"metric": m, "score": float(f"{totals[m] / counters[m]:.3f}")} for m in totals]
   return averages
 
 
-def log_metrics_to_dvc(experiment_results: list[dict[str, bool|str|float]], live: Live) -> list[dict[str, Any]]:
+def log_metrics_to_dvc(
+    experiment_results: list[dict[str, bool | str | float]], live: Live
+) -> list[dict[str, Any]]:
   """A utility to log selected metrics to DVC."""
   recorded_results = []
   for result in experiment_results:
-    if result["metric"].endswith("(ragas)") and  (not result["metric"].startswith("faithfulness")):
+    if result["metric"].endswith("(ragas)") and (not result["metric"].startswith("faithfulness")):
       continue
     recorded_results.append(result)
-  
+
   for result in recorded_results:
     live.log_metric(name=result["metric"], val=result["score"], timestamp=True)
 
@@ -357,4 +369,3 @@ def log_metrics_to_dvc(experiment_results: list[dict[str, bool|str|float]], live
   average_scores = compute_metrics_averages(recorded_results)
   for average in average_scores:
     live.log_metric(name=average["metric"], val=average["score"], timestamp=True)
-  

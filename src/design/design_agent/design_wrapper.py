@@ -7,7 +7,7 @@ import time
 
 from google.adk.agents import Agent
 from google.adk.tools.agent_tool import AgentTool
-from utils.logger import setup_logging
+from utils.logger import (get_run_id, setup_logging)
 from prompt_templates import DESIGN_AGENT_SYSTEM_PROMPT
 from design import DesignerAgent
 from design import DocumenterAgent
@@ -49,7 +49,8 @@ class DesignWrapperAgent(AgentBase):
 
 
 # For testing in adk web ui
-run_id = str(int(time.time() * 1000))
-setup_logging(run_id, "adk")
-agent = DesignWrapperAgent(DEFAULT_MODEL_NAME)
-root_agent = agent.get_agent()
+def __getattr__(name: str):
+  if name == "root_agent":
+    setup_logging(get_run_id(), "adk")
+    return DesignWrapperAgent(DEFAULT_MODEL_NAME).get_agent()
+  raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

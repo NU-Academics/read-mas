@@ -166,6 +166,7 @@ def code_benchmark_agent(
   )
   asyncio.run(benchmarker.benchmark())
 
+
 @app.command("llm-generate-samples")
 def llm_generate_samples(
     benchmark_name: str,

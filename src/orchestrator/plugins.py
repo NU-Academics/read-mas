@@ -14,6 +14,8 @@ NO_RESPONSE_ERROR_TYPE = "agent_no_response"
 
 # Transient connection errors that warrant a retry.
 RETRYABLE_ERRORS = (ClientPayloadError, ConnectionResetError, ServerDisconnectedError)
+
+
 class ReadMasRetryPlugin(ReflectAndRetryToolPlugin):
   """ReflectAndRetryToolPlugin extended to detect empty/no-response agent tool results.
 
@@ -35,6 +37,7 @@ class ReadMasRetryPlugin(ReflectAndRetryToolPlugin):
     if isinstance(result, dict) and result.get("error") == NO_RESPONSE_ERROR_TYPE:
       return result
     return None
+
 
 class ConnectionRetryPlugin(BasePlugin):
   """Logs transient connection errors via on_model_error_callback.

@@ -109,10 +109,11 @@ class AgentTrainer:
         async_config=async_config,
     )
 
-
-    optimized_prompt = optimizer.optimize(
-        prompt=self._prompt_to_optimize, goldens=self._dataset.goldens
-    ) if not self._no_opt else self._prompt_to_optimize
+    optimized_prompt = (
+        optimizer.optimize(prompt=self._prompt_to_optimize, goldens=self._dataset.goldens)
+        if not self._no_opt
+        else self._prompt_to_optimize
+    )
     training_metrics = await self._collect_metrics(optimized_prompt)
 
     if self._experiment:

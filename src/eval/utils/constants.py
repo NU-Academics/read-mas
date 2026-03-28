@@ -72,7 +72,7 @@ AGENT_PROMPTS = {
     "designer_agent": Prompt(text_template=DESIGNER_AGENT_SYSTEM_PROMPT),
     "documenter_agent": Prompt(text_template=DOCUMENTER_AGENT_SYSTEM_PROMPT),
     "design_agent": Prompt(text_template=DESIGN_AGENT_SYSTEM_PROMPT),
-    "read_agent": Prompt(text_template=None)
+    "read_agent": Prompt(text_template=None),
 }
 
 AGENT_REGISTRY = {

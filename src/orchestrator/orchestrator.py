@@ -6,11 +6,11 @@ from typing import Optional
 import litellm
 import json
 from aiohttp import (
-  ClientPayloadError,
-  ServerConnectionError,
-  ServerDisconnectedError,
-  ServerTimeoutError,
-  )
+    ClientPayloadError,
+    ServerConnectionError,
+    ServerDisconnectedError,
+    ServerTimeoutError,
+)
 from google.adk.agents import BaseAgent
 from google.adk.runners import Runner
 from google.adk.apps import App
@@ -123,7 +123,13 @@ async def run_agent_with_context(
   content = types.Content(role="user", parts=[types.Part(text=query)])
   response = _NO_RESPONSE
   escalated_response: Optional[str] = None
-  retryable_errors = (ClientPayloadError, ConnectionResetError, ServerConnectionError, ServerDisconnectedError, ServerTimeoutError)
+  retryable_errors = (
+      ClientPayloadError,
+      ConnectionResetError,
+      ServerConnectionError,
+      ServerDisconnectedError,
+      ServerTimeoutError,
+  )
 
   for attempt in range(1, MAX_RETRIES + 1):
     try:
@@ -135,8 +141,7 @@ async def run_agent_with_context(
           if event.is_final_response():
             if event.content and event.content.parts:
               response = "".join(
-                  part.text for part in event.content.parts
-                  if hasattr(part, "text") and part.text
+                  part.text for part in event.content.parts if hasattr(part, "text") and part.text
               )
             else:
               continue
@@ -207,7 +212,13 @@ async def run_agent(
   response = _NO_RESPONSE
   escalated_response: Optional[str] = None
 
-  retryable_errors = (ClientPayloadError, ConnectionResetError, ServerConnectionError,  ServerDisconnectedError, ServerTimeoutError)
+  retryable_errors = (
+      ClientPayloadError,
+      ConnectionResetError,
+      ServerConnectionError,
+      ServerDisconnectedError,
+      ServerTimeoutError,
+  )
 
   for attempt in range(1, MAX_RETRIES + 1):
     try:
@@ -221,8 +232,7 @@ async def run_agent(
           if event.is_final_response():
             if event.content and event.content.parts:
               response = "".join(
-                  part.text for part in event.content.parts
-                  if hasattr(part, "text") and part.text
+                  part.text for part in event.content.parts if hasattr(part, "text") and part.text
               )
             else:
               continue

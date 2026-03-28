@@ -124,12 +124,15 @@ class CodingBenchmarker(_BaseCodingBenchmarker):
     results = await self._evaluate()
 
     if self._experiment:
-      self._log_to_dvc(results, {
-          "agent": self._evaluated_agent.name,
-          "model": self._model,
-          "rag": self._rag,
-          "benchmark": self._dataset,
-      })
+      self._log_to_dvc(
+          results,
+          {
+              "agent": self._evaluated_agent.name,
+              "model": self._model,
+              "rag": self._rag,
+              "benchmark": self._dataset,
+          },
+      )
 
     logger.debug(f"{self._run_mode.name.capitalize()} results: {results}")
 

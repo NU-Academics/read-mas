@@ -9,7 +9,7 @@ from agents import AgentBase, get_model_from
 from design.designer import DesignerOutputModel
 from prompt_templates import DOCUMENTER_AGENT_SYSTEM_PROMPT
 from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode
-from utils.logger import setup_logging
+from utils.logger import (get_run_id, setup_logging)
 from agents import (before_agent, after_agent, before_model, after_model, get_agent_config)
 
 
@@ -45,7 +45,8 @@ class DocumenterAgent(AgentBase):
 
 
 # For testing in adk web ui
-run_id = str(int(time.time() * 1000))
-setup_logging(run_id, "adk")
-agent = DocumenterAgent(DEFAULT_MODEL_NAME)
-root_agent = agent.get_agent()
+def __getattr__(name: str):
+  if name == "root_agent":
+    setup_logging(get_run_id(), "adk")
+    return DocumenterAgent(DEFAULT_MODEL_NAME).get_agent()
+  raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
