@@ -8,9 +8,13 @@ from dotenv import load_dotenv
 import os
 import time
 
+import warnings
+
 from google.adk.agents import Agent, SequentialAgent
-from google.adk.agents.remote_a2a_agent import AGENT_CARD_WELL_KNOWN_PATH
-from google.adk.agents.remote_a2a_agent import RemoteA2aAgent
+with warnings.catch_warnings():
+  warnings.filterwarnings("ignore", category=UserWarning, message=".*RemoteA2aAgent.*")
+  from google.adk.agents.remote_a2a_agent import AGENT_CARD_WELL_KNOWN_PATH
+  from google.adk.agents.remote_a2a_agent import RemoteA2aAgent
 from google.adk.a2a.utils.agent_to_a2a import to_a2a
 from utils.logger import (get_run_id, setup_logging)
 from design import DesignWrapperAgent
