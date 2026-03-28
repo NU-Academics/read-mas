@@ -10,6 +10,7 @@ from eval.eval_tools import generate_code
 from google.adk.agents import Agent, BaseAgent
 from google.adk.tools.agent_tool import AgentTool
 from utils import DEFAULT_MODEL_NAME
+from utils.logger import (get_run_id, setup_logging)
 from single import SingleAgent
 from agents import (before_agent, after_agent, before_model, after_model)
 
@@ -46,6 +47,9 @@ class EvalCodeGeneratorAgent(AgentBase):
 
 
 # for adk web test
-single_agent = SingleAgent(DEFAULT_MODEL_NAME).get_agent()
-agent = EvalCodeGeneratorAgent(llm_model_name=DEFAULT_MODEL_NAME, evaluated=single_agent)
-root_agent = agent.get_agent()
+def __getattr__(name: str):
+  if name == "root_agent":
+    setup_logging(get_run_id(), "adk")
+    single_agent = SingleAgent(DEFAULT_MODEL_NAME).get_agent()
+    return EvalCodeGeneratorAgent(llm_model_name=DEFAULT_MODEL_NAME, evaluated=single_agent).get_agent()
+  raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
