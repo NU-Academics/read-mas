@@ -17,12 +17,15 @@ from utils.constants import (
     AgentRunMode,
 )
 
-# Monkey‑patch setrlimit on macOS to enable running evalplus.evaluate and log the results to DVC.
+# Monkey‑patch setrlimit and forking for child processes on macOS to enable running evalplus.evaluate and log the results to DVC.
 if sys.platform == "darwin":
+  import multiprocessing
 
-  def _noop_setrlimit(soft, hard):
-    """Do nothing – pretend we succeeded."""
-    return (soft, hard)
+  multiprocessing.set_start_method('fork', force=True)
+
+  def _noop_setrlimit(resource_id, limits):
+    """No-op: setrlimit(RLIMIT_AS/DATA) always fails on macOS when current limit is RLIM_INFINITY."""
+    return limits
 
   resource.setrlimit = _noop_setrlimit
 

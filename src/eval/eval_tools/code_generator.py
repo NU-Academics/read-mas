@@ -15,6 +15,10 @@ CODE_GENERATOR_TOOL_SYSTEM_PROMPT = """Generate code based on the following soft
 
     ## CRITICAL REQUIREMENTS:
     - **FORBIDDEN**: DO NOT write unit tests - only generate the function implementation code
+    - **FORBIDDEN**: Do NOT call helper functions or utilities that are not defined in the same
+      code block. Every function you call must be defined inline in your response.
+    - **FORBIDDEN**: Do NOT add isinstance() checks, type guards, or raise exceptions for edge
+      cases. Trust the caller's inputs and implement the simplest, most direct logic possible.
     - Use the EXACT function name and parameter names from the original problem statement above.
     - Return ONLY the bare function — no class wrapper, no if __name__ == "__main__" guard.
     - Return only the code without explanations or markdown formatting unless the code itself requires markdown.
