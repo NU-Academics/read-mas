@@ -58,8 +58,8 @@ requirements_accuracy = GEval(
     criteria=(
         "- Completeness: The agent captures the functional (FR) and non-functional (NFR)"
         " requirements for the requested system.   - Classification Accuracy: The agent is precise"
-        " in classifying the requirements into FR and NFR.   - Non-Ambiguity: The FRs and NFRs are"
-        " specified with minimum ambiguity."
+        " in classifying the requirements into FR and NFR.   - Requirement Quality: The agent presents requirements without duplication, clear expression, and avoiding statements that imply more than one intent."
+        "  - Consistency: The agent collects requirements without conflicts with each other."
     ),
     model=EVALUATION_MODEL,
     evaluation_params=[
