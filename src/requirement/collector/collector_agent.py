@@ -49,7 +49,7 @@ class CollectorAgent(AgentBase):
         description=(
             "A requirements collector agent that generates raw requirements from a user's query"
         ),
-        instruction=self._system_prompt,
+        instruction=self.get_instruction,
         planner=planner,
         tools=tools,
         generate_content_config=get_agent_config(),

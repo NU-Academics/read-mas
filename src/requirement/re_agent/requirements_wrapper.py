@@ -43,7 +43,7 @@ class RequirementsWrapperAgent(AgentBase):
         name="re_agent",
         model=get_model_from(self._llm_model_name),
         description="A requirements wrapper agent that uses RE agent tools to generate the SRS.",
-        instruction=self._system_prompt,
+        instruction=self.get_instruction,
         tools=tools,
         generate_content_config=get_agent_config(),
         output_key="requirements_output",
