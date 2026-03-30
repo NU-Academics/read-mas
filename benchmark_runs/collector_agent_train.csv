@@ -1,0 +1,12 @@
+Experiment,rev,typ,Created,runs/train_runs/metrics.json:agent,no_opt,RequirementsAccuracy [GEval],Hallucination,runs/train_runs/metrics.json:faithfulness (ragas),runs/train_runs/metrics.json:RAGAS,runs/train_runs/metrics.json:DesignAccuracy [GEval],train.agent_name,train.no_opt
+,collector-train-complete,baseline,2026-03-29T22:51:44,collector_agent,False,0.499,0.091,0.909,0.812,,collector_agent,False
+train-collector_agent-gemini-2.5-flash-1774882503,497abd6,branch_base,2026-03-30T11:11:03,collector_agent,True,0.623,0.0,0.967,0.843,,collector_agent,True
+,cdbb34d,baseline,2026-03-29T22:35:10,collector_agent,True,0.466,0.152,0.848,0.791,,collector_agent,True
+train-collector_agent-gemini-2.5-flash-1774838145,66a14f3,branch_base,2026-03-29T22:45:56,collector_agent,False,0.499,0.091,0.909,0.812,,collector_agent,False
+,33695a4,baseline,2026-03-29T22:20:52,collector_agent,False,0.55,0.0,1.0,0.843,,collector_agent,False
+train-collector_agent-gemini-2.5-flash-1774837367,36ef5dd,branch_base,2026-03-29T22:32:07,collector_agent,True,0.466,0.152,0.848,0.791,,collector_agent,True
+,4ec20c1,baseline,2026-03-29T22:10:42,collector_agent,False,0.55,0.0,1.0,0.843,,collector_agent,False
+,1b43da0,baseline,2026-03-29T19:49:39,collector_agent,True,0.551,0.0,0.999,0.854,,collector_agent,True
+train-collector_agent-gemini-2.5-flash-1774835570,09a7ce3,branch_base,2026-03-29T22:02:46,collector_agent,False,0.55,0.0,1.0,0.843,,collector_agent,False
+,collector-train-begin,baseline,2026-03-29T19:00:39,single_agent,True,,,0.86,0.701,0.903,single_agent,True
+train-collector_agent-gemini-2.5-flash-1774827396,19e00d5,branch_base,2026-03-29T19:43:44,collector_agent,True,0.551,0.0,0.999,0.854,,collector_agent,True
