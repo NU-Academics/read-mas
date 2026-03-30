@@ -1,0 +1,16 @@
+Experiment,rev,typ,Created,runs/eval_runs/metrics.json:agent,runs/eval_runs/metrics.json:RequirementsAccuracy [GEval],runs/eval_runs/metrics.json:Hallucination,runs/eval_runs/metrics.json:faithfulness (ragas),runs/eval_runs/metrics.json:RAGAS,runs/eval_runs/metrics.json:DesignAccuracy [GEval],eval.agent_name
+,main,baseline,2026-03-30T14:34:06,collector_agent,0.503,0.0,0.959,0.818,,collector_agent
+,a2dcedc,baseline,2026-03-30T14:20:00,collector_agent,0.479,0.0,0.964,0.809,,collector_agent
+eval-collector_agent-gemini-2.5-flash-1774894801,18953cd,branch_base,2026-03-30T14:34:04,collector_agent,0.503,0.0,0.959,0.818,,collector_agent
+,45deee6,baseline,2026-03-30T14:02:46,collector_agent,0.428,0.05,0.97,0.808,,collector_agent
+eval-collector_agent-gemini-2.5-flash-1774893899,0a95d72,branch_base,2026-03-30T14:19:59,collector_agent,0.479,0.0,0.964,0.809,,collector_agent
+,cdfbf30,baseline,2026-03-30T13:49:31,collector_agent,0.456,0.05,0.911,0.784,,collector_agent
+eval-collector_agent-gemini-2.5-flash-1774892971,93e7389,branch_base,2026-03-30T14:02:44,collector_agent,0.428,0.05,0.97,0.808,,collector_agent
+,7708de9,baseline,2026-03-30T12:16:57,collector_agent,0.46,0.0,0.969,0.816,,collector_agent
+eval-collector_agent-gemini-2.5-flash-1774892036,63af7ac,branch_base,2026-03-30T13:49:29,collector_agent,0.456,0.05,0.911,0.784,,collector_agent
+,d0ae724,baseline,2026-03-30T11:57:34,collector_agent,0.453,0.1,0.872,0.772,,collector_agent
+eval-collector_agent-gemini-2.5-flash-1774886576,7a8c48a,branch_base,2026-03-30T12:16:55,collector_agent,0.46,0.0,0.969,0.816,,collector_agent
+,03fcf0c,baseline,2026-03-30T11:39:52,collector_agent,0.491,0.0,0.964,0.816,,collector_agent
+eval-collector_agent-gemini-2.5-flash-1774885331,de4e0f8,branch_base,2026-03-30T11:57:32,collector_agent,0.453,0.1,0.872,0.772,,collector_agent
+,collector-eval-begin,baseline,2026-03-30T11:24:30,single_agent,,,0.828,0.636,0.953,single_agent
+eval-collector_agent-gemini-2.5-flash-1774884305,946a1ab,branch_base,2026-03-30T11:39:50,collector_agent,0.491,0.0,0.964,0.816,,collector_agent
