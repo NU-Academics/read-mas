@@ -70,12 +70,12 @@ stages:
       size: 196317
     - path: src/eval/evaluators/agent_evals/evaluator.py
       hash: md5
-      md5: 32a3bbb4d414d62f557b19be27b8037a
-      size: 4331
+      md5: bc83e49b87324c0cff9f1acba2c3752c
+      size: 4314
     - path: src/eval/run.py
       hash: md5
-      md5: a9949a37006381bf00a768b1ae7f37a2
-      size: 7676
+      md5: 8626d20d53ac778d2cad10ef840c0f7a
+      size: 10401
     params:
       params.yaml:
         benchmark.agent_name: single_agent
@@ -84,8 +84,8 @@ stages:
     outs:
     - path: runs/benchmark_runs
       hash: md5
-      md5: e062c8e5c0fba5e619958e4629467d09.dir
-      size: 44413
+      md5: 6f49dfc3aa3ec486369b184b3315d4a9.dir
+      size: 46855
       nfiles: 8
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t single_agent -m 
