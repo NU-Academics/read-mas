@@ -25,10 +25,10 @@ Requirements collection workflow
 Output format (REQUIRED)
 Return a single valid JSON object with exactly this structure (no extra keys, no comments, no code fences):
 
-{
+{{
   "FRs": ["requirement 1", "requirement 2", ...],
   "NFRs": ["requirement 1", "requirement 2", ...]
-}
+}}
 
 Critical formatting rules
 - Each list item must be a simple string (no objects or nested structures).
