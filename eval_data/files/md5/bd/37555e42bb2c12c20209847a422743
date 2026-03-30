@@ -1,0 +1,15 @@
+# DVC Report
+
+metrics.json
+
+| agent           | model            | rag   | metrics                                                    |   RequirementsAccuracy [GEval] |   Hallucination |   faithfulness (ragas) |   RAGAS |
+|-----------------|------------------|-------|------------------------------------------------------------|--------------------------------|-----------------|------------------------|---------|
+| collector_agent | gemini-2.5-flash | True  | ['RequirementsAccuracy [GEval]', 'Hallucination', 'RAGAS'] |                          0.428 |            0.05 |                   0.97 |   0.808 |
+
+![static/RequirementsAccuracy [GEval]](static/RequirementsAccuracy [GEval].png)
+
+![static/RAGAS](static/RAGAS.png)
+
+![static/Hallucination](static/Hallucination.png)
+
+![static/faithfulness (ragas)](static/faithfulness (ragas).png)
