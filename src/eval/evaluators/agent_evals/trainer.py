@@ -1,5 +1,6 @@
 """Trainer to optimize the agents' system prompts using prompt optimization algorithms."""
 
+from dotenv import load_dotenv
 from loguru import logger
 
 from deepeval.dataset import Golden
@@ -26,6 +27,7 @@ from eval.utils.constants import PROMPT_OPTIMIZER_MODEL
 
 TRAIN_RUN_PATH = "runs/train_runs"
 
+load_dotenv()
 
 class AgentTrainer:
   """This class utilizes DeepEval's prompt optimizer to optimize system prompts of agents."""

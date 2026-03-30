@@ -1,5 +1,6 @@
 """Callback functions before and after LLM and agent calls for logging."""
 
+import re
 from typing import Any, Optional
 
 from google.adk.agents.callback_context import CallbackContext
@@ -8,6 +9,14 @@ from google.adk.tools import BaseTool
 from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 from loguru import logger
+
+_JSON_FENCE_RE = re.compile(r'^\s*```(?:json)?\s*\n(.*?)\n\s*```\s*$', re.DOTALL)
+
+
+def _strip_json_fences(text: str) -> str:
+  """Remove markdown code fences wrapping a JSON response."""
+  m = _JSON_FENCE_RE.match(text)
+  return m.group(1).strip() if m else text
 
 
 def after_rag_tool(
@@ -69,16 +78,19 @@ def before_model(
 def after_model(
     callback_context: CallbackContext, llm_response: LlmResponse
 ) -> Optional[LlmResponse]:
-  """Callback to log input and output after LLM invocation."""
+  """Strips markdown code fences from JSON responses and logs LLM output."""
   agent_name = callback_context.agent_name
   if llm_response.content and llm_response.content.parts:
-    if llm_response.content.parts[0].text:
-      response_text = llm_response.content.parts[0].text
-      logger.debug(f"Agent {agent_name} response text: '{response_text[:100]}...'")
-    elif llm_response.content.parts[0].function_call:
+    part = llm_response.content.parts[0]
+    if part.text:
+      cleaned = _strip_json_fences(part.text)
+      if cleaned != part.text:
+        logger.debug(f"Agent {agent_name}: stripped markdown fences from JSON response.")
+        part.text = cleaned
+      logger.debug(f"Agent {agent_name} response text: '{part.text[:100]}...'")
+    elif part.function_call:
       logger.debug(
-          f"Agent {agent_name} made a function call"
-          f" '{llm_response.content.parts[0].function_call.name}'."
+          f"Agent {agent_name} made a function call '{part.function_call.name}'."
       )
     else:
       logger.debug(f"No text response from agent {agent_name}.")
