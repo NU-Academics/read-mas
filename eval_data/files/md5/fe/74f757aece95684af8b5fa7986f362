@@ -1,0 +1,14 @@
+{
+    "agent": "collector_agent",
+    "model": "gemini-2.5-flash",
+    "rag": true,
+    "metrics": [
+        "RequirementsAccuracy [GEval]",
+        "Hallucination",
+        "RAGAS"
+    ],
+    "RequirementsAccuracy [GEval]": 0.479,
+    "Hallucination": 0.0,
+    "faithfulness (ragas)": 0.964,
+    "RAGAS": 0.809
+}
