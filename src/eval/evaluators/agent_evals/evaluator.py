@@ -50,7 +50,7 @@ class AgentEvaluator:
     )
     self._metrics = get_metrics(self._agent_type)
     self._ragas_metric_names = get_ragas_metric_names(self._agent_type, self._rag)
-    self._dataset = get_dataset(self._agent_type, self._rag, AgentRunMode.EVAL)
+    self._dataset = get_dataset(self._agent_type, self._rag, self._run_mode)
     self._run_path = "runs/" + self._run_mode.value + "_runs"
 
   async def _run_single_golden(self, golden):
