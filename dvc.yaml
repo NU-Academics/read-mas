@@ -69,14 +69,12 @@ stages:
     outs:
     - runs/llm_benchmark_runs
 metrics:
-- runs/eval_runs/metrics.json
 - runs/benchmark_runs/metrics.json
 - runs/llm_benchmark_runs/metrics.json
 - runs/code_benchmark_runs/metrics.json
 - runs/train_runs/metrics.json
+- runs/eval_runs/metrics.json
 plots:
-- runs/eval_runs/plots/metrics:
-    x: step
 - runs/benchmark_runs/plots/metrics:
     x: step
 - runs/llm_benchmark_runs/plots/metrics:
@@ -84,4 +82,6 @@ plots:
 - runs/code_benchmark_runs/plots/metrics:
     x: step
 - runs/train_runs/plots/metrics:
+    x: step
+- runs/eval_runs/plots/metrics:
     x: step

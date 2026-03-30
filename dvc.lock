@@ -34,32 +34,32 @@ stages:
       size: 79244
       nfiles: 10
   eval:
-    cmd: python -m src.eval.run eval -t single_agent -m gemini-2.5-flash -r true
-      -e
+    cmd: python -m src.eval.run eval -t collector_agent -m gemini-2.5-flash -r 
+      true -e
     deps:
-    - path: data/goldens/single_agent/eval.json
+    - path: data/goldens/collector_agent/eval.json
       hash: md5
-      md5: 4e6767773735962f93d477ff39884620
-      size: 44344
+      md5: 760fa767ad2e6202abd8400952b02308
+      size: 207436
     - path: src/eval/evaluators/agent_evals/evaluator.py
       hash: md5
-      md5: 32a3bbb4d414d62f557b19be27b8037a
-      size: 4331
+      md5: d54f5a8a6351acfa76f261f9463f13d4
+      size: 4317
     - path: src/eval/run.py
       hash: md5
-      md5: a9949a37006381bf00a768b1ae7f37a2
-      size: 7676
+      md5: 8626d20d53ac778d2cad10ef840c0f7a
+      size: 10401
     params:
       params.yaml:
-        eval.agent_name: single_agent
+        eval.agent_name: collector_agent
         eval.model: gemini-2.5-flash
         eval.rag: true
     outs:
     - path: runs/eval_runs
       hash: md5
-      md5: 6d41cbd70df66d3887c5af91b7058599.dir
-      size: 43197
-      nfiles: 8
+      md5: 2c03e9aa0c533b96b85ee210cd5b8472.dir
+      size: 62965
+      nfiles: 10
   benchmark:
     cmd: python -m src.eval.run benchmark -t single_agent -m gemini-2.5-flash -r
       true -e

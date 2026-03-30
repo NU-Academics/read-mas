@@ -4,7 +4,7 @@ train:
   rag: true
   no_opt: true
 eval:
-  agent_name: single_agent
+  agent_name: collector_agent
   model: gemini-2.5-flash
   rag: true
 benchmark:
