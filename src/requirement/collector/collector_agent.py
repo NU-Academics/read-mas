@@ -2,7 +2,7 @@
 
 from typing import Optional
 from agents import (AgentBase, get_model_from)
-from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
+from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME, THINKING_BUDGET)
 import time
 
 from google.adk.agents import Agent
@@ -40,7 +40,7 @@ class CollectorAgent(AgentBase):
     add_rag_mcp(tools, self._rag)
 
     # Create a ThinkingConfig and planner
-    thinking_config = ThinkingConfig(include_thoughts=True, thinking_budget=256)
+    thinking_config = ThinkingConfig(include_thoughts=True, thinking_budget=THINKING_BUDGET)
     planner = BuiltInPlanner(thinking_config=thinking_config)
 
     return Agent(
