@@ -84,7 +84,7 @@ def generate_samples(
         help="Whether to use the RAG tool",
     ),
     concurrency: int = typer.Option(
-        8,
+        2,
         "--concurrency",
         "-c",
         help="Maximum number of concurrent agent calls",
@@ -193,7 +193,7 @@ def llm_generate_samples(
         help="Number of samples to generate per task",
     ),
     concurrency: int = typer.Option(
-        5,
+        8,
         "--concurrency",
         "-c",
         help="Maximum number of concurrent LLM calls",
