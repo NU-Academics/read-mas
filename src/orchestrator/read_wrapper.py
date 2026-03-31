@@ -21,7 +21,7 @@ from design import DesignWrapperAgent
 from design.design_agent import design_agent_card
 from requirement import RequirementsWrapperAgent
 from requirement.re_agent import re_agent_card
-from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
+from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME, DESIGN_A2A_PORT, RE_A2A_PORT)
 
 # Load configs from .env file, if available.
 load_dotenv()
@@ -40,7 +40,7 @@ def _build_re_a2a_app():
   model, run_mode, rag = _agent_env_config()
   setup_logging(get_run_id(), run_mode.value)
   agent = RequirementsWrapperAgent(model, run_mode=run_mode, rag=rag).get_agent()
-  return to_a2a(agent, port=8002, agent_card=re_agent_card)
+  return to_a2a(agent, port=RE_A2A_PORT, agent_card=re_agent_card)
 
 
 def _build_design_a2a_app():
@@ -48,7 +48,7 @@ def _build_design_a2a_app():
   model, run_mode, rag = _agent_env_config()
   setup_logging(get_run_id(), run_mode.value)
   agent = DesignWrapperAgent(model, run_mode=run_mode, rag=rag).get_agent()
-  return to_a2a(agent, port=8003, agent_card=design_agent_card)
+  return to_a2a(agent, port=DESIGN_A2A_PORT, agent_card=design_agent_card)
 
 
 # Lazy load the A2A apps and root_agent (for testing with ADK Web) to avoid their creation during the import of ReadWrapperAgent.
