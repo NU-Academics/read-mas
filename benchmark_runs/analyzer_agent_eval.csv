@@ -1,0 +1,11 @@
+Experiment,rev,typ,Created,runs/eval_runs/metrics.json:agent,runs/eval_runs/metrics.json:AnalysisAccuracy [GEval],runs/eval_runs/metrics.json:Hallucination,RequirementsAccuracy [GEval],runs/eval_runs/metrics.json:faithfulness (ragas),runs/eval_runs/metrics.json:RAGAS,eval.agent_name
+,analyzer-agent-eval-complete,baseline,2026-03-31T22:02:37,analyzer_agent,0.729,0.05,,,,analyzer_agent
+eval-analyzer_agent-gemini-2.5-flash-1775008957,d3bc3fb,branch_base,2026-03-31T22:12:37,analyzer_agent,0.635,0.05,,,,analyzer_agent
+,651e0e6,baseline,2026-03-31T21:52:49,analyzer_agent,0.694,0.05,,,,analyzer_agent
+eval-analyzer_agent-gemini-2.5-flash-1775008369,0314673,branch_base,2026-03-31T22:02:36,analyzer_agent,0.729,0.05,,,,analyzer_agent
+,c3f186e,baseline,2026-03-31T21:43:29,analyzer_agent,0.705,0.0,,,,analyzer_agent
+eval-analyzer_agent-gemini-2.5-flash-1775007809,7637f27,branch_base,2026-03-31T21:52:48,analyzer_agent,0.694,0.05,,,,analyzer_agent
+,b7f6bea,baseline,2026-03-31T21:33:55,analyzer_agent,0.711,0.0,,,,analyzer_agent
+eval-analyzer_agent-gemini-2.5-flash-1775007235,9e3ae9f,branch_base,2026-03-31T21:43:27,analyzer_agent,0.705,0.0,,,,analyzer_agent
+,analyzer-agent-eval-begin,baseline,2026-03-31T21:22:52,collector_agent,,0.0,0.503,0.959,0.818,collector_agent
+eval-analyzer_agent-gemini-2.5-flash-1775006643,7c652a2,branch_base,2026-03-31T21:33:53,analyzer_agent,0.711,0.0,,,,analyzer_agent
