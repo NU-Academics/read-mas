@@ -60,10 +60,33 @@ A `SequentialAgent` pipeline with specialized agents for each phase:
 
 ```
 ReadWrapperAgent
-├── RequirementsWrapperAgent
+├── RequirementsWrapperAgent  (served via A2A on port 8002)
 │   └── CollectorAgent → AnalyzerAgent → SpecifierAgent
-└── DesignWrapperAgent
+└── DesignWrapperAgent        (served via A2A on port 8003)
     └── DesignerAgent → DocumenterAgent
+```
+
+`ReadWrapperAgent` communicates with each sub-pipeline via Google ADK's Agent-to-Agent (A2A) protocol. `re_agent` and `design_agent` are exposed as `RemoteA2aAgent` stubs; the actual agents run as separate A2A server processes.
+
+#### A2A Servers
+
+Two A2A server apps are defined in `src/orchestrator/read_wrapper.py`:
+
+| App | Function | Port | Agent |
+|-----|----------|------|-------|
+| `re_a2a_app` | `_build_re_a2a_app()` | 8002 | `RequirementsWrapperAgent` |
+| `design_a2a_app` | `_build_design_a2a_app()` | 8003 | `DesignWrapperAgent` |
+
+Each app is created with `to_a2a(agent, port=..., agent_card=...)` and reads model, run mode, and RAG settings from environment variables (`READMAS_MODEL`, `READMAS_RUN_MODE`, `READMAS_RAG`). The apps and `root_agent` are lazy-loaded at module level to avoid unnecessary instantiation at import time.
+
+To run the A2A servers before invoking the multi-agent pipeline:
+
+```bash
+# Terminal 1 — requirements A2A server
+uvicorn src.orchestrator.read_wrapper:re_a2a_app --host localhost --port 8002
+
+# Terminal 2 — design A2A server
+uvicorn src.orchestrator.read_wrapper:design_a2a_app --host localhost --port 8003
 ```
 
 ### Key Patterns
