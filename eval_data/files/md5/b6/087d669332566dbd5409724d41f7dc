@@ -1,0 +1,11 @@
+# DVC Report
+
+metrics.json
+
+| agent          | model            | rag   | metrics                                       |   DesignerAccuracy [GEval] |   Hallucination |
+|----------------|------------------|-------|-----------------------------------------------|----------------------------|-----------------|
+| designer_agent | gemini-2.5-flash | True  | ['DesignerAccuracy [GEval]', 'Hallucination'] |                      0.843 |               0 |
+
+![static/Hallucination](static/Hallucination.png)
+
+![static/DesignerAccuracy [GEval]](static/DesignerAccuracy [GEval].png)
