@@ -34,13 +34,13 @@ stages:
       size: 45871
       nfiles: 6
   eval:
-    cmd: python -m src.eval.run eval -t specifier_agent -m gemini-2.5-flash -r 
+    cmd: python -m src.eval.run eval -t designer_agent -m gemini-2.5-flash -r 
       true -e
     deps:
-    - path: data/goldens/specifier_agent/eval.json
+    - path: data/goldens/designer_agent/eval.json
       hash: md5
-      md5: bf4f50d3f074f989887846fddc1f6b1d
-      size: 111757
+      md5: 09440876838d817740f5269ab2091ab4
+      size: 56224
     - path: src/eval/evaluators/agent_evals/evaluator.py
       hash: md5
       md5: bc83e49b87324c0cff9f1acba2c3752c
@@ -51,14 +51,14 @@ stages:
       size: 10401
     params:
       params.yaml:
-        eval.agent_name: specifier_agent
+        eval.agent_name: designer_agent
         eval.model: gemini-2.5-flash
         eval.rag: true
     outs:
     - path: runs/eval_runs
       hash: md5
-      md5: d259759fa49381c0088219aba9dc0828.dir
-      size: 30068
+      md5: fa47d385f105f67ea67ec7a3b7007b4f.dir
+      size: 30612
       nfiles: 6
   benchmark:
     cmd: python -m src.eval.run benchmark -t single_agent -m gemini-2.5-flash -r
