@@ -1,13 +1,13 @@
 schema: '2.0'
 stages:
   train:
-    cmd: python -m src.eval.run train -t analyzer_agent -m gemini-2.5-flash -r 
+    cmd: python -m src.eval.run train -t specifier_agent -m gemini-2.5-flash -r 
       true -n true -e
     deps:
-    - path: data/goldens/analyzer_agent/train.json
+    - path: data/goldens/specifier_agent/train.json
       hash: md5
-      md5: 66415b033c7c548071cc9179cf220dbc
-      size: 204891
+      md5: 0896126f9354cfded6daae7d03d13bdb
+      size: 160362
     - path: src/eval/evaluators/agent_evals/trainer.py
       hash: md5
       md5: 75e710cf644a204bf612578a41274e8f
@@ -23,15 +23,15 @@ stages:
       nfiles: 39
     params:
       params.yaml:
-        train.agent_name: analyzer_agent
+        train.agent_name: specifier_agent
         train.model: gemini-2.5-flash
         train.no_opt: true
         train.rag: true
     outs:
     - path: runs/train_runs
       hash: md5
-      md5: 1d3ef18f558292b312129ced04075442.dir
-      size: 60172
+      md5: b2238c1c90ae30a08ff613e085d15452.dir
+      size: 65874
       nfiles: 6
   eval:
     cmd: python -m src.eval.run eval -t analyzer_agent -m gemini-2.5-flash -r 
