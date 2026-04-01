@@ -1,0 +1,11 @@
+{
+    "agent": "designer_agent",
+    "model": "gemini-2.5-flash",
+    "rag": true,
+    "metrics": [
+        "DesignerAccuracy [GEval]",
+        "Hallucination"
+    ],
+    "DesignerAccuracy [GEval]": 0.922,
+    "Hallucination": 0.0
+}
