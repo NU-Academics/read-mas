@@ -1,0 +1,9 @@
+Experiment,rev,typ,Created,runs/train_runs/metrics.json:agent,no_opt,DesignerAccuracy [GEval],runs/train_runs/metrics.json:Hallucination,runs/train_runs/metrics.json:SpecificationAccuracy [GEval],train.agent_name,train.no_opt
+,designer-agent-train-complete,baseline,2026-04-01T19:13:43,designer_agent,False,0.92,0.0,,designer_agent,False
+train-designer_agent-gemini-2.5-flash-1775085321,c9e627e,branch_base,2026-04-01T19:26:22,designer_agent,False,0.844,0.0,,designer_agent,False
+,aa13006,baseline,2026-04-01T16:38:18,designer_agent,False,0.875,0.0,,designer_agent,False
+train-designer_agent-gemini-2.5-flash-1775079225,294efc5,branch_base,2026-04-01T19:06:59,designer_agent,False,0.92,0.0,,designer_agent,False
+,9b218bf,baseline,2026-04-01T16:03:52,designer_agent,True,0.895,0.0,,designer_agent,True
+train-designer_agent-gemini-2.5-flash-1775073862,0d03f06,branch_base,2026-04-01T16:30:34,designer_agent,False,0.875,0.0,,designer_agent,False
+,designer-agent-train-begin,baseline,2026-04-01T15:10:01,specifier_agent,True,,0.611,0.779,specifier_agent,True
+train-designer_agent-gemini-2.5-flash-1775070827,195f7b1,branch_base,2026-04-01T15:16:17,designer_agent,True,0.895,0.0,,designer_agent,True

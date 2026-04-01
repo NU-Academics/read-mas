@@ -1,0 +1,11 @@
+Experiment,rev,typ,Created,runs/eval_runs/metrics.json:agent,runs/eval_runs/metrics.json:DesignerAccuracy [GEval],runs/eval_runs/metrics.json:Hallucination,SpecificationAccuracy [GEval],eval.agent_name
+,designer-agent-eval-complete,baseline,2026-04-01T19:49:51,designer_agent,0.933,0.0,,designer_agent
+eval-designer_agent-gemini-2.5-flash-1775087391,90f2516,branch_base,2026-04-01T19:54:11,designer_agent,0.894,0.0,,designer_agent
+,4b420a9,baseline,2026-04-01T19:45:18,designer_agent,0.843,0.0,,designer_agent
+eval-designer_agent-gemini-2.5-flash-1775087118,d73e660,branch_base,2026-04-01T19:49:49,designer_agent,0.933,0.0,,designer_agent
+,d3763ad,baseline,2026-04-01T19:39:08,designer_agent,0.922,0.0,,designer_agent
+eval-designer_agent-gemini-2.5-flash-1775086748,e170484,branch_base,2026-04-01T19:45:16,designer_agent,0.843,0.0,,designer_agent
+,3485e41,baseline,2026-04-01T19:35:48,designer_agent,0.887,0.0,,designer_agent
+eval-designer_agent-gemini-2.5-flash-1775086548,add5a5c,branch_base,2026-04-01T19:39:07,designer_agent,0.922,0.0,,designer_agent
+,designer-agent-eval-begin,baseline,2026-04-01T19:30:52,specifier_agent,,0.75,0.717,specifier_agent
+eval-designer_agent-gemini-2.5-flash-1775086325,d75348b,branch_base,2026-04-01T19:35:47,designer_agent,0.887,0.0,,designer_agent
