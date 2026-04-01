@@ -2,7 +2,7 @@ train:
   agent_name: specifier_agent
   model: gemini-2.5-flash
   rag: true
-  no_opt: false
+  no_opt: true
 eval:
   agent_name: analyzer_agent
   model: gemini-2.5-flash
