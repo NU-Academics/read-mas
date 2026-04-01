@@ -1,0 +1,11 @@
+{
+    "agent": "specifier_agent",
+    "model": "gemini-2.5-flash",
+    "rag": true,
+    "metrics": [
+        "SpecificationAccuracy [GEval]",
+        "Hallucination"
+    ],
+    "SpecificationAccuracy [GEval]": 0.717,
+    "Hallucination": 0.75
+}
