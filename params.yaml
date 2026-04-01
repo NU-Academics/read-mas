@@ -1,8 +1,8 @@
 train:
-  agent_name: collector_agent
+  agent_name: analyzer_agent
   model: gemini-2.5-flash
   rag: true
-  no_opt: true
+  no_opt: false
 eval:
   agent_name: collector_agent
   model: gemini-2.5-flash
