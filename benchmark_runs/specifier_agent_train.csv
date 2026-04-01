@@ -1,0 +1,10 @@
+Experiment,rev,typ,Created,runs/train_runs/metrics.json:agent,no_opt,SpecificationAccuracy [GEval],runs/train_runs/metrics.json:Hallucination,runs/train_runs/metrics.json:AnalysisAccuracy [GEval],train.agent_name,train.no_opt
+,specifier-agent-train-complete,baseline,2026-04-01T11:28:46,specifier_agent,False,0.54,0.278,,specifier_agent,False
+train-specifier_agent-gemini-2.5-flash-1775057363,6381a36,branch_base,2026-04-01T12:00:39,specifier_agent,True,0.779,0.611,,specifier_agent,True
+,6364531,baseline,2026-04-01T11:14:21,specifier_agent,False,0.54,0.278,,specifier_agent,False
+,5cab2fc,baseline,2026-03-31T23:50:38,specifier_agent,False,0.599,0.278,,specifier_agent,False
+train-specifier_agent-gemini-2.5-flash-1775050665,5fb2ba0,branch_base,2026-04-01T11:07:53,specifier_agent,False,0.54,0.278,,specifier_agent,False
+,f602402,baseline,2026-03-31T22:33:48,specifier_agent,True,0.707,0.333,,specifier_agent,True
+train-specifier_agent-gemini-2.5-flash-1775010854,a5fc208,branch_base,2026-03-31T23:37:53,specifier_agent,False,0.599,0.278,,specifier_agent,False
+,specifier-agent-train,baseline,2026-03-31T22:15:46,analyzer_agent,True,,0.0,0.807,analyzer_agent,True
+train-specifier_agent-gemini-2.5-flash-1775009783,6dd5bd2,branch_base,2026-03-31T22:27:49,specifier_agent,True,0.707,0.333,,specifier_agent,True

@@ -1,0 +1,11 @@
+Experiment,rev,typ,Created,runs/eval_runs/metrics.json:agent,runs/eval_runs/metrics.json:SpecificationAccuracy [GEval],runs/eval_runs/metrics.json:Hallucination,AnalysisAccuracy [GEval],eval.agent_name
+,specifier-agent-eval-complete,baseline,2026-04-01T13:59:54,specifier_agent,0.688,0.667,,specifier_agent
+eval-specifier_agent-gemini-2.5-flash-1775068218,368ee3d,branch_base,2026-04-01T15:01:19,specifier_agent,0.717,0.75,,specifier_agent
+,51de743,baseline,2026-04-01T13:36:07,specifier_agent,0.657,0.583,,specifier_agent
+eval-specifier_agent-gemini-2.5-flash-1775064967,4ceb021,branch_base,2026-04-01T13:59:52,specifier_agent,0.688,0.667,,specifier_agent
+,62d475a,baseline,2026-04-01T13:13:46,specifier_agent,0.685,0.583,,specifier_agent
+eval-specifier_agent-gemini-2.5-flash-1775063626,570ff19,branch_base,2026-04-01T13:36:05,specifier_agent,0.657,0.583,,specifier_agent
+,334a8af,baseline,2026-04-01T12:53:41,specifier_agent,0.722,0.667,,specifier_agent
+eval-specifier_agent-gemini-2.5-flash-1775062421,f91c797,branch_base,2026-04-01T13:13:45,specifier_agent,0.685,0.583,,specifier_agent
+,specifier-agent-eval-begin,baseline,2026-04-01T12:28:39,analyzer_agent,,0.05,0.635,analyzer_agent
+eval-specifier_agent-gemini-2.5-flash-1775060963,c80fbd0,branch_base,2026-04-01T12:53:39,specifier_agent,0.722,0.667,,specifier_agent
