@@ -1,7 +1,6 @@
 """Prompt snippet for the IEEE 830-1984 SRS template adopted from https://raw.githubusercontent.com/jam01/SRS-Template/refs/heads/master/srs-template-bare.md."""
 
 IEEE_830_SRS_TEMPLATE = """
-# Software Requirements Specification
 Header
 - Software Requirements Specification
 - For [project name] (replace)
