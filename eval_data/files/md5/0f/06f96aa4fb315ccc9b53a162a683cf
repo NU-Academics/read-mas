@@ -1,0 +1,17 @@
+{
+    "agent": "read_agent",
+    "model": "gemini-2.5-flash",
+    "rag": true,
+    "no_opt": true,
+    "prompts": {
+        "original": null,
+        "optimized": null
+    },
+    "metrics": [
+        "DesignAccuracy [GEval]",
+        "RAGAS"
+    ],
+    "DesignAccuracy [GEval]": 0.881,
+    "faithfulness (ragas)": 0.635,
+    "RAGAS": 0.61
+}
