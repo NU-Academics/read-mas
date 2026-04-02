@@ -1,8 +1,8 @@
 train:
-  agent_name: designer_agent
+  agent_name: documenter_agent
   model: gemini-2.5-flash
   rag: true
-  no_opt: false
+  no_opt: true
 eval:
   agent_name: designer_agent
   model: gemini-2.5-flash
