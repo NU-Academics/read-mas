@@ -1,5 +1,5 @@
 train:
-  agent_name: documenter_agent
+  agent_name: read_agent
   model: gemini-2.5-flash
   rag: true
   no_opt: true

@@ -1,38 +1,38 @@
 schema: '2.0'
 stages:
   train:
-    cmd: python -m src.eval.run train -t documenter_agent -m gemini-2.5-flash -r
-      true -n true -e
+    cmd: python -m src.eval.run train -t read_agent -m gemini-2.5-flash -r true 
+      -n true -x
     deps:
-    - path: data/goldens/documenter_agent/train.json
+    - path: data/goldens/read_agent/train.json
       hash: md5
-      md5: 7c649ffdfcf9342aabee7295bb4be2d1
-      size: 44411
+      md5: 80ac07b11d1f2f8ca5c5f937ec6b21ec
+      size: 58567
     - path: src/eval/evaluators/agent_evals/trainer.py
       hash: md5
-      md5: 75e710cf644a204bf612578a41274e8f
-      size: 4963
+      md5: f3d88c198015aa8338828e29d155edc0
+      size: 5161
     - path: src/eval/run.py
       hash: md5
-      md5: 7571f8b1684e61c21ee994f778a66529
-      size: 10401
+      md5: 1d98734c41072fde0b47ac17abf0d550
+      size: 11468
     - path: src/prompt_templates
       hash: md5
-      md5: 21d929c591f9cf7c5358cc03d8674da0.dir
-      size: 119285
+      md5: e76c342a3ac2390677ec7b80b53dfd55.dir
+      size: 119866
       nfiles: 39
     params:
       params.yaml:
-        train.agent_name: documenter_agent
+        train.agent_name: read_agent
         train.model: gemini-2.5-flash
         train.no_opt: true
         train.rag: true
     outs:
     - path: runs/train_runs
       hash: md5
-      md5: 1055c29aa6c06830b18c3fed8fa7499a.dir
-      size: 34657
-      nfiles: 6
+      md5: 627fcaf7dc166c5598db4958c6c018a1.dir
+      size: 43702
+      nfiles: 8
   eval:
     cmd: python -m src.eval.run eval -t documenter_agent -m gemini-2.5-flash -r 
       true -e
