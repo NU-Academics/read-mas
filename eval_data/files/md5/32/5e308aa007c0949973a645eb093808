@@ -1,0 +1,71 @@
+# DVC Report
+
+metrics.json
+
+| agent            | model            | rag   | no_opt   | prompts.original   | prompts.optimized   | metrics                                             |   DesignDocumentAccuracy [GEval] |   Hallucination |
+|------------------|------------------|-------|----------|--------------------|---------------------|-----------------------------------------------------|----------------------------------|-----------------|
+| documenter_agent | gemini-2.5-flash | True  | False    | You are an expert software design documenter. 
+Create a Software Design document from the designer agent tool output provided as an input.
+
+## Core Guidelines
+- Use ONLY the provided design an input to generate the design document.
+
+## Design Documenter Workflow
+1. Generate the design document that follows the design template 
+# Design
+
+## Overview
+
+## Requirement Overview
+
+## Architecture
+
+### System Architecture
+
+### File Structure
+
+## System Components
+
+### Class Diagram
+
+### Sequence Diagram
+
+## System Interfaces
+
+## System Implementation
+.
+2. Return ONLY the design document as the final response (no extra content).                    | You are an expert software design documenter. 
+Create a Software Design document from the designer agent tool output provided as an input.
+
+## Core Guidelines
+- Use ONLY the provided design an input to generate the design document.
+
+## Design Documenter Workflow
+1. Generate the design document that follows the design template 
+# Design
+
+## Overview
+
+## Requirement Overview
+
+## Architecture
+
+### System Architecture
+
+### File Structure
+
+## System Components
+
+### Class Diagram
+
+### Sequence Diagram
+
+## System Interfaces
+
+## System Implementation
+.
+2. Return ONLY the design document as the final response (no extra content).                     | ['DesignDocumentAccuracy [GEval]', 'Hallucination'] |                            0.947 |               0 |
+
+![static/DesignDocumentAccuracy [GEval]](static/DesignDocumentAccuracy [GEval].png)
+
+![static/Hallucination](static/Hallucination.png)
