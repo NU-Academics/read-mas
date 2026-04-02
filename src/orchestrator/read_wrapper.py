@@ -21,7 +21,7 @@ from design import DesignWrapperAgent
 from design.design_agent import design_agent_card
 from requirement import RequirementsWrapperAgent
 from requirement.re_agent import re_agent_card
-from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME, DESIGN_A2A_PORT, RE_A2A_PORT)
+from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME, DESIGN_A2A_PORT, RE_A2A_PORT)
 
 # Load configs from .env file, if available.
 load_dotenv()
@@ -81,19 +81,32 @@ class ReadWrapperAgent(AgentBase):
       system_prompt: Optional[str] = None,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = False,
+      exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
   ):
-    super().__init__(llm_model_name, system_prompt=system_prompt, run_mode=run_mode, rag=rag)
+    super().__init__(
+        llm_model_name, system_prompt=system_prompt, run_mode=run_mode, rag=rag,
+        exec_mode=exec_mode,
+    )
 
   def get_agent(self) -> Agent:
-    re_remote = RemoteA2aAgent(
-        name="re_agent",
-        agent_card=re_agent_card,
-    )
-    design_remote = RemoteA2aAgent(
-        name="design_agent",
-        agent_card=design_agent_card,
-    )
+    if self._exec_mode == ExecMode.REMOTE:
+      re_sub = RemoteA2aAgent(name="re_agent", agent_card=re_agent_card)
+      design_sub = RemoteA2aAgent(name="design_agent", agent_card=design_agent_card)
+    else:
+      re_sub = RequirementsWrapperAgent(
+          self._llm_model_name,
+          run_mode=self._run_mode,
+          rag=self._rag,
+          exec_mode=self._exec_mode,
+      ).get_agent()
+      design_sub = DesignWrapperAgent(
+          self._llm_model_name,
+          run_mode=self._run_mode,
+          rag=self._rag,
+          exec_mode=self._exec_mode,
+      ).get_agent()
+
     return SequentialAgent(
         name="read_agent",
-        sub_agents=[re_remote, design_remote],
+        sub_agents=[re_sub, design_sub],
     )

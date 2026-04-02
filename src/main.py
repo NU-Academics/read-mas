@@ -7,7 +7,7 @@ from rich import print
 
 from orchestrator.orchestrator import get_agent_response
 from utils import DEFAULT_MODEL_NAME
-from utils.constants import AgentRunMode
+from utils.constants import AgentRunMode, ExecMode
 from utils.logger import get_run_id
 from utils.logger import setup_logging
 
@@ -46,19 +46,29 @@ def run(
         "-r",
         help="Indicates if the agents use RAG",
     ),
+    exec_mode: Optional[str] = typer.Option(
+        "local",
+        "--exec-mode",
+        "-e",
+        help="Execution mode: 'local' (inline, no servers needed) or 'remote' (MCP + A2A servers)",
+    ),
 ):
   """Run the READ-MAS automation with specified configuration."""
   setup_logging(run_id, "cli")
   logger.info(f"Starting run with ID: {run_id}")
 
   try:
+    mode = ExecMode(exec_mode)
     logger.info(
-        f"Input params: agent-type - {agent_type}, query - {query}, model - {llm_model_name}, rag -"
-        f" {rag}"
+        f"Input params: agent-type - {agent_type}, query - {query}, model - {llm_model_name},"
+        f" rag - {rag}, exec-mode - {mode}"
     )
 
     response = asyncio.run(
-        get_agent_response(query, llm_model_name, agent_type, run_mode=AgentRunMode.MAIN, rag=rag)
+        get_agent_response(
+            query, llm_model_name, agent_type, run_mode=AgentRunMode.MAIN, rag=rag,
+            exec_mode=mode,
+        )
     )
     logger.info(f"Response: {response}")
     # Also print the actual agent output to stdout (in addition to logs),

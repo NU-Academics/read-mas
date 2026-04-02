@@ -5,7 +5,7 @@ from typing import Optional
 
 from google.adk.agents import Agent
 
-from utils.constants import AgentRunMode
+from utils.constants import AgentRunMode, ExecMode
 from .agent_util import format_rag_few_shot
 
 
@@ -19,6 +19,7 @@ class AgentBase(ABC):
       system_prompt: Optional[str] = None,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = False,
+      exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
   ):
     """
     The agent initialization.
@@ -28,11 +29,13 @@ class AgentBase(ABC):
       system_prompt: The system prompt for the agent
       run_mode: The agent run mode, e.g. main, eval, or benchmark
       rag: Whether to use the RAG tool
+      exec_mode: Whether to run inline (local) or via MCP/A2A servers (remote)
     """
     self._llm_model_name = llm_model_name
     self._system_prompt = system_prompt or ""
     self._run_mode = run_mode
     self._rag = rag
+    self._exec_mode = exec_mode
 
   @abstractmethod
   def get_agent() -> Agent:

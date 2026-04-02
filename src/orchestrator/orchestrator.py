@@ -23,7 +23,7 @@ from orchestrator.constants import APP_NAME, MAX_RETRIES, RETRY_DELAY_BASE
 from orchestrator.session_manager import SessionManager
 from orchestrator.plugins import ConnectionRetryPlugin, ReadMasRetryPlugin
 from single import SingleAgent
-from utils.constants import AgentRunMode
+from utils.constants import AgentRunMode, ExecMode
 from utils.logger import get_log_path
 
 # Enable this to debug litellm
@@ -32,7 +32,13 @@ from utils.logger import get_log_path
 _NO_RESPONSE = json.dumps({"error": "agent_no_response", "message": "Agent returned no response."})
 
 
-def get_agent(llm_model_name: str, agent_type: str, run_mode: AgentRunMode, rag: bool) -> BaseAgent:
+def get_agent(
+    llm_model_name: str,
+    agent_type: str,
+    run_mode: AgentRunMode,
+    rag: bool,
+    exec_mode: ExecMode = ExecMode.LOCAL,
+) -> BaseAgent:
   """Returns the agent based on the specified parameters.
 
   Args:
@@ -40,14 +46,17 @@ def get_agent(llm_model_name: str, agent_type: str, run_mode: AgentRunMode, rag:
       agent_type: The agent type - single or multi-agent
       run_mode: The agent run mode
       rag: Whether the entry agent should use RAG
+      exec_mode: Whether to run inline (local) or via MCP/A2A servers (remote)
 
   Returns:
       The entry agent
   """
   if agent_type == "single_agent":
-    agent = SingleAgent(llm_model_name, run_mode=run_mode, rag=rag).get_agent()
+    agent = SingleAgent(llm_model_name, run_mode=run_mode, rag=rag, exec_mode=exec_mode).get_agent()
   elif agent_type == "read_agent":
-    agent = ReadWrapperAgent(llm_model_name, run_mode=run_mode, rag=rag).get_agent()
+    agent = ReadWrapperAgent(
+        llm_model_name, run_mode=run_mode, rag=rag, exec_mode=exec_mode
+    ).get_agent()
   else:
     raise ValueError(f"Invalid agent type: {agent_type}")
 
@@ -55,7 +64,12 @@ def get_agent(llm_model_name: str, agent_type: str, run_mode: AgentRunMode, rag:
 
 
 async def get_agent_response(
-    query: str, llm_model_name: str, agent_type: str, run_mode: AgentRunMode, rag: bool
+    query: str,
+    llm_model_name: str,
+    agent_type: str,
+    run_mode: AgentRunMode,
+    rag: bool,
+    exec_mode: ExecMode = ExecMode.LOCAL,
 ) -> str:
   """Gets the response from the agent.
 
@@ -65,8 +79,9 @@ async def get_agent_response(
       agent_type: The agent type - single or multi-agent
       run_mode: The agent run mode
       rag: Shows whether the agents should use RAG
+      exec_mode: Whether to run inline (local) or via MCP/A2A servers (remote)
   """
-  entry_agent = get_agent(llm_model_name, agent_type, run_mode, rag)
+  entry_agent = get_agent(llm_model_name, agent_type, run_mode, rag, exec_mode)
 
   return await run_agent(query, entry_agent)
 

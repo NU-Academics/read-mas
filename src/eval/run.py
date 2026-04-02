@@ -19,7 +19,7 @@ from loguru import logger
 from utils import DEFAULT_MODEL_NAME
 import typer
 from utils.logger import setup_logging
-from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
+from utils.constants import (AgentRunMode, ExecMode, NUMBER_OF_TRIES)
 from orchestrator import get_agent
 from utils.logger import get_run_id
 from dotenv import load_dotenv
@@ -89,6 +89,12 @@ def generate_samples(
         "-c",
         help="Maximum number of concurrent agent calls",
     ),
+    exec_mode: Optional[str] = typer.Option(
+        "local",
+        "--exec-mode",
+        "-e",
+        help="Execution mode: 'local' (inline) or 'remote' (MCP + A2A servers)",
+    ),
 ):
   """Generate samples for a benchmark using the evaluation coding agent. The samples are saved to a jsonl file in the data folder."""
   setup_logging(str(ctx.params["run_id"]), f"{benchmark_name}")
@@ -96,7 +102,7 @@ def generate_samples(
 
   async def a_generate_benchmark_samples():
     """Run evaluation."""
-    evaluated = get_agent(model, agent_type, AgentRunMode.CODE_BENCHMARK, rag)
+    evaluated = get_agent(model, agent_type, AgentRunMode.CODE_BENCHMARK, rag, ExecMode(exec_mode))
     entry_agent = EvalCodeGeneratorAgent(model, evaluated).get_agent()
     await generate_benchmark_samples(
         entry_agent,
@@ -155,14 +161,21 @@ def code_benchmark_agent(
     experiment: bool = typer.Option(
         False,
         "--experiment",
-        "-e",
+        "-x",
         help="Whether to run a DVC experiment",
+    ),
+    exec_mode: Optional[str] = typer.Option(
+        "local",
+        "--exec-mode",
+        "-e",
+        help="Execution mode: 'local' (inline) or 'remote' (MCP + A2A servers)",
     ),
 ):
   setup_logging(str(ctx.params["run_id"]), "code_benchmark")
 
   benchmarker = CodingBenchmarker(
-      run_id, agent_type, dataset, samples_file, model, rag, AgentRunMode.CODE_BENCHMARK, experiment
+      run_id, agent_type, dataset, samples_file, model, rag, AgentRunMode.CODE_BENCHMARK,
+      experiment, ExecMode(exec_mode),
   )
   asyncio.run(benchmarker.benchmark())
 
@@ -284,13 +297,19 @@ def train_agent(
     experiment: bool = typer.Option(
         False,
         "--experiment",
-        "-e",
+        "-x",
         help="Whether to run a DVC experiment",
+    ),
+    exec_mode: Optional[str] = typer.Option(
+        "local",
+        "--exec-mode",
+        "-e",
+        help="Execution mode: 'local' (inline) or 'remote' (MCP + A2A servers)",
     ),
 ):
   setup_logging(str(ctx.params["run_id"]), "train")
 
-  trainer = AgentTrainer(agent_type, model, rag, no_opt, experiment)
+  trainer = AgentTrainer(agent_type, model, rag, no_opt, experiment, ExecMode(exec_mode))
   asyncio.run(trainer.train_agent())
 
 
@@ -322,13 +341,19 @@ def eval_agent(
     experiment: bool = typer.Option(
         False,
         "--experiment",
-        "-e",
+        "-x",
         help="Whether to run a DVC experiment",
+    ),
+    exec_mode: Optional[str] = typer.Option(
+        "local",
+        "--exec-mode",
+        "-e",
+        help="Execution mode: 'local' (inline) or 'remote' (MCP + A2A servers)",
     ),
 ):
   setup_logging(str(ctx.params["run_id"]), "eval")
 
-  evaluator = AgentEvaluator(agent_type, model, rag, AgentRunMode.EVAL, experiment)
+  evaluator = AgentEvaluator(agent_type, model, rag, AgentRunMode.EVAL, experiment, ExecMode(exec_mode))
   asyncio.run(evaluator.eval_agent())
 
 
@@ -360,13 +385,21 @@ def benchmark_agent(
     experiment: bool = typer.Option(
         False,
         "--experiment",
-        "-e",
+        "-x",
         help="Whether to run a DVC experiment",
+    ),
+    exec_mode: Optional[str] = typer.Option(
+        "local",
+        "--exec-mode",
+        "-e",
+        help="Execution mode: 'local' (inline) or 'remote' (MCP + A2A servers)",
     ),
 ):
   setup_logging(str(ctx.params["run_id"]), "benchmark")
 
-  benchmarker = AgentEvaluator(agent_type, model, rag, AgentRunMode.BENCHMARK, experiment)
+  benchmarker = AgentEvaluator(
+      agent_type, model, rag, AgentRunMode.BENCHMARK, experiment, ExecMode(exec_mode)
+  )
   asyncio.run(benchmarker.eval_agent())
 
 

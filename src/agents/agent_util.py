@@ -1,7 +1,7 @@
 """Utility functions common for agents."""
 
 from typing import List, Optional, Union
-from utils.constants import OLLAMA_API_BASE, OLLAMA_BASE_URL
+from utils.constants import OLLAMA_API_BASE, OLLAMA_BASE_URL, ExecMode
 
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool import McpToolset, StreamableHTTPConnectionParams
@@ -32,8 +32,15 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
     return LiteLlm(llm_model_name)
 
 
-def add_rag_mcp(tools: List[any], rag: bool):
-  if rag:
+def add_rag_tool(tools: List[any], rag: bool, exec_mode: ExecMode = ExecMode.LOCAL):
+  """Attaches the RAG tool to the agent's tool list.
+
+  In remote mode, connects to the MCP server over HTTP.
+  In local mode, wraps the retriever function directly as a FunctionTool.
+  """
+  if not rag:
+    return
+  if exec_mode == ExecMode.REMOTE:
     rag_toolset = McpToolset(
         connection_params=StreamableHTTPConnectionParams(
             url=MCP_URL_RAG,
@@ -42,6 +49,15 @@ def add_rag_mcp(tools: List[any], rag: bool):
         tool_filter=["get_requirement_examples"],
     )
     tools.append(rag_toolset)
+  else:
+    from google.adk.tools import FunctionTool
+    from rag.retriever import retrieve_requirements
+
+    def get_requirement_examples(query: str) -> list[str]:
+      """Retrieve relevant requirement examples from the local knowledge base."""
+      return retrieve_requirements(query)
+
+    tools.append(FunctionTool(get_requirement_examples))
 
 
 def format_rag_few_shot(requirements) -> str:

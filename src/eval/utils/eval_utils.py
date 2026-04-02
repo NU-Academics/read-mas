@@ -34,6 +34,7 @@ from eval.utils.constants import (
 from rag import retrieve_requirements
 from utils.constants import (
     AgentRunMode,
+    ExecMode,
     EVALUATION_MODEL,
 )
 
@@ -61,10 +62,11 @@ def get_eval_agent(
     prompt: Optional[str],
     rag: bool,
     run_mode: Optional[AgentRunMode] = AgentRunMode.EVAL,
+    exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
 ) -> BaseAgent:
   """Gets the agent to be evaluated."""
   agent = AGENT_REGISTRY[agent_type]
-  return agent(model, prompt, run_mode, rag).get_agent()
+  return agent(model, prompt, run_mode, rag, exec_mode=exec_mode).get_agent()
 
 
 def get_dataset(

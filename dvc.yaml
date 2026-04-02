@@ -1,7 +1,7 @@
 stages:
   train:
     cmd: python -m src.eval.run train -t ${train.agent_name} -m ${train.model} 
-      -r ${train.rag} -n ${train.no_opt} -e
+      -r ${train.rag} -n ${train.no_opt} -x
     deps:
     - src/eval/run.py
     - src/eval/evaluators/agent_evals/trainer.py
@@ -16,7 +16,7 @@ stages:
     - runs/train_runs
   eval:
     cmd: python -m src.eval.run eval -t ${eval.agent_name} -m ${eval.model} -r 
-      ${eval.rag} -e
+      ${eval.rag} -x
     deps:
     - src/eval/run.py
     - src/eval/evaluators/agent_evals/evaluator.py
@@ -29,7 +29,7 @@ stages:
     - runs/eval_runs
   benchmark:
     cmd: python -m src.eval.run benchmark -t ${benchmark.agent_name} -m 
-      ${benchmark.model} -r ${benchmark.rag} -e
+      ${benchmark.model} -r ${benchmark.rag} -x
     deps:
     - src/eval/run.py
     - src/eval/evaluators/agent_evals/evaluator.py
@@ -42,7 +42,7 @@ stages:
     - runs/benchmark_runs
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t ${code.agent_name} -m 
-      ${code.model} -d ${code.dataset} -s ${code.samples} -r ${code.rag} -e
+      ${code.model} -d ${code.dataset} -s ${code.samples} -r ${code.rag} -x
     deps:
     - src/eval/run.py
     - src/eval/evaluators/benchmark_evals/coding_benchmarker.py
@@ -57,7 +57,7 @@ stages:
     - runs/code_benchmark_runs
   llm_code_benchmark:
     cmd: python -m src.eval.run llm-benchmark -m ${llm.model} -d ${llm.dataset} 
-      -s ${llm.samples} -e
+      -s ${llm.samples} -x
     deps:
     - src/eval/run.py
     - src/eval/evaluators/benchmark_evals/coding_benchmarker.py

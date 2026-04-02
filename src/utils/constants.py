@@ -19,6 +19,13 @@ class AgentRunMode(StrEnum):
   MAIN = "main"
 
 
+class ExecMode(StrEnum):
+  """Execution modes: local runs everything inline; remote uses MCP and A2A servers."""
+
+  LOCAL = "local"
+  REMOTE = "remote"
+
+
 NUMBER_OF_TRIES = 2
 
 EVALUATION_MODEL = "gpt-4.1"

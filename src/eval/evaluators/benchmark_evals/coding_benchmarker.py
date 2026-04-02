@@ -15,6 +15,7 @@ from eval.utils import (
 )
 from utils.constants import (
     AgentRunMode,
+    ExecMode,
 )
 
 # Monkey‑patch setrlimit and forking for child processes on macOS to enable running evalplus.evaluate and log the results to DVC.
@@ -102,6 +103,7 @@ class CodingBenchmarker(_BaseCodingBenchmarker):
       rag: Optional[bool],
       run_mode: Optional[AgentRunMode] = AgentRunMode.CODE_BENCHMARK,
       experiment: Optional[bool] = False,
+      exec_mode: ExecMode = ExecMode.LOCAL,
   ):
 
     self._run_id = run_id
@@ -112,9 +114,11 @@ class CodingBenchmarker(_BaseCodingBenchmarker):
     self._rag = rag
     self._run_mode = run_mode
     self._experiment = experiment
+    self._exec_mode = exec_mode
     self._system_prompt = get_prompt(self._agent_type)
     self._evaluated_agent = get_eval_agent(
-        self._agent_type, self._model, self._system_prompt.text_template, self._rag, self._run_mode
+        self._agent_type, self._model, self._system_prompt.text_template, self._rag, self._run_mode,
+        exec_mode=self._exec_mode,
     )
     self._run_path = "runs/" + self._run_mode.value + "_runs"
 

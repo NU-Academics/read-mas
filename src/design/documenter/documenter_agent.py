@@ -8,7 +8,7 @@ from google.adk.agents import Agent
 from agents import AgentBase, get_model_from
 from design.designer import DesignerOutputModel
 from prompt_templates import DOCUMENTER_AGENT_SYSTEM_PROMPT
-from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode
+from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode, ExecMode
 from utils.logger import (get_run_id, setup_logging)
 from agents import (before_agent, after_agent, before_model, after_model, get_agent_config)
 
@@ -22,8 +22,9 @@ class DocumenterAgent(AgentBase):
       system_prompt: Optional[str] = DOCUMENTER_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
+      exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
   ):
-    super().__init__(llm_model_name, system_prompt, run_mode, rag)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag, exec_mode)
 
   def get_agent(self) -> Agent:
     return Agent(

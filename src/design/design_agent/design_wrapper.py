@@ -2,7 +2,7 @@
 
 from typing import Optional
 from agents import (AgentBase, get_model_from, get_agent_config)
-from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
+from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME)
 import time
 
 from google.adk.agents import Agent
@@ -22,10 +22,11 @@ class DesignWrapperAgent(AgentBase):
       system_prompt: Optional[str] = DESIGN_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
+      exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
   ):
-    super().__init__(llm_model_name, system_prompt, run_mode, rag)
-    self._designer_agent = DesignerAgent(llm_model_name, run_mode, rag).get_agent()
-    self._documenter_agent = DocumenterAgent(llm_model_name, run_mode, rag).get_agent()
+    super().__init__(llm_model_name, system_prompt, run_mode, rag, exec_mode)
+    self._designer_agent = DesignerAgent(llm_model_name, run_mode, rag, exec_mode=exec_mode).get_agent()
+    self._documenter_agent = DocumenterAgent(llm_model_name, run_mode, rag, exec_mode=exec_mode).get_agent()
 
   def get_agent(self) -> Agent:
     tools = []

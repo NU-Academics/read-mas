@@ -7,7 +7,7 @@ from google.adk.agents import Agent
 
 from agents import (AgentBase, get_model_from)
 from prompt_templates import SPECIFIER_AGENT_SYSTEM_PROMPT
-from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode
+from utils.constants import DEFAULT_MODEL_NAME, AgentRunMode, ExecMode
 from utils.logger import (get_run_id, setup_logging)
 
 from .specifier_models import SpecifierInputModel
@@ -23,8 +23,9 @@ class SpecifierAgent(AgentBase):
       system_prompt: Optional[str] = SPECIFIER_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
+      exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
   ):
-    super().__init__(llm_model_name, system_prompt, run_mode, rag)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag, exec_mode)
 
   def get_agent(self) -> Agent:
     return Agent(

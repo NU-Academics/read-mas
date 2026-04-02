@@ -5,11 +5,11 @@ import time
 
 from google.adk.agents import Agent
 
-from agents import (AgentBase, get_model_from, add_rag_mcp, get_agent_config)
+from agents import (AgentBase, get_model_from, add_rag_tool, get_agent_config)
 from agents import (before_agent, after_agent, before_model, after_model, after_rag_tool)
 from utils.constants import DEFAULT_MODEL_NAME
 from prompt_templates.single_prompt import SINGLE_AGENT_SYSTEM_PROMPT
-from utils.constants import AgentRunMode
+from utils.constants import AgentRunMode, ExecMode
 from utils.logger import (get_run_id, setup_logging)
 
 
@@ -22,12 +22,13 @@ class SingleAgent(AgentBase):
       system_prompt: Optional[str] = SINGLE_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = False,
+      exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
   ):
-    super().__init__(llm_model_name, system_prompt, run_mode, rag)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag, exec_mode)
 
   def get_agent(self) -> Agent:
     tools = []
-    add_rag_mcp(tools, self._rag)
+    add_rag_tool(tools, self._rag, self._exec_mode)
 
     return Agent(
         name="single_agent",

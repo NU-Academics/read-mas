@@ -12,7 +12,7 @@ from deepeval.test_case import LLMTestCase
 from dvclive.live import Live
 
 from orchestrator import run_agent
-from utils.constants import AgentRunMode
+from utils.constants import AgentRunMode, ExecMode
 from eval.utils import (
     get_metrics,
     get_ragas_metric_names,
@@ -32,12 +32,21 @@ load_dotenv()
 class AgentTrainer:
   """This class utilizes DeepEval's prompt optimizer to optimize system prompts of agents."""
 
-  def __init__(self, agent_type: str, model: str, rag: bool, no_opt: bool, experiment: bool):
+  def __init__(
+      self,
+      agent_type: str,
+      model: str,
+      rag: bool,
+      no_opt: bool,
+      experiment: bool,
+      exec_mode: ExecMode = ExecMode.LOCAL,
+  ):
     self._agent_type = agent_type
     self._model = model
     self._rag = rag
     self._no_opt = no_opt
     self._experiment = experiment
+    self._exec_mode = exec_mode
     self._prompt_to_optimize = get_prompt(self._agent_type)
     self._evaluated_agent = get_eval_agent(
         self._agent_type,
@@ -45,6 +54,7 @@ class AgentTrainer:
         self._prompt_to_optimize.text_template,
         self._rag,
         AgentRunMode.TRAIN,
+        exec_mode=self._exec_mode,
     )
     self._metrics = get_metrics(self._agent_type)
     self._ragas_metric_names = get_ragas_metric_names(self._agent_type, self._rag)
@@ -53,7 +63,8 @@ class AgentTrainer:
   async def agent_callback(self, prompt: Prompt, golden: Golden) -> str:
     prompt_text = prompt.text_template
     eval_agent = get_eval_agent(
-        self._agent_type, self._model, prompt_text, self._rag, AgentRunMode.TRAIN
+        self._agent_type, self._model, prompt_text, self._rag, AgentRunMode.TRAIN,
+        exec_mode=self._exec_mode,
     )
     return await run_agent(golden.input, eval_agent)
 

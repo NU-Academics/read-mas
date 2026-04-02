@@ -2,7 +2,7 @@
 
 from typing import Optional
 from agents import (AgentBase, get_model_from)
-from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME, THINKING_BUDGET)
+from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME, THINKING_BUDGET)
 import time
 
 from google.adk.agents import Agent
@@ -13,7 +13,7 @@ from utils.logger import (get_run_id, setup_logging)
 from prompt_templates import COLLECTOR_AGENT_SYSTEM_PROMPT
 from .collector_models import CollectorOutputModel
 from agents import (
-    add_rag_mcp,
+    add_rag_tool,
     before_agent,
     after_agent,
     before_model,
@@ -32,12 +32,13 @@ class CollectorAgent(AgentBase):
       system_prompt: Optional[str] = COLLECTOR_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
+      exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
   ):
-    super().__init__(llm_model_name, system_prompt, run_mode, rag)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag, exec_mode)
 
   def get_agent(self) -> Agent:
     tools = []
-    add_rag_mcp(tools, self._rag)
+    add_rag_tool(tools, self._rag, self._exec_mode)
 
     # Create a ThinkingConfig and planner
     thinking_config = ThinkingConfig(include_thoughts=True, thinking_budget=THINKING_BUDGET)

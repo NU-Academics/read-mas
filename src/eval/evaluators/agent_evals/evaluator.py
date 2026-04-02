@@ -23,6 +23,7 @@ from eval.utils import (
 )
 from utils.constants import (
     AgentRunMode,
+    ExecMode,
 )
 
 load_dotenv()
@@ -38,15 +39,18 @@ class AgentEvaluator:
       rag: Optional[bool],
       run_mode: Optional[AgentRunMode] = AgentRunMode.EVAL,
       experiment: Optional[bool] = False,
+      exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
   ):
     self._agent_type = agent_type
     self._model = model
     self._rag = rag
     self._run_mode = run_mode
     self._experiment = experiment
+    self._exec_mode = exec_mode
     self._system_prompt = get_prompt(self._agent_type)
     self._evaluated_agent = get_eval_agent(
-        self._agent_type, self._model, self._system_prompt.text_template, self._rag, self._run_mode
+        self._agent_type, self._model, self._system_prompt.text_template, self._rag, self._run_mode,
+        exec_mode=self._exec_mode,
     )
     self._metrics = get_metrics(self._agent_type)
     self._ragas_metric_names = get_ragas_metric_names(self._agent_type, self._rag)

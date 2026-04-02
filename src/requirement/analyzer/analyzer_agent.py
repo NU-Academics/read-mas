@@ -2,7 +2,7 @@
 
 from typing import Optional
 from agents import (AgentBase, get_model_from)
-from utils.constants import (AgentRunMode, DEFAULT_MODEL_NAME)
+from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME)
 import time
 
 from google.adk.agents import Agent
@@ -22,8 +22,9 @@ class AnalyzerAgent(AgentBase):
       system_prompt: Optional[str] = ANALYZER_AGENT_SYSTEM_PROMPT,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
+      exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
   ):
-    super().__init__(llm_model_name, system_prompt, run_mode, rag)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag, exec_mode)
 
   def get_agent(self) -> Agent:
     return Agent(
