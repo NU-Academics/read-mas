@@ -1,0 +1,11 @@
+Experiment,rev,typ,Created,runs/eval_runs/metrics.json:agent,runs/eval_runs/metrics.json:DesignDocumentAccuracy [GEval],DesignerAccuracy [GEval],eval.agent_name
+,documenter-agent-eval-complete,baseline,2026-04-01T20:24:25,documenter_agent,1.0,,documenter_agent
+eval-documenter_agent-gemini-2.5-flash-1775089465,4322221,branch_base,2026-04-01T20:25:49,documenter_agent,0.996,,documenter_agent
+,9babe7e,baseline,2026-04-01T20:23:03,documenter_agent,1.0,,documenter_agent
+eval-documenter_agent-gemini-2.5-flash-1775089383,c56c865,branch_base,2026-04-01T20:24:24,documenter_agent,1.0,,documenter_agent
+,720a5f1,baseline,2026-04-01T20:21:33,documenter_agent,0.988,,documenter_agent
+eval-documenter_agent-gemini-2.5-flash-1775089293,05f0772,branch_base,2026-04-01T20:23:01,documenter_agent,1.0,,documenter_agent
+,3eae1f3,baseline,2026-04-01T20:20:18,documenter_agent,1.0,,documenter_agent
+eval-documenter_agent-gemini-2.5-flash-1775089218,c479dd0,branch_base,2026-04-01T20:21:32,documenter_agent,0.988,,documenter_agent
+,documenter-agent-eval-begin,baseline,2026-04-01T20:18:18,designer_agent,,0.894,designer_agent
+eval-documenter_agent-gemini-2.5-flash-1775089141,dfc462a,branch_base,2026-04-01T20:20:16,documenter_agent,1.0,,documenter_agent

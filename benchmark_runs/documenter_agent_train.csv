@@ -1,0 +1,7 @@
+Experiment,rev,typ,Created,runs/train_runs/metrics.json:agent,no_opt,DesignDocumentAccuracy [GEval],runs/train_runs/metrics.json:DesignerAccuracy [GEval],train.agent_name,train.no_opt
+,documenter-agent-train-complete,baseline,2026-04-01T20:16:05,documenter_agent,False,0.947,,documenter_agent,False
+train-documenter_agent-gemini-2.5-flash-1775088976,2348dd8,branch_base,2026-04-01T20:17:19,documenter_agent,True,0.923,,documenter_agent,True
+,eb62f7d,baseline,2026-04-01T20:04:59,documenter_agent,True,0.861,,documenter_agent,True
+train-documenter_agent-gemini-2.5-flash-1775088317,68c79eb,branch_base,2026-04-01T20:14:00,documenter_agent,False,0.947,,documenter_agent,False
+,documenter-agent-train-begin,baseline,2026-04-01T19:59:38,designer_agent,False,,0.844,designer_agent,False
+train-documenter_agent-gemini-2.5-flash-1775088137,a5beb33,branch_base,2026-04-01T20:03:26,documenter_agent,True,0.861,,documenter_agent,True
