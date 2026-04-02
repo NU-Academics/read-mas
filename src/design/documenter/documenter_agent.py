@@ -35,7 +35,6 @@ class DocumenterAgent(AgentBase):
             " designs for the requested system."
         ),
         instruction=self._system_prompt,
-        input_schema=DesignerOutputModel,
         output_key="documenter_output",
         generate_content_config=get_agent_config(),
         before_agent_callback=before_agent,

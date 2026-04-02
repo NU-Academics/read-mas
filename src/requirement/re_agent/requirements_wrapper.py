@@ -2,7 +2,7 @@
 
 from typing import Optional
 from agents import (add_rag_tool, AgentBase, get_model_from, get_agent_config)
-from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME)
+from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME, CONTENT_LENGTH_SMALL)
 import time
 
 from google.adk.agents import (Agent)
@@ -52,7 +52,7 @@ class RequirementsWrapperAgent(AgentBase):
         description="A requirements wrapper agent that uses RE agent tools to generate the SRS.",
         instruction=self.get_instruction,
         tools=tools,
-        generate_content_config=get_agent_config(),
+        generate_content_config=get_agent_config(CONTENT_LENGTH_SMALL),
         output_key="requirements_output",
     )
 

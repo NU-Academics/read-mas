@@ -11,12 +11,27 @@ from google.genai import types
 from loguru import logger
 
 _JSON_FENCE_RE = re.compile(r'^\s*```(?:json)?\s*\n(.*?)\n\s*```\s*$', re.DOTALL)
+_TABLE_ROW_RE = re.compile(r'^\s*\|.*\|\s*$')
 
 
 def _strip_json_fences(text: str) -> str:
   """Remove markdown code fences wrapping a JSON response."""
   m = _JSON_FENCE_RE.match(text)
   return m.group(1).strip() if m else text
+
+
+def _normalize_markdown(text: str) -> str:
+  """Strip trailing whitespace, table cell padding, and file-tree comment alignment."""
+  result = []
+  for line in text.splitlines():
+    line = line.rstrip()
+    if _TABLE_ROW_RE.match(line):
+      cells = line.strip().split('|')
+      line = '|' + '|'.join(c.strip() for c in cells[1:-1]) + '|'
+    elif line.lstrip()[:1] in '├└│':
+      line = re.sub(r' {2,}#', ' #', line)
+    result.append(line)
+  return '\n'.join(result)
 
 
 def after_rag_tool(
@@ -78,14 +93,14 @@ def before_model(
 def after_model(
     callback_context: CallbackContext, llm_response: LlmResponse
 ) -> Optional[LlmResponse]:
-  """Strips markdown code fences from JSON responses and logs LLM output."""
+  """Normalizes text responses: strips JSON fences, trailing whitespace, and table cell padding."""
   agent_name = callback_context.agent_name
   if llm_response.content and llm_response.content.parts:
     part = llm_response.content.parts[0]
     if part.text:
-      cleaned = _strip_json_fences(part.text)
+      cleaned = _normalize_markdown(_strip_json_fences(part.text))
       if cleaned != part.text:
-        logger.debug(f"Agent {agent_name}: stripped markdown fences from JSON response.")
+        logger.debug(f"Agent {agent_name}: normalized response (fences/whitespace/table padding).")
         part.text = cleaned
       logger.debug(f"Agent {agent_name} response text: '{part.text[:100]}...'")
     elif part.function_call:

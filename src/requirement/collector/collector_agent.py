@@ -2,7 +2,7 @@
 
 from typing import Optional
 from agents import (AgentBase, get_model_from)
-from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME, THINKING_BUDGET)
+from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME, THINKING_BUDGET, CONTENT_LENGTH_SMALL)
 import time
 
 from google.adk.agents import Agent
@@ -53,7 +53,7 @@ class CollectorAgent(AgentBase):
         instruction=self.get_instruction,
         planner=planner,
         tools=tools,
-        generate_content_config=get_agent_config(),
+        generate_content_config=get_agent_config(CONTENT_LENGTH_SMALL),
         output_schema=CollectorOutputModel,
         output_key="collector_output",
         after_tool_callback=after_rag_tool if self._rag else None,

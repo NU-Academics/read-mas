@@ -1,14 +1,11 @@
 """Wrapper agent to create a workflow of the Design agents."""
 
 from typing import Optional
-from agents import (AgentBase, get_model_from, get_agent_config)
+from agents import AgentBase
 from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME)
-import time
 
-from google.adk.agents import Agent
-from google.adk.tools.agent_tool import AgentTool
+from google.adk.agents import SequentialAgent
 from utils.logger import (get_run_id, setup_logging)
-from prompt_templates import DESIGN_AGENT_SYSTEM_PROMPT
 from design import DesignerAgent
 from design import DocumenterAgent
 
@@ -19,7 +16,7 @@ class DesignWrapperAgent(AgentBase):
   def __init__(
       self,
       llm_model_name: str,
-      system_prompt: Optional[str] = DESIGN_AGENT_SYSTEM_PROMPT,
+      system_prompt: Optional[str] = None,
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
       exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
@@ -28,24 +25,10 @@ class DesignWrapperAgent(AgentBase):
     self._designer_agent = DesignerAgent(llm_model_name, run_mode, rag, exec_mode=exec_mode).get_agent()
     self._documenter_agent = DocumenterAgent(llm_model_name, run_mode, rag, exec_mode=exec_mode).get_agent()
 
-  def get_agent(self) -> Agent:
-    tools = []
-
-    designer_agent_tool = AgentTool(agent=self._designer_agent)
-    tools.append(designer_agent_tool)
-    documenter_agent_tool = AgentTool(agent=self._documenter_agent)
-    tools.append(documenter_agent_tool)
-
-    return Agent(
+  def get_agent(self) -> SequentialAgent:
+    return SequentialAgent(
         name="design_agent",
-        model=get_model_from(self._llm_model_name),
-        description=(
-            "A design wrapper agent that uses the design agent tools to generate the design."
-        ),
-        instruction=self._system_prompt,
-        tools=tools,
-        generate_content_config=get_agent_config(),
-        output_key="design_output",
+        sub_agents=[self._designer_agent, self._documenter_agent],
     )
 
 

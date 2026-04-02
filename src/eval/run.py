@@ -251,7 +251,7 @@ def benchmark_coding_llm(
     experiment: bool = typer.Option(
         False,
         "--experiment",
-        "-e",
+        "-x",
         help="Whether to run a DVC experiment",
     ),
 ):

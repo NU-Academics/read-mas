@@ -8,7 +8,7 @@ from google.adk.tools.mcp_tool import McpToolset, StreamableHTTPConnectionParams
 from google.genai.types import GenerateContentConfig
 from loguru import logger
 
-from utils.constants import MCP_URL_RAG
+from utils.constants import (MCP_URL_RAG, CONTENT_LENGTH_LARGE)
 
 
 def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
@@ -98,10 +98,10 @@ def _extract_text(item) -> str:
   return str(item)
 
 
-def get_agent_config():
+def get_agent_config(max_output_tokens: int = CONTENT_LENGTH_LARGE):
   """Configures the agent's technical configuration attributes."""
   return GenerateContentConfig(
       temperature=0.2,
-      max_output_tokens=65536,
+      max_output_tokens=max_output_tokens,
       top_p=0.95,
   )
