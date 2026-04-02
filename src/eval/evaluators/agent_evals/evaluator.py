@@ -59,7 +59,16 @@ class AgentEvaluator:
 
   async def _run_single_golden(self, golden):
     """Run the agent on a single golden and return test case + ragas data."""
-    actual_output = await run_agent(golden.input, self._evaluated_agent, run_mode=self._run_mode)
+    # Collect session state for read_agent so the intermediate SRS can be added
+    # to the RAGAS retrieval context, fixing the context mismatch between the
+    # multi-step pipeline's internal grounding and the evaluation context.
+    state: dict = {}
+    actual_output = await run_agent(
+        golden.input,
+        self._evaluated_agent,
+        run_mode=self._run_mode,
+        state_collector=state if self._agent_type == "read_agent" else None,
+    )
 
     test_case = LLMTestCase(
         input=golden.input,
@@ -71,11 +80,15 @@ class AgentEvaluator:
 
     ragas_data = None
     if self._ragas_metric_names:
+      retrieval_context = list(golden.retrieval_context) if golden.retrieval_context else []
+      srs = state.get("specifier_output")
+      if srs:
+        retrieval_context = [srs] + retrieval_context
       ragas_data = {
           "input": golden.input,
           "actual_output": actual_output,
           "expected_output": golden.expected_output,
-          "retrieval_context": golden.retrieval_context,
+          "retrieval_context": retrieval_context or None,
       }
 
     return test_case, ragas_data

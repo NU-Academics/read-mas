@@ -193,6 +193,7 @@ async def run_agent(
     *,
     app_name: Optional[str] = APP_NAME,
     run_mode: Optional[AgentRunMode] = None,
+    state_collector: Optional[dict] = None,
 ) -> str:
   """
   Execute a single query against the supplied entry agent **inside an already‑created
@@ -204,6 +205,7 @@ async def run_agent(
   current_session_id = session_id
   current_user_id = user_id
   current_runner = runner
+  _session_manager: Optional[SessionManager] = None
 
   if (
       current_session_id is None or current_user_id is None or current_runner is None
@@ -222,8 +224,8 @@ async def run_agent(
         plugins=plugins,
     )
 
-    session_manager = SessionManager()
-    current_session_id, current_runner, current_user_id = await session_manager.initialize_session(
+    _session_manager = SessionManager()
+    current_session_id, current_runner, current_user_id = await _session_manager.initialize_session(
         app=app
     )
   elif entry_agent is None:
@@ -279,5 +281,15 @@ async def run_agent(
           f"Retrying in {delay}s..."
       )
       await asyncio.sleep(delay)
+
+  if state_collector is not None and _session_manager is not None:
+    try:
+      session = await _session_manager.get_session().get_session(
+          app_name=app_name, user_id=current_user_id, session_id=current_session_id
+      )
+      if session and session.state:
+        state_collector.update(session.state)
+    except Exception as e:
+      logger.warning(f"Could not retrieve session state for state_collector: {e}")
 
   return response or escalated_response
