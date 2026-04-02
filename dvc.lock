@@ -30,8 +30,8 @@ stages:
     outs:
     - path: runs/train_runs
       hash: md5
-      md5: 627fcaf7dc166c5598db4958c6c018a1.dir
-      size: 43702
+      md5: 7ed26c99fea7cae7f0000bac3b561dc5.dir
+      size: 44819
       nfiles: 8
   eval:
     cmd: python -m src.eval.run eval -t documenter_agent -m gemini-2.5-flash -r 
