@@ -57,8 +57,8 @@ stages:
     outs:
     - path: runs/eval_runs
       hash: md5
-      md5: ddacb1f875a4e045d0b9cddb91bd4727.dir
-      size: 47523
+      md5: 4867bcccebade617fa6be3262ae66ff7.dir
+      size: 45472
       nfiles: 8
   benchmark:
     cmd: python -m src.eval.run benchmark -t read_agent -m gemini-2.5-flash -r 
