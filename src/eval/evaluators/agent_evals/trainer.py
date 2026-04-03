@@ -1,5 +1,6 @@
 """Trainer to optimize the agents' system prompts using prompt optimization algorithms."""
 
+import json
 from dotenv import load_dotenv
 from loguru import logger
 
@@ -60,19 +61,25 @@ class AgentTrainer:
     self._ragas_metric_names = get_ragas_metric_names(self._agent_type, self._rag)
     self._dataset = get_dataset(self._agent_type, self._rag, AgentRunMode.TRAIN)
 
-  async def agent_callback(self, prompt: Prompt, golden: Golden) -> str:
+  async def agent_callback(
+      self, prompt: Prompt, golden: Golden, state_collector: dict = None
+  ) -> str:
     prompt_text = prompt.text_template
     eval_agent = get_eval_agent(
         self._agent_type, self._model, prompt_text, self._rag, AgentRunMode.TRAIN,
         exec_mode=self._exec_mode,
     )
-    return await run_agent(golden.input, eval_agent)
+    return await run_agent(
+        golden.input, eval_agent,
+        state_collector=state_collector if self._agent_type == "read_agent" else None,
+    )
 
   async def _collect_metrics(self, prompt: Prompt):
     ragas_test_cases = []
 
     for golden in self._dataset.goldens:
-      actual_output = await self.agent_callback(prompt, golden)
+      state: dict = {}
+      actual_output = await self.agent_callback(prompt, golden, state_collector=state)
 
       self._dataset.test_cases.append(
           LLMTestCase(
@@ -85,11 +92,24 @@ class AgentTrainer:
       )
 
       if self._ragas_metric_names:
+        retrieval_context = list(golden.retrieval_context) if golden.retrieval_context else []
+        srs = state.get("specifier_output")
+        design = state.get("designer_output")
+        if srs:
+          retrieval_context = [srs] + retrieval_context
+        else:
+          logger.warning(
+              "specifier_output not found in session state — RAGAS context falling back to golden"
+              " context only"
+          )
+        if design:
+          design_str = json.dumps(design) if isinstance(design, dict) else str(design)
+          retrieval_context = retrieval_context + [design_str]
         ragas_test_cases.append({
             "input": golden.input,
             "actual_output": actual_output,
             "expected_output": golden.expected_output,
-            "retrieval_context": golden.retrieval_context,
+            "retrieval_context": retrieval_context or None,
         })
 
     train_results = evaluate(test_cases=self._dataset.test_cases, metrics=self._metrics)
