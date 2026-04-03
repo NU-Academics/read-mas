@@ -1,5 +1,6 @@
 """Agent evaluator class to evaluate and benchmark READ-MAS agents using custom LLM-as-a-Judge and RAGAS metrics."""
 
+import json
 from dotenv import load_dotenv
 from typing import Optional
 from loguru import logger
@@ -82,8 +83,17 @@ class AgentEvaluator:
     if self._ragas_metric_names:
       retrieval_context = list(golden.retrieval_context) if golden.retrieval_context else []
       srs = state.get("specifier_output")
+      design = state.get("designer_output")
       if srs:
         retrieval_context = [srs] + retrieval_context
+      else:
+        logger.warning(
+            "specifier_output not found in session state — RAGAS context falling back to golden"
+            " context only"
+        )
+      if design:
+        design_str = json.dumps(design) if isinstance(design, dict) else str(design)
+        retrieval_context = retrieval_context + [design_str]
       ragas_data = {
           "input": golden.input,
           "actual_output": actual_output,
