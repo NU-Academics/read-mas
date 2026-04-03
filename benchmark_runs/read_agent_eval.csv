@@ -1,0 +1,11 @@
+Experiment,rev,typ,Created,runs/eval_runs/metrics.json:DesignAccuracy [GEval],runs/eval_runs/metrics.json:faithfulness (ragas),runs/eval_runs/metrics.json:RAGAS
+,read-agent-eval-complete3,baseline,2026-04-03T10:16:29,0.901,0.988,0.671
+eval-read_agent-gemini-2.5-flash-1775225789,4b3a83b,branch_base,2026-04-03T10:26:58,0.886,0.996,0.754
+,9fcae5c,baseline,2026-04-03T08:11:16,0.956,0.983,0.719
+eval-read_agent-gemini-2.5-flash-1775225119,f8a4279,branch_base,2026-04-03T10:16:27,0.901,0.988,0.671
+,df2700f,baseline,2026-04-03T07:59:33,0.884,1.0,0.734
+eval-read_agent-gemini-2.5-flash-1775217573,0f74a76,branch_base,2026-04-03T08:11:14,0.956,0.983,0.719
+,42f1370,baseline,2026-04-03T07:41:16,0.946,1.0,0.744
+eval-read_agent-gemini-2.5-flash-1775216826,1d47b8c,branch_base,2026-04-03T07:59:31,0.884,1.0,0.734
+,read-agent-eval-begin3,baseline,2026-04-02T23:24:03,0.918,0.775,0.669
+eval-read_agent-gemini-2.5-flash-1775215818,f51ee0c,branch_base,2026-04-03T07:41:15,0.946,1.0,0.744
