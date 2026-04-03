@@ -62,7 +62,7 @@ stages:
       nfiles: 8
   benchmark:
     cmd: python -m src.eval.run benchmark -t read_agent -m gemini-2.5-flash -r 
-      true -e
+      true -x
     deps:
     - path: data/goldens/read_agent/benchmark.json
       hash: md5
@@ -70,12 +70,12 @@ stages:
       size: 196317
     - path: src/eval/evaluators/agent_evals/evaluator.py
       hash: md5
-      md5: bc83e49b87324c0cff9f1acba2c3752c
-      size: 4314
+      md5: 9b61c344a7830e4a8b36093e276749fe
+      size: 5408
     - path: src/eval/run.py
       hash: md5
-      md5: 7571f8b1684e61c21ee994f778a66529
-      size: 10401
+      md5: 1d98734c41072fde0b47ac17abf0d550
+      size: 11468
     params:
       params.yaml:
         benchmark.agent_name: read_agent
@@ -84,8 +84,8 @@ stages:
     outs:
     - path: runs/benchmark_runs
       hash: md5
-      md5: 26da99e2b256452c04a7491b3810e97a.dir
-      size: 42090
+      md5: 9284d28e985b4f317234c2beca00ab16.dir
+      size: 47129
       nfiles: 8
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t single_agent -m 
