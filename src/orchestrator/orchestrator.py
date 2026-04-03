@@ -11,6 +11,7 @@ from aiohttp import (
     ServerDisconnectedError,
     ServerTimeoutError,
 )
+from pydantic import ValidationError
 from google.adk.agents import BaseAgent
 from google.adk.runners import Runner
 from google.adk.apps import App
@@ -144,6 +145,8 @@ async def run_agent_with_context(
       ServerConnectionError,
       ServerDisconnectedError,
       ServerTimeoutError,
+      ValidationError,
+      json.JSONDecodeError,
   )
 
   for attempt in range(1, MAX_RETRIES + 1):
@@ -176,7 +179,7 @@ async def run_agent_with_context(
         raise
       delay = RETRY_DELAY_BASE**attempt
       logger.warning(
-          f"Transient connection error (attempt {attempt}/{MAX_RETRIES}): {e}. "
+          f"Retryable error (attempt {attempt}/{MAX_RETRIES}): {type(e).__name__}: {e}. "
           f"Retrying in {delay}s..."
       )
       await asyncio.sleep(delay)
@@ -243,6 +246,8 @@ async def run_agent(
       ServerConnectionError,
       ServerDisconnectedError,
       ServerTimeoutError,
+      ValidationError,
+      json.JSONDecodeError,
   )
 
   for attempt in range(1, MAX_RETRIES + 1):
@@ -277,7 +282,7 @@ async def run_agent(
         raise
       delay = RETRY_DELAY_BASE**attempt  # Exponential backoff: 2s, 4s, 8s
       logger.warning(
-          f"Transient connection error (attempt {attempt}/{MAX_RETRIES}): {e}. "
+          f"Retryable error (attempt {attempt}/{MAX_RETRIES}): {type(e).__name__}: {e}. "
           f"Retrying in {delay}s..."
       )
       await asyncio.sleep(delay)
