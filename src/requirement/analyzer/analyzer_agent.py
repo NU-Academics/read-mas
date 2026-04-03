@@ -2,7 +2,7 @@
 
 from typing import Optional
 from agents import (AgentBase, get_model_from)
-from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME, CONTENT_LENGTH_MEDIUM)
+from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME, THINKING_BUDGET_STRUCTURED)
 import time
 
 from google.adk.agents import Agent
@@ -37,7 +37,7 @@ class AnalyzerAgent(AgentBase):
         instruction=self._system_prompt,
         input_schema=CollectorOutputModel,
         output_schema=AnalyzerOutputModel,
-        generate_content_config=get_agent_config(CONTENT_LENGTH_MEDIUM),
+        generate_content_config=get_agent_config(thinking_budget=THINKING_BUDGET_STRUCTURED),
         output_key="analyzer_output",
         before_agent_callback=before_agent,
         after_agent_callback=after_agent,

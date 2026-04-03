@@ -98,7 +98,9 @@ def after_model(
   if llm_response.content and llm_response.content.parts:
     part = llm_response.content.parts[0]
     if part.text:
-      cleaned = _normalize_markdown(_strip_json_fences(part.text))
+      stripped = _strip_json_fences(part.text)
+      is_json = stripped.lstrip()[:1] in ('{', '[')
+      cleaned = stripped if is_json else _normalize_markdown(stripped)
       if cleaned != part.text:
         logger.debug(f"Agent {agent_name}: normalized response (fences/whitespace/table padding).")
         part.text = cleaned

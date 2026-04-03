@@ -5,7 +5,7 @@ from utils.constants import OLLAMA_API_BASE, OLLAMA_BASE_URL, ExecMode
 
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.tools.mcp_tool import McpToolset, StreamableHTTPConnectionParams
-from google.genai.types import GenerateContentConfig
+from google.genai.types import GenerateContentConfig, ThinkingConfig
 from loguru import logger
 
 from utils.constants import (MCP_URL_RAG, CONTENT_LENGTH_LARGE)
@@ -98,10 +98,14 @@ def _extract_text(item) -> str:
   return str(item)
 
 
-def get_agent_config(max_output_tokens: int = CONTENT_LENGTH_LARGE):
+def get_agent_config(
+    max_output_tokens: int = CONTENT_LENGTH_LARGE,
+    thinking_budget: Optional[int] = None,
+):
   """Configures the agent's technical configuration attributes."""
   return GenerateContentConfig(
       temperature=0.2,
       max_output_tokens=max_output_tokens,
       top_p=0.95,
+      thinking_config=ThinkingConfig(thinking_budget=thinking_budget) if thinking_budget is not None else None,
   )
