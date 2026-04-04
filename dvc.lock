@@ -88,9 +88,9 @@ stages:
       size: 18873
       nfiles: 4
   code_benchmark:
-    cmd: python -m src.eval.run code-benchmark -t read_agent -m gemini-2.5-flash
-      -d mbpp -s data/samples/mbpp/mbpp_samples_1775016073942-sanitized.jsonl -r
-      true -x
+    cmd: python -m src.eval.run code-benchmark -t single_agent -m 
+      gemini-2.5-flash -d mbpp -s 
+      data/samples/mbpp/mbpp_samples_1774886180675-sanitized.jsonl -r true -x
     deps:
     - path: data/samples/mbpp
       hash: md5
@@ -107,15 +107,15 @@ stages:
       size: 11468
     params:
       params.yaml:
-        code.agent_name: read_agent
+        code.agent_name: single_agent
         code.dataset: mbpp
         code.model: gemini-2.5-flash
         code.rag: true
         code.samples: 
-          data/samples/mbpp/mbpp_samples_1775016073942-sanitized.jsonl
+          data/samples/mbpp/mbpp_samples_1774886180675-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: 74ad4b2de7e40ce5c561bff1e7425c53.dir
-      size: 27220
+      md5: 1213dbd10a30cc6845bb5c63e8f5e546.dir
+      size: 27986
       nfiles: 6
