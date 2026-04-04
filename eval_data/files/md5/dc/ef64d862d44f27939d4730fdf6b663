@@ -1,0 +1,9 @@
+# DVC Report
+
+metrics.json
+
+| agent      | model            | rag   | metrics                    |   DesignAccuracy [GEval] |
+|------------|------------------|-------|----------------------------|--------------------------|
+| read_agent | gemini-2.5-flash | False | ['DesignAccuracy [GEval]'] |                    0.938 |
+
+![static/DesignAccuracy [GEval]](static/DesignAccuracy [GEval].png)
