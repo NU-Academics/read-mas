@@ -10,7 +10,7 @@ eval:
 benchmark:
   agent_name: read_agent
   model: gemini-2.5-flash
-  rag: true
+  rag: false
 code:
   agent_name: single_agent
   model: gemini-2.5-flash
