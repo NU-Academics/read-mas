@@ -84,8 +84,8 @@ stages:
     outs:
     - path: runs/benchmark_runs
       hash: md5
-      md5: 1e4d63c9c2d1c377caad1513a9199e7e.dir
-      size: 17838
+      md5: ef970fadbd1a3ac17c81bb3596e8e519.dir
+      size: 15833
       nfiles: 4
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t single_agent -m 
