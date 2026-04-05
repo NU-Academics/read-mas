@@ -1,0 +1,12 @@
+{
+    "agent": "read_agent",
+    "model": "openai/gpt-5-mini",
+    "rag": true,
+    "metrics": [
+        "DesignAccuracy [GEval]",
+        "RAGAS"
+    ],
+    "DesignAccuracy [GEval]": 0.767,
+    "faithfulness (ragas)": 1.0,
+    "RAGAS": 0.695
+}
