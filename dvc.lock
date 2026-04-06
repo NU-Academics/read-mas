@@ -61,8 +61,8 @@ stages:
       size: 47735
       nfiles: 8
   benchmark:
-    cmd: python -m src.eval.run benchmark -t read_agent -m openai/gpt-5-mini -r 
-      true -x
+    cmd: python -m src.eval.run benchmark -t read_agent -m 
+      anthropic/claude-sonnet-4-5 -r true -x
     deps:
     - path: data/goldens/read_agent/benchmark.json
       hash: md5
@@ -79,13 +79,13 @@ stages:
     params:
       params.yaml:
         benchmark.agent_name: read_agent
-        benchmark.model: openai/gpt-5-mini
+        benchmark.model: anthropic/claude-sonnet-4-5
         benchmark.rag: true
     outs:
     - path: runs/benchmark_runs
       hash: md5
-      md5: ae69ea95d00644016b27da6780e2e066.dir
-      size: 44500
+      md5: 64fe205389c2c17eebd07a9396f81849.dir
+      size: 46931
       nfiles: 8
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m gemini-2.5-flash

@@ -1,0 +1,12 @@
+{
+    "agent": "read_agent",
+    "model": "anthropic/claude-sonnet-4-5",
+    "rag": true,
+    "metrics": [
+        "DesignAccuracy [GEval]",
+        "RAGAS"
+    ],
+    "DesignAccuracy [GEval]": 0.919,
+    "faithfulness (ragas)": 0.996,
+    "RAGAS": 0.762
+}
