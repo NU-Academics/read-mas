@@ -106,6 +106,5 @@ def get_agent_config(
   return GenerateContentConfig(
       temperature=0.2,
       max_output_tokens=max_output_tokens,
-      top_p=0.95,
       thinking_config=ThinkingConfig(thinking_budget=thinking_budget) if thinking_budget is not None else None,
   )
