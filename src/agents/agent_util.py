@@ -11,9 +11,30 @@ from loguru import logger
 from utils.constants import (MCP_URL_RAG, CONTENT_LENGTH_LARGE)
 
 
+def is_gemini_model(llm_model_name: str) -> bool:
+  """Returns True if the model is a native Gemini model (not wrapped via LiteLLM)."""
+  return llm_model_name.startswith("gemini")
+
+
+def get_planner_for(llm_model_name: str):
+  """Returns a BuiltInPlanner with thinking for Gemini; None for all other models.
+
+  BuiltInPlanner relies on Gemini's native thinking capability and is incompatible
+  with LiteLLM-wrapped models (e.g. Ollama), where it causes stalls or empty responses.
+  """
+  if not is_gemini_model(llm_model_name):
+    return None
+  from google.adk.planners import BuiltInPlanner
+  from google.genai.types import ThinkingConfig
+  from utils.constants import THINKING_BUDGET
+
+  thinking_config = ThinkingConfig(include_thoughts=True, thinking_budget=THINKING_BUDGET)
+  return BuiltInPlanner(thinking_config=thinking_config)
+
+
 def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
   """ "Returns the model name as is for Gemini models and a LiteLlm object for others."""
-  if llm_model_name.startswith("gemini"):
+  if is_gemini_model(llm_model_name):
     return llm_model_name
   elif llm_model_name.startswith("ollama"):
     import litellm
@@ -25,9 +46,10 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
       return LiteLlm(
           model=f"openai/{ollama_model}",
           api_base=OLLAMA_API_BASE,
+          timeout=120,
       )
 
-    return LiteLlm(model=llm_model_name, api_base=OLLAMA_BASE_URL)
+    return LiteLlm(model=llm_model_name, api_base=OLLAMA_BASE_URL, timeout=120)
   else:
     return LiteLlm(llm_model_name)
 

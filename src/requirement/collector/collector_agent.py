@@ -1,13 +1,11 @@
 """This is the first agent in the RE agent pipeline and collects and self elicits requirements and generates raw requirements."""
 
 from typing import Optional
-from agents import (AgentBase, get_model_from)
-from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME, THINKING_BUDGET, CONTENT_LENGTH_SMALL)
+from agents import (AgentBase, get_model_from, get_planner_for)
+from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME, CONTENT_LENGTH_SMALL)
 import time
 
 from google.adk.agents import Agent
-from google.adk.planners import BuiltInPlanner
-from google.genai.types import ThinkingConfig
 
 from utils.logger import (get_run_id, setup_logging)
 from prompt_templates import COLLECTOR_AGENT_SYSTEM_PROMPT
@@ -40,9 +38,7 @@ class CollectorAgent(AgentBase):
     tools = []
     add_rag_tool(tools, self._rag, self._exec_mode)
 
-    # Create a ThinkingConfig and planner
-    thinking_config = ThinkingConfig(include_thoughts=True, thinking_budget=THINKING_BUDGET)
-    planner = BuiltInPlanner(thinking_config=thinking_config)
+    planner = get_planner_for(self._llm_model_name)
 
     return Agent(
         name="collector_agent",
