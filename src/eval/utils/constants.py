@@ -30,7 +30,8 @@ from eval.metrics import (
     RAGAS_COMBINED,
 )
 
-CODING_MODEL = "gemini/gemini-2.5-flash"
+GEMINI_MODEL = "gemini-2.5-flash"
+CODING_MODEL = "gemini/" + GEMINI_MODEL
 
 PROMPT_OPTIMIZER_MODEL = "gpt-5-mini"
 

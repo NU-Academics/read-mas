@@ -15,6 +15,7 @@ from eval.evaluators import (
     LlmCodingBenchmarker,
 )
 from eval.eval_tools import generate_code
+from eval.utils.constants import GEMINI_MODEL
 from loguru import logger
 from utils import DEFAULT_MODEL_NAME
 import typer
@@ -37,6 +38,9 @@ def str_to_bool(s: str) -> bool:
     return False
   else:
     raise typer.BadParameter(f"'{s}' is not a valid boolean string. Use true/false/yes/no/1/0.")
+
+def is_local_model(model: str) -> bool:
+  return model.startswith(("ollama/", "ollama_chat/"))
 
 
 app = typer.Typer(help="READ-MAS CLI for running Evals")
@@ -103,7 +107,8 @@ def generate_samples(
   async def a_generate_benchmark_samples():
     """Run evaluation."""
     evaluated = get_agent(model, agent_type, AgentRunMode.CODE_BENCHMARK, rag, ExecMode(exec_mode))
-    entry_agent = EvalCodeGeneratorAgent(model, evaluated).get_agent()
+    orchestrator_model = GEMINI_MODEL if is_local_model(model) else model
+    entry_agent = EvalCodeGeneratorAgent(orchestrator_model, evaluated).get_agent()
     await generate_benchmark_samples(
         entry_agent,
         benchmark_name,
