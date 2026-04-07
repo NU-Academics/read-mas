@@ -16,7 +16,7 @@ code:
   model: gemini-2.5-flash
   rag: true
   dataset: mbpp
-  samples: data/samples/mbpp/mbpp_samples_1775484717077-sanitized.jsonl
+  samples: data/samples/mbpp/mbpp_samples_1775498665741-sanitized.jsonl
 llm:
   model: anthropic/claude-sonnet-4-5
   dataset: humaneval
