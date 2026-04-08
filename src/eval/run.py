@@ -9,13 +9,12 @@ from eval.eval_agents import EvalCodeGeneratorAgent
 from eval.evaluators import (
     generate_benchmark_samples,
     generate_llm_samples,
+    generate_benchmark_samples_local_llm,
     AgentTrainer,
     AgentEvaluator,
     CodingBenchmarker,
     LlmCodingBenchmarker,
 )
-from eval.eval_tools import generate_code
-from eval.utils.constants import GEMINI_MODEL
 from loguru import logger
 from utils import DEFAULT_MODEL_NAME
 import typer
@@ -107,16 +106,23 @@ def generate_samples(
   async def a_generate_benchmark_samples():
     """Run evaluation."""
     evaluated = get_agent(model, agent_type, AgentRunMode.CODE_BENCHMARK, rag, ExecMode(exec_mode))
-    orchestrator_model = GEMINI_MODEL if is_local_model(model) else model
-    entry_agent = EvalCodeGeneratorAgent(orchestrator_model, evaluated).get_agent()
-    await generate_benchmark_samples(
-        entry_agent,
-        benchmark_name,
-        app_name="coding_benchmarker",
-        samples_file_path=samples_file,
-        num_samples=num_samples,
-        concurrency=concurrency,
-    )
+    if is_local_model(model):
+        await generate_benchmark_samples_local_llm(
+            evaluated, benchmark_name,
+            app_name="coding_benchmarker",
+            samples_file_path=samples_file,
+            num_samples=num_samples,
+            concurrency=concurrency,
+        )
+    else:
+        entry_agent = EvalCodeGeneratorAgent(model, evaluated).get_agent()
+        await generate_benchmark_samples(
+            entry_agent, benchmark_name,
+            app_name="coding_benchmarker",
+            samples_file_path=samples_file,
+            num_samples=num_samples,
+            concurrency=concurrency,
+        )
 
   try:
     asyncio.run(a_generate_benchmark_samples())

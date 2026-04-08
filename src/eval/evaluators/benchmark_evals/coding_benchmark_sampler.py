@@ -153,7 +153,7 @@ async def generate_benchmark_samples(
     app_name: Optional[str] = APP_NAME,
     samples_file_path: Optional[str] = None,
     num_samples: int = NUMBER_OF_TRIES,
-    concurrency: int = 5,
+    concurrency: int = 8,
 ):
   """Generate samples for a benchmark using the evaluation coding agent.
 
@@ -190,7 +190,7 @@ async def generate_llm_samples(
     benchmark_name: str,
     samples_file_path: Optional[str] = None,
     num_samples: int = NUMBER_OF_TRIES,
-    concurrency: int = 16,
+    concurrency: int = 8,
 ) -> Path:
   """Generate benchmark samples by calling an LLM directly (no agent orchestration).
 
@@ -218,6 +218,36 @@ async def generate_llm_samples(
     )
     body = resp.choices[0].message.content
     return entry["prompt"] + body
+
+  return await _generate_samples_with_fn(
+      benchmark_name, sample_fn, samples_file_path, num_samples, concurrency
+  )
+  
+async def generate_benchmark_samples_local_llm(
+    evaluated_agent: Agent,
+    benchmark_name: str,
+    app_name: str = APP_NAME,
+    samples_file_path: Optional[str] = None,
+    num_samples: int = NUMBER_OF_TRIES,
+    concurrency: int = 4,
+) -> Path:
+  """Generate samples using a deterministic two-step pipeline: design agent → generate_code.
+
+  For local/small models that don't reliably follow multi-step tool-calling instructions.
+  Step 1: run the design agent to get SRS/design output.
+  Step 2: call generate_code directly with that output.
+  """
+  from eval.eval_tools import generate_code
+
+  _app, ctx_runner, ctx_session_manager = await create_app_context(
+      evaluated_agent, app_name=app_name, run_mode=AgentRunMode.CODE_BENCHMARK
+  )
+
+  async def sample_fn(task_id, entry):
+    design = await run_agent_with_context(
+        entry["prompt"], ctx_runner, ctx_session_manager, app_name=app_name
+    )
+    return await generate_code(design_output=design, original_prompt=entry["prompt"])
 
   return await _generate_samples_with_fn(
       benchmark_name, sample_fn, samples_file_path, num_samples, concurrency

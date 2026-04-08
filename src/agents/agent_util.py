@@ -8,7 +8,7 @@ from google.adk.tools.mcp_tool import McpToolset, StreamableHTTPConnectionParams
 from google.genai.types import GenerateContentConfig, ThinkingConfig
 from loguru import logger
 
-from utils.constants import (MCP_URL_RAG, CONTENT_LENGTH_LARGE)
+from utils.constants import (MCP_URL_RAG, CONTENT_LENGTH_LARGE, LITE_LLM_TIMEOUT)
 
 
 def is_gemini_model(llm_model_name: str) -> bool:
@@ -46,10 +46,10 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
       return LiteLlm(
           model=f"openai/{ollama_model}",
           api_base=OLLAMA_API_BASE,
-          timeout=120,
+          timeout=LITE_LLM_TIMEOUT,
       )
 
-    return LiteLlm(model=llm_model_name, api_base=OLLAMA_BASE_URL, timeout=120)
+    return LiteLlm(model=llm_model_name, api_base=OLLAMA_BASE_URL, timeout=LITE_LLM_TIMEOUT)
   else:
     return LiteLlm(llm_model_name)
 

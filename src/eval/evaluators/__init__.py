@@ -2,7 +2,7 @@
 
 from .agent_evals.trainer import AgentTrainer
 from .agent_evals.evaluator import AgentEvaluator
-from .benchmark_evals.coding_benchmark_sampler import generate_benchmark_samples, generate_llm_samples
+from .benchmark_evals.coding_benchmark_sampler import generate_benchmark_samples, generate_llm_samples, generate_benchmark_samples_local_llm
 from .benchmark_evals.coding_benchmarker import CodingBenchmarker, LlmCodingBenchmarker
 
 __all__ = [
@@ -10,6 +10,7 @@ __all__ = [
     "AgentEvaluator",
     "generate_benchmark_samples",
     "generate_llm_samples",
+    "generate_benchmark_samples_local_llm",
     "CodingBenchmarker",
     "LlmCodingBenchmarker",
 ]
