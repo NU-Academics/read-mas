@@ -1,0 +1,11 @@
+# DVC Report
+
+metrics.json
+
+| agent      | model            | rag   | benchmark   | metrics                  |   pass@1 |   pass@1plus |
+|------------|------------------|-------|-------------|--------------------------|----------|--------------|
+| read_agent | gemini-2.5-flash | True  | humaneval   | ['pass@1', 'pass@1plus'] |    0.915 |        0.848 |
+
+![static/pass@1plus](static/pass@1plus.png)
+
+![static/pass@1](static/pass@1.png)

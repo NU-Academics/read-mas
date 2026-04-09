@@ -15,8 +15,9 @@ code:
   agent_name: read_agent
   model: gemini-2.5-flash
   rag: true
-  dataset: mbpp
-  samples: data/samples/mbpp/mbpp_samples_1775555786488-sanitized.jsonl
+  dataset: humaneval
+  samples: 
+    data/samples/humaneval/humaneval_samples_1775609589309-sanitized.jsonl
 llm:
   model: anthropic/claude-sonnet-4-5
   dataset: humaneval
