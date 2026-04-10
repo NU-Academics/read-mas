@@ -1,7 +1,7 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
 
-
-class DesignerOutputModel(BaseModel):
+from agents import ReadmasBaseModel
+class DesignerOutputModel(ReadmasBaseModel):
   systemArchitecture: str = Field(
       default="",
       description=(

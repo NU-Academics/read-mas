@@ -1,9 +1,9 @@
 from typing import List
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
-
-class AnalyzerOutputModel(BaseModel):
+from agents import ReadmasBaseModel
+class AnalyzerOutputModel(ReadmasBaseModel):
   useCases: List[str] = Field(
       default_factory=list,
       description=(
