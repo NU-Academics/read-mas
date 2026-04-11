@@ -17,7 +17,7 @@ from orchestrator.orchestrator import (
     run_agent,
     run_agent_with_context,
 )
-from utils.constants import (AgentRunMode, NUMBER_OF_TRIES)
+from utils.constants import (AgentRunMode, NUMBER_OF_TRIES, LOCAL_LLM_TASK_TIMEOUT)
 
 LLM_SAMPLER_SYSTEM_PROMPT = (
     "You are an expert Python programmer. Complete the given Python function. "
@@ -121,7 +121,7 @@ async def _generate_samples_with_fn(
               f" {task_idx}/{len(remaining_entries)}: {task_id}, sample"
               f" {sample_idx + 1}/{num_needed})"
           )
-          solution = await sample_fn(task_id, entry)
+          solution = await asyncio.wait_for(sample_fn(task_id, entry), timeout=LOCAL_LLM_TASK_TIMEOUT)
 
           formatted_entry = {"task_id": str(task_id), "solution": str(solution)}
           async with write_lock:
@@ -132,6 +132,11 @@ async def _generate_samples_with_fn(
           logger.info(
               f"Saved sample {sample_idx + 1}/{num_needed} for {task_id}"
               f" ({completed}/{total_samples_needed} done)"
+          )
+        except asyncio.TimeoutError:                               # ← new
+          logger.warning(                                          # ← new
+              f"Task timeout ({LOCAL_LLM_TASK_TIMEOUT}s) for {task_id}"
+              f" sample {sample_idx + 1}/{num_needed}. Skipping."
           )
         except Exception as e:
           logger.error(f"Error generating sample {sample_idx + 1}/{num_needed} for {task_id}: {e}")
