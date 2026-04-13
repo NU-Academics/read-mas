@@ -19,6 +19,7 @@ code:
   samples: 
     data/samples/humaneval/humaneval_samples_1776022651906-sanitized.jsonl
 llm:
-  model: anthropic/claude-sonnet-4-5
+  model: anthropic/sonnet-4-0
   dataset: humaneval
-  samples: data/samples/humaneval/humaneval_samples_llm-sanitized.jsonl
+  samples: 
+    data/samples/humaneval/humaneval_samples_1776088866787-sanitized.jsonl
