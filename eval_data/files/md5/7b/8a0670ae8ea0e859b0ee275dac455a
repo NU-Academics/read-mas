@@ -1,0 +1,11 @@
+# DVC Report
+
+metrics.json
+
+| model                | benchmark   | metrics                  |   pass@1 |   pass@1plus |
+|----------------------|-------------|--------------------------|----------|--------------|
+| anthropic/sonnet-4-0 | mbpp        | ['pass@1', 'pass@1plus'] |    0.807 |        0.681 |
+
+![static/pass@1plus](static/pass@1plus.png)
+
+![static/pass@1](static/pass@1.png)

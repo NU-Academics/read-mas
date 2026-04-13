@@ -1,0 +1,10 @@
+{
+    "model": "anthropic/sonnet-4-0",
+    "benchmark": "mbpp",
+    "metrics": [
+        "pass@1",
+        "pass@1plus"
+    ],
+    "pass@1": 0.798,
+    "pass@1plus": 0.669
+}
