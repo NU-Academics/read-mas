@@ -121,15 +121,14 @@ stages:
       size: 25108
       nfiles: 6
   llm_code_benchmark:
-    cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d 
-      humaneval -s 
-      data/samples/humaneval/humaneval_samples_1776091021157-sanitized.jsonl -x
+    cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d mbpp -s
+      data/samples/mbpp/mbpp_samples_1776091183763-sanitized.jsonl -x
     deps:
-    - path: data/samples/humaneval
+    - path: data/samples/mbpp
       hash: md5
-      md5: 888a62da9b34abf9637823977f39272e.dir
-      size: 94004906
-      nfiles: 331
+      md5: 70ecc7c0a182dac8866010b9002440de.dir
+      size: 45139779
+      nfiles: 98
     - path: src/eval/evaluators/benchmark_evals/coding_benchmarker.py
       hash: md5
       md5: 69702d98bd655532bcb7c4b45e40261a
@@ -140,13 +139,13 @@ stages:
       size: 11873
     params:
       params.yaml:
-        llm.dataset: humaneval
+        llm.dataset: mbpp
         llm.model: anthropic/sonnet-4-0
         llm.samples: 
-          data/samples/humaneval/humaneval_samples_1776091021157-sanitized.jsonl
+          data/samples/mbpp/mbpp_samples_1776091183763-sanitized.jsonl
     outs:
     - path: runs/llm_benchmark_runs
       hash: md5
-      md5: b7b8e9b24c34df29c62af687eaf7531a.dir
-      size: 25678
+      md5: 7eeebaa53df273e2d4b2b2f2c90fa985.dir
+      size: 29917
       nfiles: 6

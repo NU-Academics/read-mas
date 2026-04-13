@@ -20,6 +20,5 @@ code:
     data/samples/humaneval/humaneval_samples_1776022651906-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
-  dataset: humaneval
-  samples: 
-    data/samples/humaneval/humaneval_samples_1776091021157-sanitized.jsonl
+  dataset: mbpp
+  samples: data/samples/mbpp/mbpp_samples_1776091183763-sanitized.jsonl
