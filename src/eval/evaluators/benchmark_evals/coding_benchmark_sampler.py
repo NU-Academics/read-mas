@@ -19,10 +19,19 @@ from orchestrator.orchestrator import (
 )
 from utils.constants import (AgentRunMode, NUMBER_OF_TRIES, LOCAL_LLM_TASK_TIMEOUT)
 
-LLM_SAMPLER_SYSTEM_PROMPT = (
-    "You are an expert Python programmer. Complete the given Python function. "
-    "Return ONLY the code continuation — no markdown fences, no explanations, no tests."
-)
+LLM_SAMPLER_SYSTEM_PROMPT = """You are an expert Python programmer. Complete the given Python function.
+
+## CRITICAL REQUIREMENTS:
+- **FORBIDDEN**: DO NOT write unit tests - only generate the function implementation code
+- **FORBIDDEN**: Do NOT call helper functions or utilities that are not defined in the same
+  code block. Every function you call must be defined inline in your response.
+- **FORBIDDEN**: Do NOT add isinstance() checks, type guards, or raise exceptions for edge
+  cases. Trust the caller's inputs and implement the simplest, most direct logic possible.
+- Return only the code without explanations or markdown formatting unless the code itself requires markdown.
+- **CRITICAL**: LIMIT doc strings and code comments to at most 2 sentences.
+- Apply proper indenting to the Python function body you are generating
+- **CRITICAL**: Return ONLY the code continuation — no markdown fences, no explanations, no tests
+"""
 
 
 async def _generate_samples_with_fn(
@@ -200,7 +209,7 @@ async def generate_llm_samples(
   """Generate benchmark samples by calling an LLM directly (no agent orchestration).
 
   Args:
-    model: LiteLLM-format model string (e.g., "anthropic/claude-sonnet-4-5")
+    model: LiteLLM-format model string (e.g., "anthropic/claude-sonnet-4-0")
     benchmark_name: Name of the benchmark (e.g., "humaneval", "mbpp")
     samples_file_path: Optional path to an existing samples file for resuming
     num_samples: Total number of samples to generate per benchmark task
