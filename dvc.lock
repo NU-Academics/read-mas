@@ -90,14 +90,14 @@ stages:
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m 
       anthropic/claude-sonnet-4-0 -d humaneval -s 
-      data/samples/humaneval/humaneval_samples_1775921242692-sanitized.jsonl -r 
+      data/samples/humaneval/humaneval_samples_1775929582451-sanitized.jsonl -r 
       true -x
     deps:
     - path: data/samples/humaneval
       hash: md5
-      md5: 1088eb6cde86fb96e7316306ff1f4366.dir
-      size: 87038703
-      nfiles: 305
+      md5: 3fb2d25c1106fca44f70d5ade91fffea.dir
+      size: 87764189
+      nfiles: 307
     - path: src/eval/evaluators/benchmark_evals/coding_benchmarker.py
       hash: md5
       md5: 69702d98bd655532bcb7c4b45e40261a
@@ -113,10 +113,10 @@ stages:
         code.model: anthropic/claude-sonnet-4-0
         code.rag: true
         code.samples: 
-          data/samples/humaneval/humaneval_samples_1775921242692-sanitized.jsonl
+          data/samples/humaneval/humaneval_samples_1775929582451-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: a409f2e84b64b5ef3065a1e097989969.dir
-      size: 25104
+      md5: df40bb8052b09c6395687ed112ffd99f.dir
+      size: 25879
       nfiles: 6
