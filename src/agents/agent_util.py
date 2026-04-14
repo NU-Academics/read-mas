@@ -123,8 +123,12 @@ def _extract_text(item) -> str:
 def get_agent_config(
     max_output_tokens: int = CONTENT_LENGTH_LARGE,
     thinking_budget: Optional[int] = None,
+    llm_model_name: Optional[str] = None,
 ):
   """Configures the agent's technical configuration attributes."""
+  if llm_model_name and not is_gemini_model(llm_model_name):
+        max_output_tokens = min(max_output_tokens, CONTENT_LENGTH_LARGE)  # cap at 16384
+        thinking_budget = None
   return GenerateContentConfig(
       temperature=0.2,
       max_output_tokens=max_output_tokens,

@@ -36,7 +36,7 @@ class SpecifierAgent(AgentBase):
         ),
         instruction=self._system_prompt,
         input_schema=SpecifierInputModel,
-        generate_content_config=get_agent_config(),
+        generate_content_config=get_agent_config(llm_model_name=self._llm_model_name),
         output_key="specifier_output",
         before_agent_callback=before_agent,
         after_agent_callback=after_agent,

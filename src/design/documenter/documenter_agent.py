@@ -36,7 +36,7 @@ class DocumenterAgent(AgentBase):
         ),
         instruction=self._system_prompt,
         output_key="documenter_output",
-        generate_content_config=get_agent_config(),
+        generate_content_config=get_agent_config(llm_model_name=self._llm_model_name),
         before_agent_callback=before_agent,
         after_agent_callback=after_agent,
         before_model_callback=before_model,

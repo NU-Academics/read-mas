@@ -14,7 +14,6 @@ from loguru import logger
 from orchestrator.constants import APP_NAME
 from orchestrator.orchestrator import (
     create_app_context,
-    run_agent,
     run_agent_with_context,
 )
 from utils.constants import (AgentRunMode, NUMBER_OF_TRIES, LOCAL_LLM_TASK_TIMEOUT)
@@ -251,7 +250,7 @@ async def generate_benchmark_samples_local_llm(
   Step 1: run the design agent to get SRS/design output.
   Step 2: call generate_code directly with that output.
   """
-  from eval.eval_tools import generate_code
+  from .eval_coder import generate_eval_code
 
   _app, ctx_runner, ctx_session_manager = await create_app_context(
       evaluated_agent, app_name=app_name, run_mode=AgentRunMode.CODE_BENCHMARK
@@ -261,7 +260,7 @@ async def generate_benchmark_samples_local_llm(
     design = await run_agent_with_context(
         entry["prompt"], ctx_runner, ctx_session_manager, app_name=app_name
     )
-    return await generate_code(design_output=design, original_prompt=entry["prompt"])
+    return await generate_eval_code(design_output=design, original_prompt=entry["prompt"])
 
   return await _generate_samples_with_fn(
       benchmark_name, sample_fn, samples_file_path, num_samples, concurrency

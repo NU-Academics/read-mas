@@ -49,7 +49,7 @@ class CollectorAgent(AgentBase):
         instruction=self.get_instruction,
         planner=planner,
         tools=tools,
-        generate_content_config=get_agent_config(CONTENT_LENGTH_SMALL),
+        generate_content_config=get_agent_config(CONTENT_LENGTH_SMALL, llm_model_name=self._llm_model_name),
         output_schema=CollectorOutputModel,
         output_key="collector_output",
         after_tool_callback=after_rag_tool if self._rag else None,

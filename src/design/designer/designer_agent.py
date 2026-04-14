@@ -34,7 +34,7 @@ class DesignerAgent(AgentBase):
             " requirements."
         ),
         instruction=self._system_prompt,
-        generate_content_config=get_agent_config(CONTENT_LENGTH_MAX, thinking_budget=THINKING_BUDGET_STRUCTURED),
+        generate_content_config=get_agent_config(CONTENT_LENGTH_MAX, thinking_budget=THINKING_BUDGET_STRUCTURED, llm_model_name=self._llm_model_name),
         output_schema=DesignerOutputModel,
         output_key="designer_output",
         before_agent_callback=before_agent,

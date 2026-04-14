@@ -37,7 +37,7 @@ class AnalyzerAgent(AgentBase):
         instruction=self._system_prompt,
         input_schema=CollectorOutputModel,
         output_schema=AnalyzerOutputModel,
-        generate_content_config=get_agent_config(thinking_budget=THINKING_BUDGET_STRUCTURED),
+        generate_content_config=get_agent_config(thinking_budget=THINKING_BUDGET_STRUCTURED, llm_model_name=self._llm_model_name),
         output_key="analyzer_output",
         before_agent_callback=before_agent,
         after_agent_callback=after_agent,

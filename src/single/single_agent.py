@@ -36,7 +36,7 @@ class SingleAgent(AgentBase):
         description="A single agent that generates a software design for a user's query",
         instruction=self.get_instruction,
         tools=tools,
-        generate_content_config=get_agent_config(),
+        generate_content_config=get_agent_config(llm_model_name=self._llm_model_name),
         output_key="design_output",
         after_tool_callback=after_rag_tool if self._rag else None,
         before_agent_callback=before_agent,
