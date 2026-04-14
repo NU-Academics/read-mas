@@ -21,12 +21,14 @@ Design context (use as implementation guidance only):
 </design>
 
 REQUIREMENTS:
-- Return ONLY the bare function implementation — no class wrapper, no if __name__ == '__main__'
-- Use the EXACT function name and parameter names from the function stub above
+- DO NOT write unit tests - only generate the function implementation code
 - Do NOT call any helper that is not defined inline in your response
 - Do NOT add isinstance() checks or raise exceptions for edge cases
-- Limit docstrings and comments to at most 2 sentences
-- No unit tests"""
+- Use the EXACT function name and parameter names from the original problem statement above.
+- Return ONLY the bare function — no class wrapper, no if __name__ == "__main__" guard.
+- Return only the code without explanations or markdown formatting unless the code itself requires markdown.
+- Limit docstrings and code comments to at most 2 sentences
+"""
 
 
 async def generate_eval_code(design_output: str, original_prompt: str = "") -> str:
