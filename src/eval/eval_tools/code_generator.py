@@ -4,25 +4,29 @@ from litellm import acompletion
 from loguru import logger
 from eval.utils.constants import CODING_MODEL
 
-CODE_GENERATOR_TOOL_SYSTEM_PROMPT = """Generate code based on the following software design specification:
+CODE_GENERATOR_TOOL_SYSTEM_PROMPT = (
+    "You are a Python code completer. Given a function stub and design context, output the "
+      "COMPLETE function definition starting with the `def` line — no markdown fences, no prose, "
+      "no explanations, no tests.")
 
-    {design_output}
+CODE_GENERATOR_TOOL_USER_PROMPT = """Complete this Python function:
 
-    Original problem statement:
-    {original_prompt}
+{original_prompt}
 
-    Provide complete, executable code that implements the design.
+Design context (use as implementation guidance only):
+<design>
+{design_output}
+</design>
 
-    ## CRITICAL REQUIREMENTS:
-    - **FORBIDDEN**: DO NOT write unit tests - only generate the function implementation code
-    - **FORBIDDEN**: Do NOT call helper functions or utilities that are not defined in the same
-      code block. Every function you call must be defined inline in your response.
-    - **FORBIDDEN**: Do NOT add isinstance() checks, type guards, or raise exceptions for edge
-      cases. Trust the caller's inputs and implement the simplest, most direct logic possible.
-    - Use the EXACT function name and parameter names from the original problem statement above.
-    - Return ONLY the bare function — no class wrapper, no if __name__ == "__main__" guard.
-    - Return only the code without explanations or markdown formatting unless the code itself requires markdown.
-    - **CRITICAL**: LIMIT doc strings and code comments to at most 2 sentences.
+REQUIREMENTS:
+- Your output MUST start with the `def` line — include the full function signature
+- DO NOT write unit tests - only generate the function implementation code
+- Do NOT call any helper that is not defined inline in your response
+- Do NOT add isinstance() checks or raise exceptions for edge cases
+- Use the EXACT function name and parameter names from the function stub above
+- No class wrapper, no if __name__ == "__main__" guard
+- No markdown formatting, no explanations
+- Limit docstrings and code comments to at most 2 sentences
     """
 
 
@@ -41,11 +45,12 @@ async def generate_code(design_output: str, original_prompt: str = "") -> str:
     response = await acompletion(
         model=CODING_MODEL,
         messages=[
+            {"role": "system", "content": CODE_GENERATOR_TOOL_SYSTEM_PROMPT},
             {
                 "role": "user",
-                "content": CODE_GENERATOR_TOOL_SYSTEM_PROMPT.format(
-                    design_output=design_output,
+                "content": CODE_GENERATOR_TOOL_USER_PROMPT.format(
                     original_prompt=original_prompt,
+                    design_output=design_output,
                 ),
             },
         ],
