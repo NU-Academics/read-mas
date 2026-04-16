@@ -12,12 +12,12 @@ benchmark:
   model: anthropic/claude-sonnet-4-0
   rag: true
 code:
-  agent_name: read_agent
-  model: anthropic/claude-sonnet-4-0
+  agent_name: single_agent
+  model: openai/gpt-5-mini
   rag: true
   dataset: humaneval
   samples: 
-    data/samples/humaneval/humaneval_samples_1776022651906-sanitized.jsonl
+    data/samples/humaneval/humaneval_samples_1776200370470-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp
