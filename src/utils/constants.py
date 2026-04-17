@@ -1,10 +1,11 @@
 """Constants common across modules are defined here."""
 
+import os
 from enum import StrEnum
 
 DEFAULT_PROVIDER = "ollama"
 DEFAULT_MODEL_NAME = f"{DEFAULT_PROVIDER}_chat/gpt-oss:20b"
-OLLAMA_BASE_URL = "http://localhost:11434"
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 OLLAMA_API_BASE = f"{OLLAMA_BASE_URL}/v1"
 
 
@@ -46,4 +47,4 @@ CONTENT_LENGTH_SMALL = 4096
 
 LITE_LLM_TIMEOUT = 400
 
-LOCAL_LLM_TASK_TIMEOUT = 600
+LOCAL_LLM_TASK_TIMEOUT = 1200
