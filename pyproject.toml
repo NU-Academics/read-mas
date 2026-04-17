@@ -27,6 +27,7 @@ dependencies = [
     "openai>=1.10.0",
     "pandas>=2.3.3",
     "pdfplumber>=0.11.8",
+    "pingouin>=0.6.1",
     "pydantic>=2.5.0",
     "pyink>=24.10.1",
     "pypdf>=6.3.0",

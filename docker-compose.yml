@@ -1,0 +1,70 @@
+services:
+  readmas:
+    build: .
+    image: readmas:latest
+    volumes:
+      - ./runs:/app/runs
+      - ./data:/app/data
+      - ./benchmark_runs:/app/benchmark_runs
+      - ./.deepeval:/app/.deepeval
+      - ./eval_data:/app/eval_data
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      READMAS_RUN_MODE: MAIN
+      OLLAMA_BASE_URL: "http://host.docker.internal:11434"
+    stdin_open: true
+    tty: true
+    # Usage:
+    #   docker compose run --rm readmas run \
+    #     --query "Design a REST API" -t single_agent -m gemini-2.5-flash --rag true
+  readmas-eval:
+    image: readmas:latest
+    volumes:
+      - ./runs:/app/runs
+      - ./data:/app/data
+      - ./benchmark_runs:/app/benchmark_runs
+      - ./.deepeval:/app/.deepeval
+      - ./eval_data:/app/eval_data
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      READMAS_RUN_MODE: EVAL
+      OLLAMA_BASE_URL: "http://host.docker.internal:11434"
+    entrypoint: ["readmas-eval"]
+    command: ["--help"]
+    # Usage:
+    #   docker compose run --rm readmas-eval generate-samples humaneval \
+    #     --model openai/gpt-5-mini --agent-type single_agent --rag true
+    #
+    #   docker compose run --rm readmas-eval code-benchmark \
+    #     --model openai/gpt-5-mini --agent-type single_agent --rag true --dataset humaneval
+    #
+    #   docker compose run --rm readmas-eval train \
+    #     --model gemini-2.5-flash --agent-type single_agent --rag true
+    #
+    #   docker compose run --rm readmas-eval eval \
+    #     --model gemini-2.5-flash --agent-type single_agent
+    #
+    #   docker compose run --rm readmas-eval benchmark \
+    #     --model openai/gpt-5-mini --agent-type single_agent --rag true
+    #
+    #   docker compose run --rm readmas-eval llm-benchmark \
+    #     --model anthropic/sonnet-4-0 --dataset mbpp
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    profiles:
+      - ollama
+    # Usage:
+    #   docker compose --profile ollama up -d ollama
+    #   docker exec -it <id> ollama pull gpt-oss:20b
+    # Then point readmas at: -m ollama_chat/gpt-oss:20b
+
+volumes:
+  ollama_models:

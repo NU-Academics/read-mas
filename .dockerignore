@@ -1,0 +1,16 @@
+.git
+.venv
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.mypy_cache
+runs/
+data/samples/
+data/results/
+benchmark_runs/
+.deepeval/
+notebooks/
+*.ipynb
+.env
+*.log
