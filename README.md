@@ -14,6 +14,48 @@ uv pip install -e .
 
 Set environment variables for your LLM provider as needed (e.g. `GOOGLE_API_KEY`, `OPENAI_API_KEY`, `OLLAMA_BASE_URL`).
 
+## Docker
+
+### Build
+
+```bash
+docker compose build
+```
+
+### Main CLI
+
+```bash
+docker compose run --rm readmas run \
+  --query "Design a task management app" -t single_agent -m gemini-2.5-flash
+```
+
+### Eval / benchmark CLI
+
+**Generate samples**
+
+```bash
+docker compose run --rm readmas-eval generate-samples humaneval \
+  --model openai/gpt-5-mini --agent-type single_agent
+```
+
+**Code benchmark**
+
+```bash
+docker compose run --rm readmas-eval code-benchmark \
+  --model openai/gpt-5-mini --agent-type single_agent --rag true --dataset humaneval
+```
+
+All readmas-eval subcommands (train, eval, benchmark, llm-benchmark, etc.) work the same way.
+
+### Ollama (local models)
+
+OLLAMA_BASE_URL=http://host.docker.internal:11434 is pre-configured in docker-compose.yml. Start Ollama on your host then pass the model name directly:
+
+```bash
+docker compose run --rm readmas run \
+  --query "Design a chat app" -t single_agent -m ollama_chat/gpt-oss:20b
+```
+
 ## Usage
 
 ### Running the CLI
