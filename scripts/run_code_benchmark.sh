@@ -74,7 +74,7 @@ trap 'git checkout "$ORIG_REF" 2>/dev/null || true' EXIT
 echo "=== Step 1: Generating samples ==="
 echo "  agent=$AGENT  model=$MODEL  rag=$RAG  dataset=$DATASET"
 
-GENERATE_CMD=(readmas-eval generate-samples "$DATASET" -t "$AGENT" -m "$MODEL")
+GENERATE_CMD=(readmas-eval generate-samples "$DATASET" -t "$AGENT" -m "$MODEL" -n 1)
 
 if [ "$RAG" = "true" ]; then
   GENERATE_CMD+=( -r true)
