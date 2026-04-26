@@ -27,7 +27,7 @@ class ExecMode(StrEnum):
   REMOTE = "remote"
 
 
-NUMBER_OF_TRIES = 2
+NUMBER_OF_TRIES = 1
 
 EVALUATION_MODEL = "gpt-4.1"
 
