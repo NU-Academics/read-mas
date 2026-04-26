@@ -6,8 +6,9 @@ from eval.utils.constants import CODING_MODEL
 
 CODE_GENERATOR_TOOL_SYSTEM_PROMPT = (
     "You are a Python code completer. Given a function stub and design context, output the "
-      "COMPLETE function definition starting with the `def` line — no markdown fences, no prose, "
-      "no explanations, no tests.")
+    "COMPLETE function definition starting with the `def` line — no markdown fences, no prose, "
+    "no explanations, no tests."
+)
 
 CODE_GENERATOR_TOOL_USER_PROMPT = """Complete this Python function:
 

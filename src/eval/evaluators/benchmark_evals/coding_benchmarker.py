@@ -22,7 +22,7 @@ from utils.constants import (
 if sys.platform == "darwin":
   import multiprocessing
 
-  multiprocessing.set_start_method('fork', force=True)
+  multiprocessing.set_start_method("fork", force=True)
 
   def _noop_setrlimit(resource_id, limits):
     """No-op: setrlimit(RLIMIT_AS/DATA) always fails on macOS when current limit is RLIM_INFINITY."""
@@ -117,7 +117,11 @@ class CodingBenchmarker(_BaseCodingBenchmarker):
     self._exec_mode = exec_mode
     self._system_prompt = get_prompt(self._agent_type)
     self._evaluated_agent = get_eval_agent(
-        self._agent_type, self._model, self._system_prompt.text_template, self._rag, self._run_mode,
+        self._agent_type,
+        self._model,
+        self._system_prompt.text_template,
+        self._rag,
+        self._run_mode,
         exec_mode=self._exec_mode,
     )
     self._run_path = "runs/" + self._run_mode.value + "_runs"

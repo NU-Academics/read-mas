@@ -21,7 +21,13 @@ from design import DesignWrapperAgent
 from design.design_agent import design_agent_card
 from requirement import RequirementsWrapperAgent
 from requirement.re_agent import re_agent_card
-from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME, DESIGN_A2A_PORT, RE_A2A_PORT)
+from utils.constants import (
+    AgentRunMode,
+    ExecMode,
+    DEFAULT_MODEL_NAME,
+    DESIGN_A2A_PORT,
+    RE_A2A_PORT,
+)
 
 # Load configs from .env file, if available.
 load_dotenv()
@@ -84,7 +90,10 @@ class ReadWrapperAgent(AgentBase):
       exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
   ):
     super().__init__(
-        llm_model_name, system_prompt=system_prompt, run_mode=run_mode, rag=rag,
+        llm_model_name,
+        system_prompt=system_prompt,
+        run_mode=run_mode,
+        rag=rag,
         exec_mode=exec_mode,
     )
 

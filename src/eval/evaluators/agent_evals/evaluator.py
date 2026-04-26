@@ -50,7 +50,11 @@ class AgentEvaluator:
     self._exec_mode = exec_mode
     self._system_prompt = get_prompt(self._agent_type)
     self._evaluated_agent = get_eval_agent(
-        self._agent_type, self._model, self._system_prompt.text_template, self._rag, self._run_mode,
+        self._agent_type,
+        self._model,
+        self._system_prompt.text_template,
+        self._rag,
+        self._run_mode,
         exec_mode=self._exec_mode,
     )
     self._metrics = get_metrics(self._agent_type)

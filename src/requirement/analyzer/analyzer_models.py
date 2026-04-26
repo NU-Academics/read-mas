@@ -3,6 +3,8 @@ from typing import List
 from pydantic import Field
 
 from agents import ReadmasBaseModel
+
+
 class AnalyzerOutputModel(ReadmasBaseModel):
   useCases: List[str] = Field(
       default_factory=list,

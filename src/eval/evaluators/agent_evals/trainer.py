@@ -30,6 +30,7 @@ TRAIN_RUN_PATH = "runs/train_runs"
 
 load_dotenv()
 
+
 class AgentTrainer:
   """This class utilizes DeepEval's prompt optimizer to optimize system prompts of agents."""
 
@@ -66,11 +67,16 @@ class AgentTrainer:
   ) -> str:
     prompt_text = prompt.text_template
     eval_agent = get_eval_agent(
-        self._agent_type, self._model, prompt_text, self._rag, AgentRunMode.TRAIN,
+        self._agent_type,
+        self._model,
+        prompt_text,
+        self._rag,
+        AgentRunMode.TRAIN,
         exec_mode=self._exec_mode,
     )
     return await run_agent(
-        golden.input, eval_agent,
+        golden.input,
+        eval_agent,
         state_collector=state_collector if self._agent_type == "read_agent" else None,
     )
 

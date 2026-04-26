@@ -66,7 +66,11 @@ def run(
 
     response = asyncio.run(
         get_agent_response(
-            query, llm_model_name, agent_type, run_mode=AgentRunMode.MAIN, rag=rag,
+            query,
+            llm_model_name,
+            agent_type,
+            run_mode=AgentRunMode.MAIN,
+            rag=rag,
             exec_mode=mode,
         )
     )

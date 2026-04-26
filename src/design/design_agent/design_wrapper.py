@@ -22,8 +22,12 @@ class DesignWrapperAgent(AgentBase):
       exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
   ):
     super().__init__(llm_model_name, system_prompt, run_mode, rag, exec_mode)
-    self._designer_agent = DesignerAgent(llm_model_name, run_mode=run_mode, rag=rag, exec_mode=exec_mode).get_agent()
-    self._documenter_agent = DocumenterAgent(llm_model_name, run_mode=run_mode, rag=rag, exec_mode=exec_mode).get_agent()
+    self._designer_agent = DesignerAgent(
+        llm_model_name, run_mode=run_mode, rag=rag, exec_mode=exec_mode
+    ).get_agent()
+    self._documenter_agent = DocumenterAgent(
+        llm_model_name, run_mode=run_mode, rag=rag, exec_mode=exec_mode
+    ).get_agent()
 
   def get_agent(self) -> SequentialAgent:
     return SequentialAgent(

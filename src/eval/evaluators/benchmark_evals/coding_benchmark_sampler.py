@@ -129,7 +129,9 @@ async def _generate_samples_with_fn(
               f" {task_idx}/{len(remaining_entries)}: {task_id}, sample"
               f" {sample_idx + 1}/{num_needed})"
           )
-          solution = await asyncio.wait_for(sample_fn(task_id, entry), timeout=LOCAL_LLM_TASK_TIMEOUT)
+          solution = await asyncio.wait_for(
+              sample_fn(task_id, entry), timeout=LOCAL_LLM_TASK_TIMEOUT
+          )
 
           formatted_entry = {"task_id": str(task_id), "solution": str(solution)}
           async with write_lock:
@@ -141,8 +143,8 @@ async def _generate_samples_with_fn(
               f"Saved sample {sample_idx + 1}/{num_needed} for {task_id}"
               f" ({completed}/{total_samples_needed} done)"
           )
-        except asyncio.TimeoutError:                               # ← new
-          logger.warning(                                          # ← new
+        except asyncio.TimeoutError:  # ← new
+          logger.warning(  # ← new
               f"Task timeout ({LOCAL_LLM_TASK_TIMEOUT}s) for {task_id}"
               f" sample {sample_idx + 1}/{num_needed}. Skipping."
           )
@@ -235,7 +237,8 @@ async def generate_llm_samples(
   return await _generate_samples_with_fn(
       benchmark_name, sample_fn, samples_file_path, num_samples, concurrency
   )
-  
+
+
 async def generate_benchmark_samples_local_llm(
     evaluated_agent: Agent,
     benchmark_name: str,

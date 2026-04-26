@@ -10,8 +10,8 @@ from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 from loguru import logger
 
-_JSON_FENCE_RE = re.compile(r'^\s*```(?:json)?\s*\n(.*?)\n\s*```\s*$', re.DOTALL)
-_TABLE_ROW_RE = re.compile(r'^\s*\|.*\|\s*$')
+_JSON_FENCE_RE = re.compile(r"^\s*```(?:json)?\s*\n(.*?)\n\s*```\s*$", re.DOTALL)
+_TABLE_ROW_RE = re.compile(r"^\s*\|.*\|\s*$")
 
 
 def _strip_json_fences(text: str) -> str:
@@ -26,12 +26,12 @@ def _normalize_markdown(text: str) -> str:
   for line in text.splitlines():
     line = line.rstrip()
     if _TABLE_ROW_RE.match(line):
-      cells = line.strip().split('|')
-      line = '|' + '|'.join(c.strip() for c in cells[1:-1]) + '|'
-    elif line.lstrip()[:1] in '├└│':
-      line = re.sub(r' {2,}#', ' #', line)
+      cells = line.strip().split("|")
+      line = "|" + "|".join(c.strip() for c in cells[1:-1]) + "|"
+    elif line.lstrip()[:1] in "├└│":
+      line = re.sub(r" {2,}#", " #", line)
     result.append(line)
-  return '\n'.join(result)
+  return "\n".join(result)
 
 
 def after_rag_tool(
@@ -99,16 +99,14 @@ def after_model(
     part = llm_response.content.parts[0]
     if part.text:
       stripped = _strip_json_fences(part.text)
-      is_json = stripped.lstrip()[:1] in ('{', '[')
+      is_json = stripped.lstrip()[:1] in ("{", "[")
       cleaned = stripped if is_json else _normalize_markdown(stripped)
       if cleaned != part.text:
         logger.debug(f"Agent {agent_name}: normalized response (fences/whitespace/table padding).")
         part.text = cleaned
       logger.debug(f"Agent {agent_name} response text: '{part.text[:100]}...'")
     elif part.function_call:
-      logger.debug(
-          f"Agent {agent_name} made a function call '{part.function_call.name}'."
-      )
+      logger.debug(f"Agent {agent_name} made a function call '{part.function_call.name}'.")
     else:
       logger.debug(f"No text response from agent {agent_name}.")
   elif llm_response.error_message:

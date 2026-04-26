@@ -2,7 +2,13 @@
 
 from typing import Optional
 from agents import (AgentBase, get_model_from, get_agent_config)
-from utils.constants import (AgentRunMode, ExecMode, DEFAULT_MODEL_NAME, CONTENT_LENGTH_MAX, THINKING_BUDGET_STRUCTURED)
+from utils.constants import (
+    AgentRunMode,
+    ExecMode,
+    DEFAULT_MODEL_NAME,
+    CONTENT_LENGTH_MAX,
+    THINKING_BUDGET_STRUCTURED,
+)
 import time
 
 from google.adk.agents import Agent
@@ -34,7 +40,11 @@ class DesignerAgent(AgentBase):
             " requirements."
         ),
         instruction=self._system_prompt,
-        generate_content_config=get_agent_config(CONTENT_LENGTH_MAX, thinking_budget=THINKING_BUDGET_STRUCTURED, llm_model_name=self._llm_model_name),
+        generate_content_config=get_agent_config(
+            CONTENT_LENGTH_MAX,
+            thinking_budget=THINKING_BUDGET_STRUCTURED,
+            llm_model_name=self._llm_model_name,
+        ),
         output_schema=DesignerOutputModel,
         output_key="designer_output",
         before_agent_callback=before_agent,

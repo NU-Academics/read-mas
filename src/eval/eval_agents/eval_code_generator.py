@@ -51,5 +51,7 @@ def __getattr__(name: str):
   if name == "root_agent":
     setup_logging(get_run_id(), "adk")
     single_agent = SingleAgent(DEFAULT_MODEL_NAME).get_agent()
-    return EvalCodeGeneratorAgent(llm_model_name=DEFAULT_MODEL_NAME, evaluated=single_agent).get_agent()
+    return EvalCodeGeneratorAgent(
+        llm_model_name=DEFAULT_MODEL_NAME, evaluated=single_agent
+    ).get_agent()
   raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

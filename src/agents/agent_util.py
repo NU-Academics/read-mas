@@ -127,10 +127,12 @@ def get_agent_config(
 ):
   """Configures the agent's technical configuration attributes."""
   if llm_model_name and not is_gemini_model(llm_model_name):
-        max_output_tokens = min(max_output_tokens, CONTENT_LENGTH_LARGE)  # cap at 16384
-        thinking_budget = None
+    max_output_tokens = min(max_output_tokens, CONTENT_LENGTH_LARGE)  # cap at 16384
+    thinking_budget = None
   return GenerateContentConfig(
       temperature=0.2,
       max_output_tokens=max_output_tokens,
-      thinking_config=ThinkingConfig(thinking_budget=thinking_budget) if thinking_budget is not None else None,
+      thinking_config=ThinkingConfig(thinking_budget=thinking_budget)
+      if thinking_budget is not None
+      else None,
   )

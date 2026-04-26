@@ -170,8 +170,7 @@ async def run_agent_with_context(
       if attempt < MAX_RETRIES:
         delay = RETRY_DELAY_BASE**attempt
         logger.warning(
-            f"Agent returned no response (attempt {attempt}/{MAX_RETRIES}). "
-            f"Retrying in {delay}s..."
+            f"Agent returned no response (attempt {attempt}/{MAX_RETRIES}). Retrying in {delay}s..."
         )
         await asyncio.sleep(delay)
     except retryable_errors as e:
@@ -273,8 +272,7 @@ async def run_agent(
       if attempt < MAX_RETRIES:
         delay = RETRY_DELAY_BASE**attempt
         logger.warning(
-            f"Agent returned no response (attempt {attempt}/{MAX_RETRIES}). "
-            f"Retrying in {delay}s..."
+            f"Agent returned no response (attempt {attempt}/{MAX_RETRIES}). Retrying in {delay}s..."
         )
         await asyncio.sleep(delay)
     except retryable_errors as e:
