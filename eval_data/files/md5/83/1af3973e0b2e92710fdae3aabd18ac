@@ -1,0 +1,12 @@
+{
+    "agent": "read_agent",
+    "model": "gemini-2.5-flash",
+    "rag": false,
+    "benchmark": "humaneval",
+    "metrics": [
+        "pass@1",
+        "pass@1plus"
+    ],
+    "pass@1": 0.829,
+    "pass@1plus": 0.777
+}
