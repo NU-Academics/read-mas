@@ -2,7 +2,7 @@
 # Export DVC experiment results to CSV for a given stage and commit range.
 #
 # Usage:
-#   ./scripts/export_experiments.sh <agent> <stage> <model> <start_commit> <end_commit>
+#   ./scripts/export_experiments.sh <agent> <stage> <model> <start_commit> <end_commit> <dataset>
 #
 # Arguments:
 #   agent         The agent under training, eval or benchmarking
