@@ -1,0 +1,11 @@
+# DVC Report
+
+metrics.json
+
+| agent      | model                       | rag   | benchmark   | metrics                  |   pass@1 |   pass@1plus |
+|------------|-----------------------------|-------|-------------|--------------------------|----------|--------------|
+| read_agent | anthropic/claude-sonnet-4-0 | True  | mbpp        | ['pass@1', 'pass@1plus'] |    0.943 |        0.782 |
+
+![static/pass@1plus](static/pass@1plus.png)
+
+![static/pass@1](static/pass@1.png)
