@@ -90,13 +90,13 @@ stages:
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m 
       anthropic/claude-sonnet-4-0 -d mbpp -s 
-      data/samples/mbpp/mbpp_samples_1776199607989-sanitized.jsonl -r true -x
+      data/samples/mbpp/mbpp_samples_1776214077101-sanitized.jsonl -r true -x
     deps:
     - path: data/samples/mbpp
       hash: md5
-      md5: 58efea1d799b7eb1b21edbe9edbf11c1.dir
-      size: 60409352
-      nfiles: 138
+      md5: 506968e480f1749cb7be0014eda6254a.dir
+      size: 61415838
+      nfiles: 140
     - path: src/eval/evaluators/benchmark_evals/coding_benchmarker.py
       hash: md5
       md5: 51486e157e5fdfe939cec43f498bf25d
@@ -112,12 +112,12 @@ stages:
         code.model: anthropic/claude-sonnet-4-0
         code.rag: true
         code.samples: 
-          data/samples/mbpp/mbpp_samples_1776199607989-sanitized.jsonl
+          data/samples/mbpp/mbpp_samples_1776214077101-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: fc443da09b86c580b17172b9b2852df1.dir
-      size: 27813
+      md5: bf0baebc5e53f168e8661867e3de158e.dir
+      size: 27202
       nfiles: 6
   llm_code_benchmark:
     cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d mbpp -s
