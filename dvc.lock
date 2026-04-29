@@ -90,12 +90,12 @@ stages:
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m 
       openai/gpt-5-mini -d mbpp -s 
-      data/samples/mbpp/mbpp_samples_1775872769782-sanitized.jsonl -r true -x
+      data/samples/mbpp/mbpp_samples_1775916976625-sanitized.jsonl -r true -x
     deps:
     - path: data/samples/mbpp
       hash: md5
-      md5: f13ebae43b8985aae916842fc49fd5b7.dir
-      size: 73495803
+      md5: 6bcad593ac78f33b4d144b130162010b.dir
+      size: 73502073
       nfiles: 174
     - path: src/eval/evaluators/benchmark_evals/coding_benchmarker.py
       hash: md5
@@ -112,12 +112,12 @@ stages:
         code.model: openai/gpt-5-mini
         code.rag: true
         code.samples: 
-          data/samples/mbpp/mbpp_samples_1775872769782-sanitized.jsonl
+          data/samples/mbpp/mbpp_samples_1775916976625-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: d5ce5498ce4fa73ac1a0ef879507ef12.dir
-      size: 28138
+      md5: 7729c63b984cbafa67e554ae78d9c0dd.dir
+      size: 27969
       nfiles: 6
   llm_code_benchmark:
     cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d mbpp -s
