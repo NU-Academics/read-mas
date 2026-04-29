@@ -13,10 +13,10 @@ benchmark:
   rag: true
 code:
   agent_name: read_agent
-  model: anthropic/claude-sonnet-4-0
+  model: openai/gpt-5-mini
   rag: true
   dataset: mbpp
-  samples: data/samples/mbpp/mbpp_samples_1777320341185-sanitized.jsonl
+  samples: data/samples/mbpp/mbpp_samples_1775789568204-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp
