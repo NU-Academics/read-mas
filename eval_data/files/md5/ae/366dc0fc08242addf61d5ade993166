@@ -1,0 +1,13 @@
+# DVC Report
+
+metrics.json
+
+| agent      | model                   | rag   | metrics                             |   DesignAccuracy [GEval] |   faithfulness (ragas) |   RAGAS |
+|------------|-------------------------|-------|-------------------------------------|--------------------------|------------------------|---------|
+| read_agent | ollama_chat/gpt-oss:20b | True  | ['DesignAccuracy [GEval]', 'RAGAS'] |                    0.826 |                  0.932 |     0.7 |
+
+![static/DesignAccuracy [GEval]](static/DesignAccuracy [GEval].png)
+
+![static/RAGAS](static/RAGAS.png)
+
+![static/faithfulness (ragas)](static/faithfulness (ragas).png)
