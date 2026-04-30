@@ -62,7 +62,7 @@ stages:
       nfiles: 8
   benchmark:
     cmd: python -m src.eval.run benchmark -t read_agent -m 
-      anthropic/claude-sonnet-4-0 -r true -x
+      ollama_chat/gpt-oss:20b -r true -x
     deps:
     - path: data/goldens/read_agent/benchmark.json
       hash: md5
@@ -70,22 +70,22 @@ stages:
       size: 196317
     - path: src/eval/evaluators/agent_evals/evaluator.py
       hash: md5
-      md5: 9b61c344a7830e4a8b36093e276749fe
-      size: 5408
+      md5: 4cce6b9ffae07b0e10039b71e9be79df
+      size: 5440
     - path: src/eval/run.py
       hash: md5
-      md5: 3dfab08dca235a68d0caae961f99b3e7
-      size: 11873
+      md5: 085f16e1f12e59114a33921d6b978a96
+      size: 11916
     params:
       params.yaml:
         benchmark.agent_name: read_agent
-        benchmark.model: anthropic/claude-sonnet-4-0
+        benchmark.model: ollama_chat/gpt-oss:20b
         benchmark.rag: true
     outs:
     - path: runs/benchmark_runs
       hash: md5
-      md5: 0b059e2fa6f32d61d28b41896190e03d.dir
-      size: 51605
+      md5: 5e3d69d2812f46d6d2db20ffe9cf6d52.dir
+      size: 44881
       nfiles: 8
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m 

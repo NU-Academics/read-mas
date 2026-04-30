@@ -9,7 +9,7 @@ eval:
   rag: true
 benchmark:
   agent_name: read_agent
-  model: anthropic/claude-sonnet-4-0
+  model: ollama_chat/gpt-oss:20b
   rag: true
 code:
   agent_name: read_agent
