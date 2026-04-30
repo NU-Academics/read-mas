@@ -1,0 +1,12 @@
+{
+    "agent": "read_agent",
+    "model": "ollama_chat/gpt-oss:20b",
+    "rag": true,
+    "metrics": [
+        "DesignAccuracy [GEval]",
+        "RAGAS"
+    ],
+    "DesignAccuracy [GEval]": 0.845,
+    "faithfulness (ragas)": 0.968,
+    "RAGAS": 0.707
+}
