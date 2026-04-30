@@ -1,0 +1,11 @@
+# DVC Report
+
+metrics.json
+
+| agent        | model             | rag   | benchmark   | metrics                  |   pass@1 |   pass@1plus |
+|--------------|-------------------|-------|-------------|--------------------------|----------|--------------|
+| single_agent | openai/gpt-5-mini | True  | mbpp        | ['pass@1', 'pass@1plus'] |    0.868 |        0.706 |
+
+![static/pass@1plus](static/pass@1plus.png)
+
+![static/pass@1](static/pass@1.png)
