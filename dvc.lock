@@ -90,14 +90,14 @@ stages:
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m 
       ollama_chat/gpt-oss:20b -d humaneval -s 
-      data/samples/humaneval/humaneval_samples_1776253732799-sanitized.jsonl -r 
+      data/samples/humaneval/humaneval_samples_1777297195353-sanitized.jsonl -r 
       true -x
     deps:
     - path: data/samples/humaneval
       hash: md5
-      md5: 5b70c46e49492e2e3879362a51c7c11a.dir
-      size: 118935152
-      nfiles: 428
+      md5: 208e7bb63c53efd2bd543eba147fffbb.dir
+      size: 119200558
+      nfiles: 430
     - path: src/eval/evaluators/benchmark_evals/coding_benchmarker.py
       hash: md5
       md5: 51486e157e5fdfe939cec43f498bf25d
@@ -113,12 +113,12 @@ stages:
         code.model: ollama_chat/gpt-oss:20b
         code.rag: true
         code.samples: 
-          data/samples/humaneval/humaneval_samples_1776253732799-sanitized.jsonl
+          data/samples/humaneval/humaneval_samples_1777297195353-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: 3208227e664fdcd37599467c493de0a5.dir
-      size: 27663
+      md5: 4068e4b6fafe2f001f94f09fde8e8b20.dir
+      size: 27461
       nfiles: 6
   llm_code_benchmark:
     cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d mbpp -s
