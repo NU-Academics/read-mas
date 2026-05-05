@@ -15,9 +15,8 @@ code:
   agent_name: read_agent
   model: ollama_chat/gpt-oss:20b
   rag: true
-  dataset: humaneval
-  samples: 
-    data/samples/humaneval/humaneval_samples_1777466057302-sanitized.jsonl
+  dataset: mbpp
+  samples: data/samples/mbpp/mbpp_samples_1777488051993-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp
