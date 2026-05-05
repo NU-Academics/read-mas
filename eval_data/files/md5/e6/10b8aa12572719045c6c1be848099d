@@ -1,0 +1,12 @@
+{
+    "agent": "read_agent",
+    "model": "ollama_chat/gpt-oss:20b",
+    "rag": true,
+    "benchmark": "mbpp",
+    "metrics": [
+        "pass@1",
+        "pass@1plus"
+    ],
+    "pass@1": 0.905,
+    "pass@1plus": 0.738
+}
