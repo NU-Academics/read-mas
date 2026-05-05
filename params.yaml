@@ -16,7 +16,7 @@ code:
   model: ollama_chat/gpt-oss:20b
   rag: true
   dataset: mbpp
-  samples: data/samples/mbpp/mbpp_samples_1777594326414-sanitized.jsonl
+  samples: data/samples/mbpp/mbpp_samples_1777662119058-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp
