@@ -20,7 +20,8 @@ Design context (use as implementation guidance only):
 </design>
 
 REQUIREMENTS:
-- Your output MUST start with the `def` line — include the full function signature
+- Include any necessary import statements BEFORE the function definition
+- Include the full function signature starting with `def`
 - DO NOT write unit tests - only generate the function implementation code
 - Do NOT call any helper that is not defined inline in your response
 - Do NOT add isinstance() checks or raise exceptions for edge cases
