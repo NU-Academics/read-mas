@@ -7,9 +7,8 @@ warnings.filterwarnings("ignore", category=FutureWarning, module="instructor")
 
 from eval.eval_agents import EvalCodeGeneratorAgent
 from eval.evaluators import (
-    generate_benchmark_samples,
     generate_llm_samples,
-    generate_benchmark_samples_local_llm,
+    generate_benchmark_samples_directly,
     AgentTrainer,
     AgentEvaluator,
     CodingBenchmarker,
@@ -104,25 +103,15 @@ def generate_samples(
   logger.info(f"Starting run with ID: {run_id}")
 
   async def a_generate_benchmark_samples():
-    """Run evaluation."""
+    """Run the benchmark samples generation."""
     evaluated = get_agent(model, agent_type, AgentRunMode.CODE_BENCHMARK, rag, ExecMode(exec_mode))
-    if is_local_model(model):
-        await generate_benchmark_samples_local_llm(
-            evaluated, benchmark_name,
-            app_name="coding_benchmarker",
-            samples_file_path=samples_file,
-            num_samples=num_samples,
-            concurrency=concurrency,
-        )
-    else:
-        entry_agent = EvalCodeGeneratorAgent(model, evaluated).get_agent()
-        await generate_benchmark_samples(
-            entry_agent, benchmark_name,
-            app_name="coding_benchmarker",
-            samples_file_path=samples_file,
-            num_samples=num_samples,
-            concurrency=concurrency,
-        )
+    await generate_benchmark_samples_directly(
+        evaluated, benchmark_name,
+        app_name="coding_benchmarker",
+        samples_file_path=samples_file,
+        num_samples=num_samples,
+        concurrency=concurrency,
+    )
 
   try:
     asyncio.run(a_generate_benchmark_samples())

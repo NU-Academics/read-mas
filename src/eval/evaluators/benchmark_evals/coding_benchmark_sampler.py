@@ -138,6 +138,11 @@ async def _generate_samples_with_fn(
             f.write(json.dumps(formatted_entry) + "\n")
             f.flush()
 
+          logger.info(
+              f"Sample association: run_id={jsonl_path.stem} task_id={task_id}"
+              f" sample_idx={sample_idx} samples_file={jsonl_path}"
+          )
+          
           completed += 1
           logger.info(
               f"Saved sample {sample_idx + 1}/{num_needed} for {task_id}"
@@ -239,7 +244,7 @@ async def generate_llm_samples(
   )
 
 
-async def generate_benchmark_samples_local_llm(
+async def generate_benchmark_samples_directly(
     evaluated_agent: Agent,
     benchmark_name: str,
     app_name: str = APP_NAME,
@@ -247,11 +252,7 @@ async def generate_benchmark_samples_local_llm(
     num_samples: int = NUMBER_OF_TRIES,
     concurrency: int = 4,
 ) -> Path:
-  """Generate samples using a deterministic two-step pipeline: design agent → generate_code.
-
-  For local/small models that don't reliably follow multi-step tool-calling instructions.
-  Step 1: run the design agent to get SRS/design output.
-  Step 2: call generate_code directly with that output.
+  """Generate samples using a deterministic two-step pipeline from the evaluated design agent to the generate_code function.
   """
   from eval.eval_tools import generate_code
 
