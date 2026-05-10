@@ -90,7 +90,7 @@ stages:
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m gemini-2.5-flash
       -d humaneval -s 
-      data/samples/humaneval/humaneval_samples_1778155399713-sanitized.jsonl -r 
+      data/samples/humaneval/humaneval_samples_1778159055881-sanitized.jsonl -r 
       true -x
     deps:
     - path: data/samples/humaneval
@@ -113,12 +113,12 @@ stages:
         code.model: gemini-2.5-flash
         code.rag: true
         code.samples: 
-          data/samples/humaneval/humaneval_samples_1778155399713-sanitized.jsonl
+          data/samples/humaneval/humaneval_samples_1778159055881-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: 25a6c2a831ce1dc326a176d9d06b0435.dir
-      size: 24997
+      md5: b67eb5a05184d0534397c8c345316d87.dir
+      size: 28343
       nfiles: 6
   llm_code_benchmark:
     cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d mbpp -s
