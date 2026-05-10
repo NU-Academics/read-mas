@@ -12,12 +12,12 @@ benchmark:
   model: openai/gpt-5-mini
   rag: true
 code:
-  agent_name: single_agent
+  agent_name: read_agent
   model: gemini-2.5-flash
   rag: true
   dataset: humaneval
   samples: 
-    data/samples/humaneval/humaneval_samples_1778206322889-sanitized.jsonl
+    data/samples/humaneval/humaneval_samples_1778121192027-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp
