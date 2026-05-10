@@ -17,7 +17,7 @@ code:
   rag: true
   dataset: humaneval
   samples: 
-    data/samples/humaneval/humaneval_samples_1778207734928-sanitized.jsonl
+    data/samples/humaneval/humaneval_samples_1778236704903-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp
