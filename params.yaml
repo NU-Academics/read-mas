@@ -13,11 +13,11 @@ benchmark:
   rag: true
 code:
   agent_name: read_agent
-  model: gemini-2.5-flash
+  model: anthropic/claude-sonnet-4-0
   rag: true
   dataset: humaneval
   samples: 
-    data/samples/humaneval/humaneval_samples_1778184180564-sanitized.jsonl
+    data/samples/humaneval/humaneval_samples_1778167268492-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp

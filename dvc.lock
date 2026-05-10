@@ -88,15 +88,15 @@ stages:
       size: 44990
       nfiles: 8
   code_benchmark:
-    cmd: python -m src.eval.run code-benchmark -t read_agent -m gemini-2.5-flash
-      -d humaneval -s 
-      data/samples/humaneval/humaneval_samples_1778184180564-sanitized.jsonl -r 
+    cmd: python -m src.eval.run code-benchmark -t read_agent -m 
+      anthropic/claude-sonnet-4-0 -d humaneval -s 
+      data/samples/humaneval/humaneval_samples_1778167268492-sanitized.jsonl -r 
       true -x
     deps:
     - path: data/samples/humaneval
       hash: md5
-      md5: f5b584397cb25a635a5274610091754e.dir
-      size: 195157144
+      md5: 21a3283cb131440a7bb7aadda58c5855.dir
+      size: 195194573
       nfiles: 843
     - path: src/eval/evaluators/benchmark_evals/coding_benchmarker.py
       hash: md5
@@ -110,15 +110,15 @@ stages:
       params.yaml:
         code.agent_name: read_agent
         code.dataset: humaneval
-        code.model: gemini-2.5-flash
+        code.model: anthropic/claude-sonnet-4-0
         code.rag: true
         code.samples: 
-          data/samples/humaneval/humaneval_samples_1778184180564-sanitized.jsonl
+          data/samples/humaneval/humaneval_samples_1778167268492-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: e6d266765e42f8ecf700a4d32930990c.dir
-      size: 25271
+      md5: 917c916f8967be9b57da00de51ed7563.dir
+      size: 25830
       nfiles: 6
   llm_code_benchmark:
     cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d mbpp -s
