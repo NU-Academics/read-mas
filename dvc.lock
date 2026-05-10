@@ -88,36 +88,37 @@ stages:
       size: 44990
       nfiles: 8
   code_benchmark:
-    cmd: python -m src.eval.run code-benchmark -t read_agent -m 
-      ollama_chat/gpt-oss:20b -d mbpp -s 
-      data/samples/mbpp/mbpp_samples_1777944986681-sanitized.jsonl -r true -x
+    cmd: python -m src.eval.run code-benchmark -t single_agent -m 
+      gemini-2.5-flash -d humaneval -s 
+      data/samples/humaneval/humaneval_samples_1778198310477-sanitized.jsonl -r 
+      true -x
     deps:
-    - path: data/samples/mbpp
+    - path: data/samples/humaneval
       hash: md5
-      md5: 82e8d724b5307b3d4af1b3ddba9e7b92.dir
-      size: 117567573
-      nfiles: 303
+      md5: 527c9fbb3750ad9fffb46dbc9b8fd0a8.dir
+      size: 195068146
+      nfiles: 843
     - path: src/eval/evaluators/benchmark_evals/coding_benchmarker.py
       hash: md5
       md5: 51486e157e5fdfe939cec43f498bf25d
       size: 5320
     - path: src/eval/run.py
       hash: md5
-      md5: 383a0eeeee31504d6d3422a827e63445
-      size: 11890
+      md5: 6e4b4ea0bcc07eadb4df516cf6181a35
+      size: 11481
     params:
       params.yaml:
-        code.agent_name: read_agent
-        code.dataset: mbpp
-        code.model: ollama_chat/gpt-oss:20b
+        code.agent_name: single_agent
+        code.dataset: humaneval
+        code.model: gemini-2.5-flash
         code.rag: true
         code.samples: 
-          data/samples/mbpp/mbpp_samples_1777944986681-sanitized.jsonl
+          data/samples/humaneval/humaneval_samples_1778198310477-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: 1f3ec370a32995ed1aa4904d8482bfe6.dir
-      size: 27382
+      md5: 0daa3588cc7f17db84e6ca1d06518bea.dir
+      size: 25821
       nfiles: 6
   llm_code_benchmark:
     cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d mbpp -s
