@@ -88,16 +88,16 @@ stages:
       size: 44990
       nfiles: 8
   code_benchmark:
-    cmd: python -m src.eval.run code-benchmark -t single_agent -m 
+    cmd: python -m src.eval.run code-benchmark -t read_agent -m 
       openai/gpt-5-mini -d humaneval -s 
-      data/samples/humaneval/humaneval_samples_1778274704389-sanitized.jsonl -r 
+      data/samples/humaneval/humaneval_samples_1778204897298-sanitized.jsonl -r 
       true -x
     deps:
     - path: data/samples/humaneval
       hash: md5
-      md5: e3820055bbe3469e1c7f7c5b290f833b.dir
-      size: 195220281
-      nfiles: 843
+      md5: 5c34df6595cdc5455467e1e31f50d094.dir
+      size: 195293299
+      nfiles: 844
     - path: src/eval/evaluators/benchmark_evals/coding_benchmarker.py
       hash: md5
       md5: 51486e157e5fdfe939cec43f498bf25d
@@ -108,17 +108,17 @@ stages:
       size: 11481
     params:
       params.yaml:
-        code.agent_name: single_agent
+        code.agent_name: read_agent
         code.dataset: humaneval
         code.model: openai/gpt-5-mini
         code.rag: true
         code.samples: 
-          data/samples/humaneval/humaneval_samples_1778274704389-sanitized.jsonl
+          data/samples/humaneval/humaneval_samples_1778204897298-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: 755fdf6f6ac6046dc281468131b68d30.dir
-      size: 25792
+      md5: ca0822ea32a021f04c8d69e0ade7ec4b.dir
+      size: 28107
       nfiles: 6
   llm_code_benchmark:
     cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d mbpp -s
