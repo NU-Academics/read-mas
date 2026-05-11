@@ -14,10 +14,10 @@ benchmark:
 code:
   agent_name: read_agent
   model: gemini-2.5-flash
-  rag: true
-  dataset: mbpp
+  rag: false
+  dataset: humaneval
   samples: 
-    data/samples/mbpp/mbpp_samples_1778464457124-sanitized-sanitized.jsonl
+    data/samples/humaneval/humaneval_samples_1778453263864-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp

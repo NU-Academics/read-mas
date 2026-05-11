@@ -89,15 +89,15 @@ stages:
       nfiles: 8
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m gemini-2.5-flash
-      -d mbpp -s 
-      data/samples/mbpp/mbpp_samples_1778464457124-sanitized-sanitized.jsonl -r 
-      true -x
+      -d humaneval -s 
+      data/samples/humaneval/humaneval_samples_1778453263864-sanitized.jsonl -r 
+      false -x
     deps:
-    - path: data/samples/mbpp
+    - path: data/samples/humaneval
       hash: md5
-      md5: f951e505d94685ce21bbc4b8e01a8870.dir
-      size: 139432792
-      nfiles: 394
+      md5: 435a3a3e22b4328a13129ec022925ce6.dir
+      size: 198953981
+      nfiles: 870
     - path: src/eval/evaluators/benchmark_evals/coding_benchmarker.py
       hash: md5
       md5: 51486e157e5fdfe939cec43f498bf25d
@@ -109,16 +109,16 @@ stages:
     params:
       params.yaml:
         code.agent_name: read_agent
-        code.dataset: mbpp
+        code.dataset: humaneval
         code.model: gemini-2.5-flash
-        code.rag: true
+        code.rag: false
         code.samples: 
-          data/samples/mbpp/mbpp_samples_1778464457124-sanitized-sanitized.jsonl
+          data/samples/humaneval/humaneval_samples_1778453263864-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: 3ed90d5b04af4b0a53223b1d7f9c7609.dir
-      size: 27188
+      md5: 024bb0690e680144e18d285e2a5118b3.dir
+      size: 25781
       nfiles: 6
   llm_code_benchmark:
     cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d mbpp -s
