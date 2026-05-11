@@ -17,7 +17,7 @@ code:
   rag: true
   dataset: mbpp
   samples: 
-    data/samples/mbpp/mbpp_samples_1778455681810-sanitized-sanitized.jsonl
+    data/samples/mbpp/mbpp_samples_1778464457124-sanitized-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp
