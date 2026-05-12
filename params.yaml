@@ -13,10 +13,10 @@ benchmark:
   rag: true
 code:
   agent_name: read_agent
-  model: anthropic/claude-sonnet-4-0
+  model: gemini-2.5-flash
   rag: true
   dataset: mbpp
-  samples: data/samples/mbpp/mbpp_samples_1778509035943-sanitized.jsonl
+  samples: data/samples/mbpp/mbpp_samples_1778288368404-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp
