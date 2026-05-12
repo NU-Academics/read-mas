@@ -1,0 +1,12 @@
+{
+    "agent": "single_agent",
+    "model": "openai/gpt-5-mini",
+    "rag": true,
+    "benchmark": "mbpp",
+    "metrics": [
+        "pass@1",
+        "pass@1plus"
+    ],
+    "pass@1": 0.854,
+    "pass@1plus": 0.675
+}
