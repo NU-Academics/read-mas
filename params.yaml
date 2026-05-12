@@ -16,7 +16,7 @@ code:
   model: openai/gpt-5-mini
   rag: true
   dataset: mbpp
-  samples: data/samples/mbpp/mbpp_samples_1778502172336-sanitized.jsonl
+  samples: data/samples/mbpp/mbpp_samples_1778508995713-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp
