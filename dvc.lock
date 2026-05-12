@@ -89,7 +89,7 @@ stages:
       nfiles: 8
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m gemini-2.5-flash
-      -d mbpp -s data/samples/mbpp/mbpp_samples_1778360143078-sanitized.jsonl -r
+      -d mbpp -s data/samples/mbpp/mbpp_samples_1778377979477-sanitized.jsonl -r
       true -x
     deps:
     - path: data/samples/mbpp
@@ -112,12 +112,12 @@ stages:
         code.model: gemini-2.5-flash
         code.rag: true
         code.samples: 
-          data/samples/mbpp/mbpp_samples_1778360143078-sanitized.jsonl
+          data/samples/mbpp/mbpp_samples_1778377979477-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: 467fba5c7c404d20b2ada46f977991dd.dir
-      size: 27154
+      md5: 6a6dc91e9fc53d8b8e016f2e7acbc11d.dir
+      size: 27708
       nfiles: 6
   llm_code_benchmark:
     cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d mbpp -s
