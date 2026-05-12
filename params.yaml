@@ -16,7 +16,7 @@ code:
   model: anthropic/claude-sonnet-4-0
   rag: true
   dataset: mbpp
-  samples: data/samples/mbpp/mbpp_samples_1778495607984-sanitized.jsonl
+  samples: data/samples/mbpp/mbpp_samples_1778509035943-sanitized.jsonl
 llm:
   model: anthropic/sonnet-4-0
   dataset: mbpp

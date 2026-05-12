@@ -1,0 +1,12 @@
+{
+    "agent": "read_agent",
+    "model": "anthropic/claude-sonnet-4-0",
+    "rag": true,
+    "benchmark": "mbpp",
+    "metrics": [
+        "pass@1",
+        "pass@1plus"
+    ],
+    "pass@1": 0.939,
+    "pass@1plus": 0.78
+}
