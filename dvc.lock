@@ -90,7 +90,7 @@ stages:
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m 
       ollama_chat/gpt-oss:20b -d humaneval -s 
-      data/samples/humaneval/humaneval_samples_1778449176010-sanitized.jsonl -r 
+      data/samples/humaneval/humaneval_samples_1778495451209-sanitized.jsonl -r 
       true -x
     deps:
     - path: data/samples/humaneval
@@ -113,7 +113,7 @@ stages:
         code.model: ollama_chat/gpt-oss:20b
         code.rag: true
         code.samples: 
-          data/samples/humaneval/humaneval_samples_1778449176010-sanitized.jsonl
+          data/samples/humaneval/humaneval_samples_1778495451209-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
