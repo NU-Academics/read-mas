@@ -61,10 +61,10 @@ stages:
       size: 47735
       nfiles: 8
   benchmark:
-    cmd: python -m src.eval.run benchmark -t single_agent -m openai/gpt-5-mini 
-      -r true -x
+    cmd: python -m src.eval.run benchmark -t read_agent -m gemini-2.5-flash -r 
+      false -x
     deps:
-    - path: data/goldens/single_agent/benchmark.json
+    - path: data/goldens/read_agent/benchmark.json
       hash: md5
       md5: 93e56a6b465266942ba6d988de5326b3
       size: 196317
@@ -74,19 +74,19 @@ stages:
       size: 5440
     - path: src/eval/run.py
       hash: md5
-      md5: 383a0eeeee31504d6d3422a827e63445
-      size: 11890
+      md5: 6e4b4ea0bcc07eadb4df516cf6181a35
+      size: 11481
     params:
       params.yaml:
-        benchmark.agent_name: single_agent
-        benchmark.model: openai/gpt-5-mini
-        benchmark.rag: true
+        benchmark.agent_name: read_agent
+        benchmark.model: gemini-2.5-flash
+        benchmark.rag: false
     outs:
     - path: runs/benchmark_runs
       hash: md5
-      md5: 5dcb784303809529cf301a20916c3f95.dir
-      size: 44990
-      nfiles: 8
+      md5: 124890c0c91f6402f15fe89eb84bf420.dir
+      size: 18860
+      nfiles: 4
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m 
       ollama_chat/gpt-oss:20b -d humaneval -s 
