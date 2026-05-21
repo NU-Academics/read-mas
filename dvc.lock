@@ -90,7 +90,7 @@ stages:
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m 
       ollama_chat/gpt-oss:20b -d mbpp -s 
-      data/samples/mbpp/mbpp_samples_1778944558246-sanitized.jsonl -r true -x
+      data/samples/mbpp/mbpp_samples_1779024154901-sanitized.jsonl -r true -x
     deps:
     - path: data/samples/mbpp
       hash: md5
@@ -112,12 +112,12 @@ stages:
         code.model: ollama_chat/gpt-oss:20b
         code.rag: true
         code.samples: 
-          data/samples/mbpp/mbpp_samples_1778944558246-sanitized.jsonl
+          data/samples/mbpp/mbpp_samples_1779024154901-sanitized.jsonl
     outs:
     - path: runs/code_benchmark_runs
       hash: md5
-      md5: 47c874f320b66be8873cea308e0f983b.dir
-      size: 27809
+      md5: 961e4ab6b9ff739b674f0db73d583b99.dir
+      size: 28466
       nfiles: 6
   llm_code_benchmark:
     cmd: python -m src.eval.run llm-benchmark -m anthropic/sonnet-4-0 -d mbpp -s
