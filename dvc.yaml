@@ -28,7 +28,7 @@ stages:
     outs:
     - runs/eval_runs
   benchmark:
-    cmd: python -m src.eval.run benchmark -t ${benchmark.agent_name} -m
+    cmd: python -m src.eval.run benchmark -t ${benchmark.agent_name} -m 
       ${benchmark.model} -r ${benchmark.rag} -ri ${benchmark.rag_index} -x
     deps:
     - src/eval/run.py
@@ -73,8 +73,8 @@ metrics:
 - runs/train_runs/metrics.json
 - runs/eval_runs/metrics.json
 - runs/llm_benchmark_runs/metrics.json
-- runs/benchmark_runs/metrics.json
 - runs/code_benchmark_runs/metrics.json
+- runs/benchmark_runs/metrics.json
 plots:
 - runs/train_runs/plots/metrics:
     x: step
@@ -82,7 +82,7 @@ plots:
     x: step
 - runs/llm_benchmark_runs/plots/metrics:
     x: step
-- runs/benchmark_runs/plots/metrics:
-    x: step
 - runs/code_benchmark_runs/plots/metrics:
+    x: step
+- runs/benchmark_runs/plots/metrics:
     x: step
