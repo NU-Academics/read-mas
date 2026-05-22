@@ -28,8 +28,8 @@ stages:
     outs:
     - runs/eval_runs
   benchmark:
-    cmd: python -m src.eval.run benchmark -t ${benchmark.agent_name} -m 
-      ${benchmark.model} -r ${benchmark.rag} -x
+    cmd: python -m src.eval.run benchmark -t ${benchmark.agent_name} -m
+      ${benchmark.model} -r ${benchmark.rag} -ri ${benchmark.rag_index} -x
     deps:
     - src/eval/run.py
     - src/eval/evaluators/agent_evals/evaluator.py
@@ -38,6 +38,7 @@ stages:
     - benchmark.agent_name
     - benchmark.model
     - benchmark.rag
+    - benchmark.rag_index
     outs:
     - runs/benchmark_runs
   code_benchmark:

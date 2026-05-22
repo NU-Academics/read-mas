@@ -2,15 +2,16 @@
 # Run DVC experiment pipeline for train, eval, or benchmark stages.
 #
 # Usage:
-#   ./scripts/run_experiments.sh <stage> <agent> <model> <rag> [no_opt] [num_runs]
+#   ./scripts/run_experiments.sh <stage> <agent> <model> <rag> [no_opt] [num_runs] [rag_index]
 #
 # Arguments:
-#   stage     Stage to run: train | eval | benchmark
-#   agent     Agent type: single_agent | read_agent
-#   model     LLM model name (e.g. gemini-2.5-flash)
-#   rag       Enable RAG: true | false
-#   no_opt    Skip prompt optimization (train only): true | false  (default: false)
-#   num_runs  Number of runs (eval/benchmark only, default: 1)
+#   stage      Stage to run: train | eval | benchmark
+#   agent      Agent type: single_agent | read_agent
+#   model      LLM model name (e.g. gemini-2.5-flash)
+#   rag        Enable RAG: true | false
+#   no_opt     Skip prompt optimization (train only): true | false  (default: false)
+#   num_runs   Number of runs (eval/benchmark only, default: 1)
+#   rag_index  RAG index to use (benchmark only): requirements | devbench_benchmark  (default: devbench_benchmark)
 #
 # Notes:
 #   - train: single run only, no dvc push or git commit
@@ -29,14 +30,15 @@ else
 fi
 
 usage() {
-  echo "Usage: $0 <stage> <agent> <model> <rag> [no_opt] [num_runs]" >&2
+  echo "Usage: $0 <stage> <agent> <model> <rag> [no_opt] [num_runs] [rag_index]" >&2
   echo "" >&2
-  echo "  stage     train | eval | benchmark" >&2
-  echo "  agent     single_agent | read_agent | collector_agent | analyzer_agent | specifier_agent | designer_agent | documenter_agent" >&2
-  echo "  model     LLM model name (e.g. gemini-2.5-flash)" >&2
-  echo "  rag       true | false" >&2
-  echo "  no_opt    true | false  (train only, default: false)" >&2
-  echo "  num_runs  positive integer (eval/benchmark only, default: 1)" >&2
+  echo "  stage      train | eval | benchmark" >&2
+  echo "  agent      single_agent | read_agent | collector_agent | analyzer_agent | specifier_agent | designer_agent | documenter_agent" >&2
+  echo "  model      LLM model name (e.g. gemini-2.5-flash)" >&2
+  echo "  rag        true | false" >&2
+  echo "  no_opt     true | false  (train only, default: false)" >&2
+  echo "  num_runs   positive integer (eval/benchmark only, default: 1)" >&2
+  echo "  rag_index  requirements | devbench_benchmark  (benchmark only, default: devbench_benchmark)" >&2
   exit 1
 }
 
@@ -47,6 +49,7 @@ MODEL="${3:-}"
 RAG="${4:-}"
 NO_OPT="${5:-false}"
 NUM_RUNS="${6:-1}"
+RAG_INDEX="${7:-devbench_benchmark}"
 
 # Sanitize model name for use in experiment names (replace '/' with '-')
 MODEL_SAFE="${MODEL//[\/:]/-}"
@@ -114,24 +117,43 @@ fi
 
 # --- Run eval or benchmark (multi-run, push + commit) ---
 echo "=== Running $STAGE stage ($NUM_RUNS run(s)) ==="
-echo "  agent=$AGENT  model=$MODEL  rag=$RAG"
+if [ "$STAGE" = "benchmark" ]; then
+  echo "  agent=$AGENT  model=$MODEL  rag=$RAG  rag_index=$RAG_INDEX"
+else
+  echo "  agent=$AGENT  model=$MODEL  rag=$RAG"
+fi
 
 for i in $(seq 1 "$NUM_RUNS"); do
   echo ""
   echo "--- Run $i of $NUM_RUNS ---"
   EXP_NAME="${STAGE}-${AGENT}-${MODEL_SAFE}-$(date +%s)"
 
-  dvc exp run \
-    -S "${STAGE}.agent_name=${AGENT}" \
-    -S "${STAGE}.model=${MODEL}" \
-    -S "${STAGE}.rag=${RAG}" \
-    --name "$EXP_NAME" \
-    --force \
-    "$STAGE"
+  if [ "$STAGE" = "benchmark" ]; then
+    dvc exp run \
+      -S "benchmark.agent_name=${AGENT}" \
+      -S "benchmark.model=${MODEL}" \
+      -S "benchmark.rag=${RAG}" \
+      -S "benchmark.rag_index=${RAG_INDEX}" \
+      --name "$EXP_NAME" \
+      --force \
+      benchmark
+  else
+    dvc exp run \
+      -S "${STAGE}.agent_name=${AGENT}" \
+      -S "${STAGE}.model=${MODEL}" \
+      -S "${STAGE}.rag=${RAG}" \
+      --name "$EXP_NAME" \
+      --force \
+      "$STAGE"
+  fi
 
   dvc push
   git add dvc.lock dvc.yaml params.yaml data/goldens.dvc data/samples.dvc eval_data/files
-  git commit -m "${STAGE} exp: ${AGENT} / ${MODEL} (rag=${RAG}) run $i of $NUM_RUNS"
+  if [ "$STAGE" = "benchmark" ]; then
+    git commit -m "${STAGE} exp: ${AGENT} / ${MODEL} (rag=${RAG}, index=${RAG_INDEX}) run $i of $NUM_RUNS"
+  else
+    git commit -m "${STAGE} exp: ${AGENT} / ${MODEL} (rag=${RAG}) run $i of $NUM_RUNS"
+  fi
 
   echo "--- Completed run $i of $NUM_RUNS: $EXP_NAME ---"
 done
