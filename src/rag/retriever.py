@@ -1,33 +1,28 @@
-"""Searches for a query from the RAG index."""
+"""Searches for a query from a FAISS RAG index."""
 
 from dotenv import load_dotenv
 import json
 import os
 from pathlib import Path
-import sys
-from typing import Optional, List
+from typing import Callable, List, Optional
 
 import faiss
 import numpy as np
 from google import genai
-
 from loguru import logger
 
 from .constants import (
-    BASE_REQUIREMENTS_PATH,
-    FAISS_INDEX_NAME,
-    GEMINI_EMBEDDING_MODEL,
-    RAG_DISTANCE_THRESHOLD,
-    RAG_RETRIEVAL_K,
-    RAG_TOP_K,
-    REQUIREMENT_CHUNKS_NAME,
+  BASE_REQUIREMENTS_PATH,
+  FAISS_INDEX_NAME,
+  GEMINI_EMBEDDING_MODEL,
+  RAG_DISTANCE_THRESHOLD,
+  RAG_RETRIEVAL_K,
+  RAG_TOP_K,
+  REQUIREMENT_CHUNKS_NAME,
 )
 
 load_dotenv(dotenv_path=Path(__file__).parent.parent.parent / ".env", override=False)
 
-# Module-level cache for FAISS index, requirement chunks, and GenAI client.
-_cached_index = None
-_cached_chunks = None
 _cached_client = None
 
 
@@ -38,54 +33,56 @@ def _get_client() -> genai.Client:
   return _cached_client
 
 
-def _get_embedding(query: str):
-  client = _get_client()
-  res = client.models.embed_content(model=GEMINI_EMBEDDING_MODEL, contents=query)
-  return np.array(res.embeddings[0].values)
+def _get_embedding(query: str) -> np.ndarray:
+  res = _get_client().models.embed_content(model=GEMINI_EMBEDDING_MODEL, contents=query)
+  return np.array(res.embeddings[0].values, dtype=np.float32)
 
 
-def _get_index_and_chunks():
-  global _cached_index, _cached_chunks
-  if _cached_index is None:
-    _cached_index = faiss.read_index(str(BASE_REQUIREMENTS_PATH / FAISS_INDEX_NAME))
-  if _cached_chunks is None:
-    with open(str(BASE_REQUIREMENTS_PATH / REQUIREMENT_CHUNKS_NAME), "r") as f:
-      _cached_chunks = json.load(f)
-  return _cached_index, _cached_chunks
+def make_retriever(
+  faiss_index_name: str,
+  chunks_name: str,
+) -> Callable[[str], Optional[List[str]]]:
+  """Factory that returns a retrieval function backed by the given FAISS index and chunks file.
 
-
-def retrieve_requirements(query: str) -> Optional[List[str]]:
-  """Retrieves the top K functional and non-functional requirements samples for the provided query.
-
-  Args:
-    query: The prompt passed to the agent
-
-  Returns:
-    A string list containing the top K requirements semantically matching the provided query.
+  Each returned function has its own lazy-loaded cache so multiple indexes can
+  coexist in the same process without interference.
   """
-  index, requirement_chunks = _get_index_and_chunks()
+  _index = None
+  _chunks = None
 
-  # Embed the query using the same embedding model and search the index
-  query_vector = _get_embedding(query)
-  distances, indices = index.search(np.array([query_vector]), RAG_RETRIEVAL_K)
+  def _load():
+    nonlocal _index, _chunks
+    if _index is None:
+      _index = faiss.read_index(str(BASE_REQUIREMENTS_PATH / faiss_index_name))
+    if _chunks is None:
+      with open(BASE_REQUIREMENTS_PATH / chunks_name) as f:
+        _chunks = json.load(f)
+    return _index, _chunks
 
-  # Filter by distance threshold and keep up to RAG_TOP_K results
-  result = []
-  for dist, idx in zip(distances[0], indices[0]):
-    if dist <= RAG_DISTANCE_THRESHOLD:
-      result.append(requirement_chunks[idx]["chunk"])
-      if len(result) >= RAG_TOP_K:
-        break
+  def retrieve(query: str) -> Optional[List[str]]:
+    index, chunks = _load()
+    query_vector = _get_embedding(query)
+    distances, indices = index.search(np.array([query_vector]), RAG_RETRIEVAL_K)
 
-  if not result:
-    message = (
-        f"RAG: all {RAG_RETRIEVAL_K} candidates exceeded distance threshold"
-        f" {RAG_DISTANCE_THRESHOLD} (best: {distances[0][0]:.4f}). Returning empty."
-    )
+    result = []
+    for dist, idx in zip(distances[0], indices[0]):
+      if dist <= RAG_DISTANCE_THRESHOLD:
+        result.append(chunks[idx]["chunk"])
+        if len(result) >= RAG_TOP_K:
+          break
 
-    logger.debug(message)
-  else:
-    message = f"RAG retrieved {len(result)} context(s) within threshold {RAG_DISTANCE_THRESHOLD}."
-    logger.debug(message)
+    if not result:
+      logger.debug(
+        f"RAG ({faiss_index_name}): all {RAG_RETRIEVAL_K} candidates exceeded"
+        f" threshold {RAG_DISTANCE_THRESHOLD} (best: {distances[0][0]:.4f})."
+        " Returning empty."
+      )
+    else:
+      logger.debug(f"RAG ({faiss_index_name}): retrieved {len(result)} context(s).")
+    return result
 
-  return result
+  return retrieve
+
+
+# Public API — unchanged from callers' perspective.
+retrieve_requirements = make_retriever(FAISS_INDEX_NAME, REQUIREMENT_CHUNKS_NAME)

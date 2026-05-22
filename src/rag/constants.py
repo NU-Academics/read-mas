@@ -27,6 +27,23 @@ GEMINI_EMBEDDING_MODEL = "gemini-embedding-001"
 FAISS_INDEX_NAME = "requirements_index.faiss"
 REQUIREMENT_CHUNKS_NAME = "requirement_chunks.json"
 
+# DevBench benchmark FAISS index (non-input PRD sections for the 14 benchmark projects)
+DEVBENCH_BENCHMARK_FAISS_INDEX_NAME = "devbench_benchmark_index.faiss"
+DEVBENCH_BENCHMARK_CHUNKS_NAME = "devbench_benchmark_chunks.json"
+DEVBENCH_BENCHMARK_PATH = Path("datasets/DevBench/benchmark_data")
+
+# Sections excluded from DevBench index — identical to extract_requirements_text() in golden_generator.ipynb
+DEVBENCH_INPUT_SECTIONS = frozenset({
+    "introduction",
+    "background",
+    "goals",
+    "features and functionalities",
+    "constraints",
+    "technical constraints",
+    "requirements",
+    "dependencies",
+})
+
 # Retrieval config
 RAG_TOP_K = 5
 RAG_RETRIEVAL_K = 10  # Candidates to fetch before distance filtering

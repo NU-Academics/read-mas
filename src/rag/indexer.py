@@ -10,10 +10,8 @@ from dotenv import load_dotenv
 import json
 from pathlib import Path
 import re
-import os
 
 import faiss
-from google import genai
 import numpy as np
 import pandas as pd
 import pdfplumber
@@ -26,7 +24,6 @@ from utils import setup_logging, get_run_id
 from .constants import (
     BASE_REQUIREMENTS_PATH,
     FAISS_INDEX_NAME,
-    GEMINI_EMBEDDING_MODEL,
     PROMISE_CHUNK_OVERLAP,
     PROMISE_CHUNK_SIZE,
     PROMISE_PATH,
@@ -36,8 +33,8 @@ from .constants import (
     PURE_DOCS_PATH,
     PURE_XML_PATH,
     REQUIREMENT_CHUNKS_NAME,
-    EMBED_BATCH_SIZE,
 )
+from .embed_utils import batch_chunks as _batch_chunks, embed_chunks as _embed_chunks
 
 load_dotenv(dotenv_path=Path(__file__).parent.parent.parent / ".env", override=False)
 
@@ -249,26 +246,6 @@ def _chunk_pure_docs() -> list[dict]:
       f"({skipped_count} held out for goldens)"
   )
   return chunks
-
-
-def _batch_chunks(seq, size):
-  """Splits chunks into multiple batches based on the batch size."""
-  for pos in range(0, len(seq), size):
-    yield seq[pos : pos + size]
-
-
-def _embed_chunks(chunks: list[dict]) -> np.ndarray:
-  """Embed all chunks using Ollama."""
-  emb_list = []
-  texts = [c["chunk"] for c in chunks]
-
-  client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
-  for batch in _batch_chunks(texts, EMBED_BATCH_SIZE):
-    res = client.models.embed_content(model=GEMINI_EMBEDDING_MODEL, contents=batch)
-    emb_list.extend(res.embeddings)
-
-  # Return a 2‑D float32 NumPy array
-  return np.array([e.values for e in emb_list], dtype=np.float32)
 
 
 def index_requirements():
