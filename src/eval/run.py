@@ -394,11 +394,18 @@ def benchmark_agent(
         "-e",
         help="Execution mode: 'local' (inline) or 'remote' (MCP + A2A servers)",
     ),
+    rag_index: Optional[str] = typer.Option(
+        "requirements",
+        "--rag-index",
+        "-ri",
+        help="RAGAS evaluation index: 'requirements' (default) or 'devbench_benchmark'",
+    ),
 ):
   setup_logging(str(ctx.params["run_id"]), "benchmark")
 
   benchmarker = AgentEvaluator(
-      agent_type, model, rag, AgentRunMode.BENCHMARK, experiment, ExecMode(exec_mode)
+      agent_type, model, rag, AgentRunMode.BENCHMARK, experiment, ExecMode(exec_mode),
+      rag_source=rag_index,
   )
   asyncio.run(benchmarker.eval_agent())
 

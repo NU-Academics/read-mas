@@ -88,6 +88,7 @@ class ReadWrapperAgent(AgentBase):
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = False,
       exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
+      rag_source: str = "requirements",
   ):
     super().__init__(
         llm_model_name,
@@ -95,6 +96,7 @@ class ReadWrapperAgent(AgentBase):
         run_mode=run_mode,
         rag=rag,
         exec_mode=exec_mode,
+        rag_source=rag_source,
     )
 
   def get_agent(self) -> Agent:
@@ -107,6 +109,7 @@ class ReadWrapperAgent(AgentBase):
           run_mode=self._run_mode,
           rag=self._rag,
           exec_mode=self._exec_mode,
+          rag_source=self._rag_source,
       ).get_agent()
       design_sub = DesignWrapperAgent(
           self._llm_model_name,

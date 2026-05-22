@@ -41,6 +41,7 @@ class AgentEvaluator:
       run_mode: Optional[AgentRunMode] = AgentRunMode.EVAL,
       experiment: Optional[bool] = False,
       exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
+      rag_source: str = "requirements",
   ):
     self._agent_type = agent_type
     self._model = model
@@ -56,10 +57,11 @@ class AgentEvaluator:
         self._rag,
         self._run_mode,
         exec_mode=self._exec_mode,
+        rag_source=rag_source,
     )
     self._metrics = get_metrics(self._agent_type)
     self._ragas_metric_names = get_ragas_metric_names(self._agent_type, self._rag)
-    self._dataset = get_dataset(self._agent_type, self._rag, self._run_mode)
+    self._dataset = get_dataset(self._agent_type, self._rag, self._run_mode, rag_source=rag_source)
     self._run_path = "runs/" + self._run_mode.value + "_runs"
 
   async def _run_single_golden(self, golden):

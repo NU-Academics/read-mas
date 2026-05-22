@@ -20,6 +20,7 @@ class AgentBase(ABC):
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = False,
       exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
+      rag_source: str = "requirements",
   ):
     """
     The agent initialization.
@@ -30,12 +31,14 @@ class AgentBase(ABC):
       run_mode: The agent run mode, e.g. main, eval, or benchmark
       rag: Whether to use the RAG tool
       exec_mode: Whether to run inline (local) or via MCP/A2A servers (remote)
+      rag_source: Which RAG index to use: 'requirements' or 'devbench_benchmark'
     """
     self._llm_model_name = llm_model_name
     self._system_prompt = system_prompt or ""
     self._run_mode = run_mode
     self._rag = rag
     self._exec_mode = exec_mode
+    self._rag_source = rag_source
 
   @abstractmethod
   def get_agent() -> Agent:

@@ -54,11 +54,16 @@ def get_model_from(llm_model_name: str) -> Union[str, LiteLlm]:
     return LiteLlm(llm_model_name)
 
 
-def add_rag_tool(tools: List[any], rag: bool, exec_mode: ExecMode = ExecMode.LOCAL):
+def add_rag_tool(
+    tools: List[any],
+    rag: bool,
+    exec_mode: ExecMode = ExecMode.LOCAL,
+    rag_source: str = "requirements",
+):
   """Attaches the RAG tool to the agent's tool list.
 
   In remote mode, connects to the MCP server over HTTP.
-  In local mode, wraps the retriever function directly as a FunctionTool.
+  In local mode, wraps the retriever selected by rag_source as a FunctionTool.
   """
   if not rag:
     return
@@ -73,11 +78,17 @@ def add_rag_tool(tools: List[any], rag: bool, exec_mode: ExecMode = ExecMode.LOC
     tools.append(rag_toolset)
   else:
     from google.adk.tools import FunctionTool
-    from rag.retriever import retrieve_requirements
+    from rag import retrieve_requirements, retrieve_devbench_context
+
+    _retrievers = {
+        "requirements": retrieve_requirements,
+        "devbench_benchmark": retrieve_devbench_context,
+    }
+    retriever = _retrievers.get(rag_source, retrieve_requirements)
 
     def get_requirement_examples(query: str) -> list[str]:
       """Retrieve relevant requirement examples from the local knowledge base."""
-      return retrieve_requirements(query)
+      return retriever(query)
 
     tools.append(FunctionTool(get_requirement_examples))
 

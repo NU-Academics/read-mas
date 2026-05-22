@@ -31,12 +31,20 @@ from eval.utils.constants import (
     AGENT_PROMPTS,
     AGENT_REGISTRY,
 )
-from rag import retrieve_requirements
+from rag import retrieve_requirements, retrieve_devbench_context
 from utils.constants import (
     AgentRunMode,
     ExecMode,
     EVALUATION_MODEL,
 )
+
+
+# Module-private mapping from rag_source string → retrieval function.
+# Only accessed via get_dataset(); not exported.
+_RETRIEVAL_FNS = {
+  "requirements": retrieve_requirements,
+  "devbench_benchmark": retrieve_devbench_context,
+}
 
 
 def get_metrics(agent_type: str) -> list[BaseMetric]:
@@ -63,14 +71,18 @@ def get_eval_agent(
     rag: bool,
     run_mode: Optional[AgentRunMode] = AgentRunMode.EVAL,
     exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
+    rag_source: str = "requirements",
 ) -> BaseAgent:
   """Gets the agent to be evaluated."""
   agent = AGENT_REGISTRY[agent_type]
-  return agent(model, prompt, run_mode, rag, exec_mode=exec_mode).get_agent()
+  return agent(model, prompt, run_mode, rag, exec_mode=exec_mode, rag_source=rag_source).get_agent()
 
 
 def get_dataset(
-    agent_type: str, rag: bool, run_mode: Optional[AgentRunMode] = AgentRunMode.EVAL
+    agent_type: str,
+    rag: bool,
+    run_mode: Optional[AgentRunMode] = AgentRunMode.EVAL,
+    rag_source: str = "requirements",
 ) -> EvaluationDataset:
   """Retrieves an evaluation dataset with a list of goldens for an agent based on the requested run mode."""
   golden_filename = run_mode.value + ".json"
@@ -81,8 +93,9 @@ def get_dataset(
   goldens = [Golden.model_validate(g) for g in goldens_list]
 
   if rag:
+    retrieval_fn = _RETRIEVAL_FNS.get(rag_source, retrieve_requirements)
     for golden in goldens:
-      retrieval_context = retrieve_requirements(golden.input) or []
+      retrieval_context = retrieval_fn(golden.input) or []
       # Include the specification document from the golden as retrieval context so RAGAS
       # evaluates faithfulness against the same document included in the agent's input.
       if golden.context:

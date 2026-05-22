@@ -21,10 +21,11 @@ class RequirementsWrapperAgent(AgentBase):
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = True,
       exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
+      rag_source: str = "requirements",
   ):
-    super().__init__(llm_model_name, system_prompt, run_mode, rag, exec_mode)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag, exec_mode, rag_source)
     self._collector_agent = CollectorAgent(
-        llm_model_name, run_mode=run_mode, rag=rag, exec_mode=exec_mode
+        llm_model_name, run_mode=run_mode, rag=rag, exec_mode=exec_mode, rag_source=rag_source
     ).get_agent()
     self._analyzer_agent = AnalyzerAgent(
         llm_model_name, run_mode=run_mode, rag=rag, exec_mode=exec_mode

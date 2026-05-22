@@ -23,12 +23,13 @@ class SingleAgent(AgentBase):
       run_mode: Optional[AgentRunMode] = AgentRunMode.MAIN,
       rag: Optional[bool] = False,
       exec_mode: Optional[ExecMode] = ExecMode.LOCAL,
+      rag_source: str = "requirements",
   ):
-    super().__init__(llm_model_name, system_prompt, run_mode, rag, exec_mode)
+    super().__init__(llm_model_name, system_prompt, run_mode, rag, exec_mode, rag_source)
 
   def get_agent(self) -> Agent:
     tools = []
-    add_rag_tool(tools, self._rag, self._exec_mode)
+    add_rag_tool(tools, self._rag, self._exec_mode, self._rag_source)
 
     return Agent(
         name="single_agent",
