@@ -84,5 +84,5 @@ def make_retriever(
   return retrieve
 
 
-# Public API — unchanged from callers' perspective.
+# Public API to retrieve requirements from the FAISS index
 retrieve_requirements = make_retriever(FAISS_INDEX_NAME, REQUIREMENT_CHUNKS_NAME)

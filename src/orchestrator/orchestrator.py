@@ -202,7 +202,20 @@ async def run_agent(
   session**.  The caller is responsible for creating the session and passing the
   runner that will be reused across calls.
 
-  Retries up to 3 times with 2 minute pauses if LLM model errors occur.
+  Retries up to 3 times with exponential backoff if LLM model errors occur.
+
+  Args:
+    query: The user query
+    entry_agent: The entry agent to use
+    session_id: The session ID to use
+    user_id: The user ID to use
+    runner: The runner to use
+    app_name: The app name to use
+    run_mode: The run mode to use
+    state_collector: The state collector to use
+
+  Returns:
+    The agent response string
   """
   current_session_id = session_id
   current_user_id = user_id
