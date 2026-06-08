@@ -1,0 +1,13 @@
+# DVC Report
+
+metrics.json
+
+| agent      | model            | rag   | metrics                             |   DesignAccuracy [GEval] |   faithfulness (ragas) |   RAGAS |
+|------------|------------------|-------|-------------------------------------|--------------------------|------------------------|---------|
+| read_agent | gemini-2.5-flash | True  | ['DesignAccuracy [GEval]', 'RAGAS'] |                    0.867 |                  0.998 |   0.735 |
+
+![static/DesignAccuracy [GEval]](static/DesignAccuracy [GEval].png)
+
+![static/RAGAS](static/RAGAS.png)
+
+![static/faithfulness (ragas)](static/faithfulness (ragas).png)
