@@ -11,7 +11,7 @@ benchmark:
   agent_name: read_agent
   model: gemini-2.5-flash
   rag: true
-  rag_index: devbench_benchmark
+  rag_index: requirements
 code:
   agent_name: read_agent
   model: ollama_chat/gpt-oss:20b
