@@ -62,7 +62,7 @@ stages:
       nfiles: 8
   benchmark:
     cmd: python -m src.eval.run benchmark -t read_agent -m gemini-2.5-flash -r 
-      false -ri devbench_benchmark -x
+      true -ri devbench_benchmark -x
     deps:
     - path: data/goldens/read_agent/benchmark.json
       hash: md5
@@ -80,14 +80,14 @@ stages:
       params.yaml:
         benchmark.agent_name: read_agent
         benchmark.model: gemini-2.5-flash
-        benchmark.rag: false
+        benchmark.rag: true
         benchmark.rag_index: devbench_benchmark
     outs:
     - path: runs/benchmark_runs
       hash: md5
-      md5: 0f5e0b346e01cc8710749a328fa8deab.dir
-      size: 16269
-      nfiles: 4
+      md5: 94de5ad2b3fbd0755abb861ea83f977f.dir
+      size: 51438
+      nfiles: 8
   code_benchmark:
     cmd: python -m src.eval.run code-benchmark -t read_agent -m 
       ollama_chat/gpt-oss:20b -d mbpp -s 

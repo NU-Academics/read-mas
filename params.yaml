@@ -10,7 +10,7 @@ eval:
 benchmark:
   agent_name: read_agent
   model: gemini-2.5-flash
-  rag: false
+  rag: true
   rag_index: devbench_benchmark
 code:
   agent_name: read_agent
