@@ -1,0 +1,17 @@
+# RQ1 default configuration: read_agent (multi-agent) with Gemini 2.5 Flash, RAG enabled.
+# For RQ1 also run with -t single_agent and with -m the OpenAI GPT-5-mini model
+# (see README.md "Reproducing RQ1" for the full experiment matrix).
+benchmark:
+  agent_name: read_agent
+  model: gemini-2.5-flash
+  rag: true
+  rag_index: devbench_benchmark
+
+# RQ1 code-benchmark default (HumanEval/MBPP). Re-run per dataset/model/agent
+# combination as described in README.md.
+code:
+  agent_name: read_agent
+  model: gemini-2.5-flash
+  rag: true
+  dataset: mbpp
+  samples: data/samples/mbpp/mbpp_samples_1778288368404-sanitized.jsonl

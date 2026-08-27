@@ -1,0 +1,38 @@
+stages:
+  benchmark:
+    cmd: python -m src.eval.run benchmark -t ${benchmark.agent_name} -m
+      ${benchmark.model} -r ${benchmark.rag} -ri ${benchmark.rag_index} -x
+    deps:
+    - src/eval/run.py
+    - src/eval/evaluators/agent_evals/evaluator.py
+    - data/goldens/${benchmark.agent_name}/benchmark.json
+    params:
+    - benchmark.agent_name
+    - benchmark.model
+    - benchmark.rag
+    - benchmark.rag_index
+    outs:
+    - runs/benchmark_runs
+  code_benchmark:
+    cmd: python -m src.eval.run code-benchmark -t ${code.agent_name} -m
+      ${code.model} -d ${code.dataset} -s ${code.samples} -r ${code.rag} -x
+    deps:
+    - src/eval/run.py
+    - src/eval/evaluators/benchmark_evals/coding_benchmarker.py
+    - data/samples/${code.dataset}
+    params:
+    - code.agent_name
+    - code.model
+    - code.rag
+    - code.dataset
+    - code.samples
+    outs:
+    - runs/code_benchmark_runs
+metrics:
+- runs/benchmark_runs/metrics.json
+- runs/code_benchmark_runs/metrics.json
+plots:
+- runs/benchmark_runs/plots/metrics:
+    x: step
+- runs/code_benchmark_runs/plots/metrics:
+    x: step
